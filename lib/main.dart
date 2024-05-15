@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shop0koa_frontend/constants/initial_bindings.dart';
-import 'package:shop0koa_frontend/view/authentication/login_page.dart';
+import 'package:shop0koa_frontend/view/authentication/signup.dart';
+import 'package:shop0koa_frontend/view/account/account.dart';
 
 void main() async {
   runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -28,7 +29,12 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginPage(),
+      home: SignupPage(),
+      getPages: [
+        // Define your routes here
+        GetPage(name: '/', page: () => SignupPage()),
+        GetPage(name: '/account', page: () => Withdraw()), // Add this line
+      ],
     );
   }
 }

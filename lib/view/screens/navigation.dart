@@ -4,10 +4,8 @@ import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
 import 'package:shop0koa_frontend/controllers/navigation_controller.dart';
-import 'package:shop0koa_frontend/view/screens/account_page.dart';
 import 'package:shop0koa_frontend/view/screens/catalogue_page.dart';
 import 'package:shop0koa_frontend/view/screens/home_page.dart';
-import 'package:shop0koa_frontend/view/screens/oders/oders_page.dart';
 
 class NavigationPage extends GetView<NavigationController> {
   const NavigationPage({super.key});

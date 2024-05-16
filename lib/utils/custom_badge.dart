@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shop0koa_frontend/constants/colors.dart';
 
 class CustomBadge extends StatelessWidget {
   const CustomBadge({

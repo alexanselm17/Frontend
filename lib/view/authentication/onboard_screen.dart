@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop0koa_frontend/controllers/introduction_controller.dart';
 import 'package:shop0koa_frontend/utils/button.dart';
 import 'package:shop0koa_frontend/view/authentication/confirm_pin.dart';
-import 'package:shop0koa_frontend/view/authentication/login_page.dart';
 
 class OnBoardScreen extends StatefulWidget {
   const OnBoardScreen({super.key});

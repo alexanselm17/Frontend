@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shop0koa_frontend/constants/initial_bindings.dart';
-import 'package:shop0koa_frontend/view/authentication/login_page.dart';
 import 'package:shop0koa_frontend/view/authentication/onboard_screen.dart';
 
 void main() async {

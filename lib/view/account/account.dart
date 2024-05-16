@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-class Withdraw extends StatelessWidget {
+class Withdraw extends StatefulWidget {
   const Withdraw({Key? key}) : super(key: key);
+
+  @override
+  State<Withdraw> createState() => _WithdrawState();
+}
+
+class _WithdrawState extends State<Withdraw> {
+  int _selectedValue = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -25,22 +33,20 @@ class Withdraw extends StatelessWidget {
           // Add padding inside the Scaffold
           child: Column(
             children: [
-              SizedBox(height: 10, width: 0),
+              const SizedBox(height: 10, width: 0),
               Container(
                 width: MediaQuery.of(context).size.width - 10,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10), // Add border radius
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(0xFF34C759),
-                      Color(0xFF34C759),
-                      Color(0xFF000000).withOpacity(0.6),
-                      Color(0xFF000000).withOpacity(0.5),
-                    ],
-                  ),
+                  borderRadius: BorderRadius.circular(20), // Add border radius
+                  gradient: const LinearGradient(colors: [
+                    Color.fromARGB(255, 4, 183, 49),
+                    Color.fromARGB(255, 2, 135, 35),
+                    Color.fromARGB(255, 1, 109, 28),
+                    Color.fromARGB(255, 1, 94, 24),
+                  ]),
                 ),
-                padding: EdgeInsets.all(16.0),
-                child: Column(
+                padding: const EdgeInsets.all(16.0),
+                child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -48,43 +54,57 @@ class Withdraw extends StatelessWidget {
                       style: TextStyle(fontSize: 15.0, color: Colors.white),
                     ),
                     Text(
-                      'Ksh 4568927',
-                      style: TextStyle(fontSize: 25.0, color: Colors.white),
+                      'Ksh 456,892.01',
+                      style: TextStyle(fontSize: 30.0, color: Colors.white),
                     ),
                   ],
                 ),
               ),
               const SizedBox(height: 20),
-              TextField(
+               TextField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Amount (Ksh)',
                 ),
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))],
               ),
               const SizedBox(height: 20),
-              Align(
+              const Align(
                 alignment: Alignment.centerLeft,
                 child: Text('Withdraw to:'),
               ),
               Column(
                 children: [
                   RadioListTile(
-                    title: Text('M-Pesa'),
+                    title: const Text('M-Pesa'),
                     value: 1,
-                    groupValue: 1,
-                    onChanged: (value) {},
+                    groupValue: _selectedValue,
+                    onChanged: (int? value) {
+                      setState(() {
+                        _selectedValue = value!;
+                      });
+                    },
                   ),
                   RadioListTile(
-                    title: Text('Flexisave'),
+                    title: const Text('Flexisave'),
                     value: 2,
-                    groupValue: 1,
-                    onChanged: (value) {},
+                    groupValue: _selectedValue,
+                    onChanged: (int? value) {
+                      setState(() {
+                        _selectedValue = value!;
+                      });
+                    },
                   ),
                   RadioListTile(
-                    title: Text('Sacco Wallet'),
+                    title: const Text('Sacco Wallet'),
                     value: 3,
-                    groupValue: 1,
-                    onChanged: (value) {},
+                    groupValue: _selectedValue,
+                    onChanged: (int? value) {
+                      setState(() {
+                        _selectedValue = value!;
+                      });
+                    },
                   ),
                 ],
               ),
@@ -92,22 +112,22 @@ class Withdraw extends StatelessWidget {
               GestureDetector(
                 onTap: () {},
                 child: SizedBox(
-                  width: 400,
+                  width: MediaQuery.of(context).size.width - 10,
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius:
-                          BorderRadius.circular(10), // Add border radius
-                      gradient: LinearGradient(
+                          BorderRadius.circular(20), // Add border radius
+                      gradient: const LinearGradient(
                         colors: [
-                          Color(0xFF34C759),
-                          Color(0xFF34C759),
-                          Color(0xFF000000).withOpacity(0.6),
-                          Color(0xFF000000).withOpacity(0.5),
+                          Color.fromARGB(255, 4, 183, 49),
+                          Color.fromARGB(255, 2, 135, 35),
+                          Color.fromARGB(255, 1, 109, 28),
+                          Color.fromARGB(255, 1, 94, 24),
                         ],
                       ),
                     ),
-                    padding: EdgeInsets.all(16.0),
-                    child: Center(
+                    padding: const EdgeInsets.all(16.0),
+                    child: const Center(
                       child: Text(
                         'Withdraw Cash',
                         style: TextStyle(fontSize: 15.0, color: Colors.white),

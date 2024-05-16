@@ -4,6 +4,7 @@ import 'package:shop0koa_frontend/constants/initial_bindings.dart';
 import 'package:shop0koa_frontend/view/authentication/signup.dart';
 import 'package:shop0koa_frontend/view/account/account.dart';
 
+
 void main() async {
   runApp(const MyApp());
 }
@@ -33,7 +34,7 @@ class _MyAppState extends State<MyApp> {
       getPages: [
         // Define your routes here
         GetPage(name: '/', page: () => SignupPage()),
-        GetPage(name: '/account', page: () => Withdraw()), // Add this line
+        GetPage(name: '/authentication', page: () => Withdraw()), // Add this line
       ],
     );
   }

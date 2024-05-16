@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shop0koa_frontend/view/account/account.dart';
+import 'package:flutter/services.dart';
 
 class SignupPage extends StatelessWidget {
-  const SignupPage({Key? key}) : super(key: key);
+  final _formKey = GlobalKey<FormState>();
+  SignupPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +27,7 @@ class SignupPage extends StatelessWidget {
             child: Column(
               children: [
                 Form(
+                  key: _formKey,
                   child: Column(
                     children: [
                       Row(
@@ -32,86 +35,166 @@ class SignupPage extends StatelessWidget {
                           Expanded(
                             child: CustomTextField(
                               labelText: "First Name*",
-                              icon: Icon(Icons.person),
                               keyboardType: TextInputType.text,
                               obscureText: false,
-                              validator: (value) {},
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your first name';
+                                } else if (!RegExp(r'^[a-zA-Z\s]*$')
+                                    .hasMatch(value)) {
+                                  return 'Please enter only characters';
+                                }
+                                return null;
+                              },
                             ),
                           ),
                           const SizedBox(width: 20),
                           Expanded(
                             child: CustomTextField(
                               labelText: 'Last Name*',
-                              icon: Icon(Icons.person),
                               keyboardType: TextInputType.text,
                               obscureText: false,
-                              validator: (value) {},
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your first name';
+                                } else if (!RegExp(r'^[a-zA-Z\s]*$')
+                                    .hasMatch(value)) {
+                                  return 'Please enter only characters';
+                                }
+                                return null;
+                              },
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 10),
                       CustomTextField(
-                        labelText: "Business Name*",
-                        icon: Icon(Icons.business_outlined),
-                        keyboardType: TextInputType.text,
-                        obscureText: false,
-                        validator: (value) {},
-                      ),
+                          labelText: "Business Name*",
+                          keyboardType: TextInputType.text,
+                          obscureText: false,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your business name';
+                            } else if (!RegExp(r'^[a-zA-Z\s]*$')
+                                .hasMatch(value)) {
+                              return 'Please enter only characters';
+                            }
+                            return null;
+                          }),
                       const SizedBox(height: 10),
                       CustomTextField(
                         labelText: "License No.*",
-                        icon: Icon(Icons.edit_document),
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.number,
                         obscureText: false,
-                        validator: (value) {},
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your license number';
+                          } else if (!RegExp(r'^\d+$').hasMatch(value)) {
+                            return 'Please enter a valid license number';
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(height: 10),
-                      CustomTextField(
-                        labelText: "Select Location*",
-                        icon: Icon(Icons.location_city),
-                        keyboardType: TextInputType.text,
-                        obscureText: false,
-                        validator: (value) {},
+                      DropdownButtonFormField<String>(
+                        decoration: InputDecoration(
+                          labelText: 'Select Location',
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                        ),
+                        items: <String>['Kenya', 'Tanzania', 'Uganda']
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          // Do something when a location is selected
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please select a location';
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(height: 10),
                       CustomTextField(
                         labelText: "Email Address",
-                        icon: Icon(Icons.email),
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.emailAddress,
                         obscureText: false,
-                        validator: (value) {},
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your email address';
+                          } else if (!RegExp(
+                                  r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
+                              .hasMatch(value)) {
+                            return 'Please enter a valid email address';
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(height: 10),
                       CustomTextField(
                         labelText: "Phone Number*",
-                        icon: Icon(Icons.phone),
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.number,
                         obscureText: false,
-                        validator: (value) {},
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your phone number';
+                          } else if (!RegExp(r'^(07|01)\d{8}$')
+                              .hasMatch(value)) {
+                            return 'Please enter a valid phone number';
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(height: 10),
                       CustomTextField(
                         labelText: "Create Password(Min.8 Char)*",
-                        icon: Icon(Icons.visibility),
                         keyboardType: TextInputType.text,
-                        obscureText: false,
-                        validator: (value) {},
+                        obscureText: true,
+                        validator: (value) {
+                          if (value == null || value.length < 8) {
+                            return 'Password must be at least 8 characters';
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(height: 10),
                       CustomTextField(
                         labelText: "Repeat Password*",
-                        icon: Icon(Icons.visibility),
                         keyboardType: TextInputType.text,
-                        obscureText: false,
-                        validator: (value) {},
+                        obscureText: true,
+                        validator: (value) {
+                          if (value == null || value.length < 8) {
+                            return 'Password must be at least 8 characters';
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(height: 10),
                       Container(
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            // Handle button press
+                            if (_formKey.currentState!.validate()) {
+                              // If the form is valid, show a different SnackBar
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('All inputs are valid'),
+                                ),
+                              );
+                            } else {
+                              // If all inputs are not valid, show a SnackBar
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                      'Please enter all the required fields'),
+                                ),
+                              );
+                            }
                           },
                           child: Text('Sign Up'),
                           style: ButtonStyle(
@@ -133,35 +216,39 @@ class SignupPage extends StatelessWidget {
 
 class CustomTextField extends StatelessWidget {
   final String labelText;
-  final Icon icon;
   final TextInputType keyboardType;
   final bool obscureText;
-  final Function(String) validator;
+  final String? Function(String?)? validator;
+  final ValueNotifier<bool> _obscureTextNotifier = ValueNotifier(true);
 
-  const CustomTextField({
+  CustomTextField({
     Key? key,
     required this.labelText,
-    required this.icon,
-    required this.keyboardType,
-    required this.obscureText,
+    this.keyboardType = TextInputType.text,
+    this.obscureText = false,
     required this.validator,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      keyboardType: keyboardType,
-      obscureText: obscureText,
-      decoration: InputDecoration(
-        labelText: labelText,
-        border: OutlineInputBorder(),
-        prefixIcon: icon,
-      ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter some text';
-        }
-        return null;
+    return ValueListenableBuilder<bool>(
+      valueListenable: _obscureTextNotifier,
+      builder: (context, value, child) {
+        return TextFormField(
+          keyboardType: keyboardType,
+          obscureText: obscureText ? value : false,
+          decoration: InputDecoration(
+            labelText: labelText,
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+            suffixIcon: obscureText
+                ? IconButton(
+                    icon: Icon(value ? Icons.visibility : Icons.visibility_off),
+                    onPressed: () => _obscureTextNotifier.value = !value,
+                  )
+                : null,
+          ),
+          validator: validator,
+        );
       },
     );
   }
@@ -187,9 +274,10 @@ class TextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       keyboardType: keyboardType,
+      obscureText: obscureText,
       decoration: InputDecoration(
         labelText: labelText,
-        border: OutlineInputBorder(),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(40)),
         prefixIcon: icon,
       ),
     );

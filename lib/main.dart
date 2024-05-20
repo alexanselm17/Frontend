@@ -3,7 +3,8 @@ import 'package:get/get.dart';
 import 'package:shop0koa_frontend/constants/initial_bindings.dart';
 import 'package:shop0koa_frontend/view/authentication/signup.dart';
 import 'package:shop0koa_frontend/view/account/account.dart';
-
+import 'package:shop0koa_frontend/view/authentication/verify.dart';
+import 'package:shop0koa_frontend/view/product/product.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -28,13 +29,15 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       initialBinding: InitialBinding(),
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.white,
       ),
       home: SignupPage(),
       getPages: [
         // Define your routes here
         GetPage(name: '/', page: () => SignupPage()),
-        GetPage(name: '/authentication', page: () => Withdraw()), // Add this line
+        GetPage(name: '/authentication', page: () => Withdraw()),
+        GetPage(name: '/verify', page: () => Business()),
+        GetPage(name: '/product', page: () => ProductPage()), // Add this line
       ],
     );
   }

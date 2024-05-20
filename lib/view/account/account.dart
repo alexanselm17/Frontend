@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:shop0koa_frontend/view/authentication/verify.dart';
 
 class Withdraw extends StatefulWidget {
   const Withdraw({Key? key}) : super(key: key);
@@ -18,9 +20,7 @@ class _WithdrawState extends State<Withdraw> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            if (Navigator.canPop(context)) {
-              Navigator.pop(context);
-            }
+            Get.to(Business());
           },
         ),
         title:
@@ -61,13 +61,15 @@ class _WithdrawState extends State<Withdraw> {
                 ),
               ),
               const SizedBox(height: 20),
-               TextField(
+              TextField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Amount (Ksh)',
                 ),
                 keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))],
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
+                ],
               ),
               const SizedBox(height: 20),
               const Align(

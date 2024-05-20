@@ -30,7 +30,12 @@ class ProductTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 8.0),
-      decoration: const BoxDecoration(color: Colors.white),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(
+          Radius.circular(10),
+        ),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
@@ -42,7 +47,7 @@ class ProductTile extends StatelessWidget {
               width: 100,
             ),
             const SizedBox(
-              width: 8.0,
+              width: 14.0,
             ),
             Expanded(
               child: Column(
@@ -57,9 +62,7 @@ class ProductTile extends StatelessWidget {
                           child: Text(
                             productName,
                             style: const TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
-                                color: Colors.black),
+                                fontSize: 20, color: Colors.black),
                             softWrap: true,
                           ),
                         ),
@@ -78,8 +81,7 @@ class ProductTile extends StatelessWidget {
                     children: [
                       Text(
                         "Ksh. $productPrice",
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
+                        style: const TextStyle(fontSize: 20),
                       ),
                       const SizedBox(width: 10),
                       Text(
@@ -90,7 +92,7 @@ class ProductTile extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const VerticalSpacing(),
+                  const VerticalSpacing(height: 0),
                   !isAnalytics
                       ? Row(
                           children: [
@@ -108,12 +110,15 @@ class ProductTile extends StatelessWidget {
                             ),
                           ],
                         )
-                      : SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.5,
-                          child: CustomButton(
-                            padding: 5,
-                            onTap: () {},
-                            text: 'Edit',
+                      : Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4),
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            child: CustomButton(
+                              padding: 5,
+                              onTap: () {},
+                              text: 'Edit',
+                            ),
                           ),
                         ),
                 ],

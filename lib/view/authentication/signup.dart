@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shop0koa_frontend/constants/colors.dart';
 import 'package:shop0koa_frontend/utils/button.dart';
 import 'package:shop0koa_frontend/view/account/account.dart';
 import 'package:flutter/services.dart';

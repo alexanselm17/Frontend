@@ -41,70 +41,44 @@ class _OdersPageState extends State<OdersPage>
             Get.back();
           },
         ),
-        title: const Text('Oders'),
+        title: const Text(
+          'Oders',
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: 100,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5.0),
-                  color: Colors.white),
-              padding: const EdgeInsets.all(5.0),
-              child: TabBar(
-                controller: _tabController,
-                dividerColor: Colors.white,
-                indicator: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.0),
-                    color: Colors.white),
-                labelColor: Colors.white,
-                unselectedLabelColor: Colors.grey,
-                labelStyle: const TextStyle(fontWeight: FontWeight.bold),
-                unselectedLabelStyle: const TextStyle(),
-                tabs: [
-                  SizedBox(
-                    width: 120, // Specify the width for the first tab
-                    child: Tab(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 5,
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: AppColors.mainColor,
-                        ),
-                        child: const Text('FlexiSave'),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 120, // Specify the width for the second tab
-                    child: Tab(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 5,
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: AppColors.mainColor,
-                        ),
-                        child: const Text("Pay Later"),
-                      ),
-                    ),
-                  ),
-                ],
+            TabBar(
+              controller: _tabController,
+              dividerColor: Colors.white,
+              indicator: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                color: AppColors.mainColor,
               ),
+              indicatorSize: TabBarIndicatorSize.tab,
+              labelColor: Colors.white,
+              unselectedLabelColor: Colors.grey,
+              labelStyle: const TextStyle(fontWeight: FontWeight.bold),
+              unselectedLabelStyle: const TextStyle(),
+              tabs: const [
+                Tab(
+                  child: Text('FlexiSave'),
+                ),
+                Tab(
+                  child: Text("Pay Later"),
+                ),
+              ],
             ),
             const VerticalSpacing(),
             Expanded(
                 child: TabBarView(
               controller: _tabController,
-              children: const [PayLaterOders(), FlexiSave()],
+              children: const [
+                FlexiSave(),
+                PayLaterOders(),
+              ],
             ))
           ],
         ),

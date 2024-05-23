@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
 import 'package:shop0koa_frontend/controllers/navigation_controller.dart';
+import 'package:shop0koa_frontend/view/account/accounts.dart';
 import 'package:shop0koa_frontend/view/screens/catalogue_page.dart';
 import 'package:shop0koa_frontend/view/screens/home_page.dart';
 
@@ -23,19 +24,12 @@ class NavigationPage extends GetView<NavigationController> {
         activeColorPrimary: AppColors.mainColor,
         inactiveColorPrimary: CupertinoColors.black,
       ),
-      // PersistentBottomNavBarItem(
-      //   textStyle: const TextStyle(color: Colors.black),
-      //   icon: const Icon(CupertinoIcons.cart),
-      //   title: ("Oders"),
-      //   activeColorPrimary: AppColors.mainColor,
-      //   inactiveColorPrimary: CupertinoColors.black,
-      // ),
-      // PersistentBottomNavBarItem(
-      //   icon: const Icon(CupertinoIcons.profile_circled),
-      //   title: ("Account"),
-      //   activeColorPrimary: AppColors.mainColor,
-      //   inactiveColorPrimary: CupertinoColors.black,
-      // ),
+      PersistentBottomNavBarItem(
+        icon: const Icon(CupertinoIcons.profile_circled),
+        title: ("Account"),
+        activeColorPrimary: AppColors.mainColor,
+        inactiveColorPrimary: CupertinoColors.black,
+      ),
     ];
   }
 
@@ -43,8 +37,7 @@ class NavigationPage extends GetView<NavigationController> {
     return [
       const HomePage(),
       const CataloguePage(),
-      // const OdersPage(),
-      // const AccountPage(),
+      const AccountPage(),
     ];
   }
 

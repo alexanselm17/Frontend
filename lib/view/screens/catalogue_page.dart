@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shop0koa_frontend/constants/colors.dart';
 import 'package:shop0koa_frontend/utils/product_tile.dart';
+import 'package:shop0koa_frontend/view/screens/products/add_product.dart';
 
 class CataloguePage extends StatelessWidget {
   const CataloguePage({super.key});
@@ -20,6 +22,23 @@ class CataloguePage extends StatelessWidget {
         ),
         title: const Text('Catalog'),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+          backgroundColor: AppColors.mainColor,
+          onPressed: () {
+            Get.to(const AddProduct());
+          },
+          label: const Row(
+            children: [
+              Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
+              Text(
+                'Add Product',
+                style: TextStyle(color: Colors.white),
+              )
+            ],
+          )),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView.builder(

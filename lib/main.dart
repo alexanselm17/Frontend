@@ -27,6 +27,7 @@ class _MyAppState extends State<MyApp> {
       initialBinding: InitialBinding(),
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Colors.white,
       ),
       home: const OnBoardScreen(),
     );

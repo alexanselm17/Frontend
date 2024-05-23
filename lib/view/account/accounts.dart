@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({super.key});
@@ -7,12 +6,8 @@ class AccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Column(
-        children: [
-          Center(
-            child: Text('Account Page'),
-          )
-        ],
+      body: Center(
+        child: Text('Account Page'),
       ),
     );
   }

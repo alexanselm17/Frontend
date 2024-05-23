@@ -3,17 +3,17 @@ import 'package:get/get.dart';
 import 'package:shop0koa_frontend/constants/assets_path.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
 import 'package:shop0koa_frontend/utils/button.dart';
-import 'package:shop0koa_frontend/view/screens/home_page.dart';
+import 'package:shop0koa_frontend/view/authentication/confirm_pin.dart';
 import 'package:shop0koa_frontend/view/screens/navigation.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class NewPin extends StatefulWidget {
+  const NewPin({super.key});
 
   @override
   _ConfirmPinState createState() => _ConfirmPinState();
 }
 
-class _ConfirmPinState extends State<LoginPage> {
+class _ConfirmPinState extends State<NewPin> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   String enteredPin = '';
   bool isPinVisible = false;
@@ -78,7 +78,7 @@ class _ConfirmPinState extends State<LoginPage> {
             width: MediaQuery.of(context).size.width - 90,
           ),
           SizedBox(height: size.height * 0.05),
-          const Text('Enter PIN to login',
+          const Text('Create new Pin',
               style: TextStyle(
                 fontSize: 20, // Adjust font size as needed
                 fontWeight: FontWeight.bold,
@@ -205,9 +205,9 @@ class _ConfirmPinState extends State<LoginPage> {
             padding: 15,
             color: AppColors.mainColor,
             onTap: () {
-              Get.to(() => HomePage());
+              Get.to(const ConfirmPin());
             },
-            text: 'Login ',
+            text: 'Sign Up',
           ),
           const SizedBox(height: 30),
         ],

@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop0koa_frontend/controllers/introduction_controller.dart';
 import 'package:shop0koa_frontend/utils/button.dart';
 import 'package:shop0koa_frontend/view/authentication/confirm_pin.dart';
+import 'package:shop0koa_frontend/view/screens/GetStarted/started.dart';
 
 class OnBoardScreen extends StatefulWidget {
   const OnBoardScreen({super.key});
@@ -21,21 +22,18 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
 
   final List<OnboardingItem> onboardingItems = [
     OnboardingItem(
-      title: 'Welcome to Our shopOkoa App',
-      description: 'Manage your sales, inventory, and more with ease.',
-      imageUrl: 'assets/images/apple.png',
+      title: 'Merchant App',
+      description: 'Loading',
+      imageUrl: 'assets/images/logo.jpg',
+      child: const CircularProgressIndicator(),
     ),
     OnboardingItem(
       title: 'Track Your Sales',
       description:
           'Monitor your sales in real-time and analyze your performance.',
-      imageUrl: 'assets/images/apple.png',
+      imageUrl: 'assets/images/logo.jpg',
     ),
-    OnboardingItem(
-      title: 'Manage Inventory',
-      description: 'Effortlessly manage your inventory and stock levels.',
-      imageUrl: 'assets/images/apple.png',
-    ),
+   
   ];
   @override
   void initState() {
@@ -75,14 +73,14 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
                     buildDot(index: index, currentIndex: _currentPageIndex),
               ),
             ),
-          if (_currentPageIndex == onboardingItems.length - 1)
+          if (_currentPageIndex == 1)
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: CustomButton(
                   onTap: () {
-                    Get.to(const ConfirmPin());
+                    Get.to(const Started());
                     introductionController.disableIntro();
                   },
                   text: 'Get Started',
@@ -113,12 +111,14 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
 class OnboardingItem {
   final String title;
   final String description;
-  final String imageUrl;
+  final String? imageUrl;
+  final Widget? child;
 
   OnboardingItem({
     required this.title,
     required this.description,
-    required this.imageUrl,
+    this.imageUrl,
+    this.child,
   });
 }
 
@@ -140,11 +140,11 @@ class OnboardingItemWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(
-            item.imageUrl,
-            height: 300,
-            width: 300,
+            item.imageUrl ?? '',
+            height: 150,
+            width: 200,
           ),
-          const SizedBox(height: 32.0),
+          const SizedBox(height: 10.0),
           Text(
             item.title,
             style: const TextStyle(
@@ -152,7 +152,7 @@ class OnboardingItemWidget extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 16.0),
+          const SizedBox(height: 10.0),
           Text(
             item.description,
             textAlign: TextAlign.center,

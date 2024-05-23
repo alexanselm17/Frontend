@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:shop0koa_frontend/view/authentication/login_page.dart';
+import 'package:shop0koa_frontend/view/screens/home_page.dart';
 
 class VerifyBusiness extends StatelessWidget {
   const VerifyBusiness({super.key});
@@ -74,7 +76,9 @@ class VerifyBusiness extends StatelessWidget {
             SizedBox(
               width: MediaQuery.of(context).size.width - 30,
               child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(const LoginPage());
+                },
                 style: TextButton.styleFrom(
                   backgroundColor: const Color(0xFF34C759),
                 ),

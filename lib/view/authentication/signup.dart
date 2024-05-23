@@ -3,10 +3,24 @@ import 'package:get/get.dart';
 import 'package:shop0koa_frontend/utils/button.dart';
 import 'package:shop0koa_frontend/view/account/account.dart';
 import 'package:flutter/services.dart';
+import 'package:shop0koa_frontend/view/authentication/confirm_pin.dart';
+import 'package:shop0koa_frontend/view/authentication/new_pin.dart';
 
-class SignupPage extends StatelessWidget {
-  final _formKey = GlobalKey<FormState>();
+class SignupPage extends StatefulWidget {
   SignupPage({super.key});
+
+  @override
+  State<SignupPage> createState() => _SignupPageState();
+}
+
+class _SignupPageState extends State<SignupPage> {
+  final _formKey = GlobalKey<FormState>();
+
+  bool _isMale = false;
+
+  bool _isFemale = false;
+
+  bool _isAgreed = false;
 
   @override
   Widget build(BuildContext context) {
@@ -176,8 +190,125 @@ class SignupPage extends StatelessWidget {
                         },
                       ),
                       const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          const Text(
+                            'Gender',
+                            style: TextStyle(
+                              fontSize: 18, // Adjust font size as needed
+                            ),
+                          ),
+                          Container(
+                            padding:
+                                EdgeInsets.all(8.0), // Adjust padding as needed
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Colors
+                                      .grey), // Adjust border color as needed
+                              borderRadius: BorderRadius.circular(
+                                  50.0), // Adjust border radius as needed
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text('Male'),
+                                    Checkbox(
+                                      value: _isMale,
+                                      onChanged: (bool? value) {
+                                        setState(() {
+                                          _isMale = value!;
+                                          _isFemale = !value;
+                                        });
+                                      },
+                                    ),
+                                  ],
+                                ),
+                                VerticalDivider(
+                                    color: Color.fromARGB(255, 13, 13, 13)),
+                                Row(
+                                  children: [
+                                    Text('Female'),
+                                    Checkbox(
+                                      value: _isFemale,
+                                      onChanged: (bool? value) {
+                                        setState(() {
+                                          _isFemale = value!;
+                                          _isMale = !value;
+                                        });
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10.0),
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Icon(
+                              Icons
+                                  .supervised_user_circle_sharp, // This is a user icon
+                              size: 60.0, // Adjust size as needed
+                              color: Colors.black, // Adjust color as needed
+                            ),
+                            SizedBox(width: 10), // Adjust as needed for spacing
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Profile Picture',
+                                  style: TextStyle(
+                                    fontSize: 18, // Adjust font size as needed
+                                    fontWeight: FontWeight
+                                        .bold, // Adjust font weight as needed
+                                  ),
+                                ),
+                                Text(
+                                  'Upload',
+                                  style: TextStyle(
+                                    fontSize: 18, // Adjust font size as needed
+                                    color:
+                                        Colors.blue, // Adjust color as needed
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Checkbox(
+                            value: _isAgreed,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                _isAgreed = value!;
+                              });
+                            },
+                          ),
+                          const Expanded(
+                            child: Text(
+                              'I agree with the terms and conditions',
+                              style: TextStyle(
+                                  fontSize: 14), // Adjust font size as needed
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
                       CustomButton(
-                        onTap: () {},
+                        onTap: () {
+                          Get.to(const NewPin());
+                        },
                         text: "Sign Up",
                       )
                     ],

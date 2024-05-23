@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shop0koa_frontend/utils/button.dart';
-import 'package:shop0koa_frontend/view/account/account.dart';
+import 'package:shop0koa_frontend/view/account/withdraw_page.dart';
 import 'package:flutter/services.dart';
 import 'package:shop0koa_frontend/view/authentication/confirm_pin.dart';
 import 'package:shop0koa_frontend/view/authentication/new_pin.dart';
+import 'package:shop0koa_frontend/view/authentication/verify.dart';
 
 class SignupPage extends StatefulWidget {
-  SignupPage({super.key});
+  const SignupPage({super.key});
 
   @override
   State<SignupPage> createState() => _SignupPageState();
@@ -17,9 +18,7 @@ class _SignupPageState extends State<SignupPage> {
   final _formKey = GlobalKey<FormState>();
 
   bool _isMale = false;
-
   bool _isFemale = false;
-
   bool _isAgreed = false;
 
   @override
@@ -29,7 +28,7 @@ class _SignupPageState extends State<SignupPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Get.to(const Withdraw());
+            Get.back();
           },
         ),
         title:
@@ -200,8 +199,8 @@ class _SignupPageState extends State<SignupPage> {
                             ),
                           ),
                           Container(
-                            padding:
-                                EdgeInsets.all(8.0), // Adjust padding as needed
+                            padding: const EdgeInsets.all(
+                                8.0), // Adjust padding as needed
                             decoration: BoxDecoration(
                               border: Border.all(
                                   color: Colors
@@ -214,7 +213,7 @@ class _SignupPageState extends State<SignupPage> {
                               children: [
                                 Row(
                                   children: [
-                                    Text('Male'),
+                                    const Text('Male'),
                                     Checkbox(
                                       value: _isMale,
                                       onChanged: (bool? value) {
@@ -226,11 +225,11 @@ class _SignupPageState extends State<SignupPage> {
                                     ),
                                   ],
                                 ),
-                                VerticalDivider(
+                                const VerticalDivider(
                                     color: Color.fromARGB(255, 13, 13, 13)),
                                 Row(
                                   children: [
-                                    Text('Female'),
+                                    const Text('Female'),
                                     Checkbox(
                                       value: _isFemale,
                                       onChanged: (bool? value) {
@@ -307,7 +306,7 @@ class _SignupPageState extends State<SignupPage> {
                       const SizedBox(height: 20),
                       CustomButton(
                         onTap: () {
-                          Get.to(const NewPin());
+                          Get.to(const VerifyBusiness());
                         },
                         text: "Sign Up",
                       )

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/widgets.dart';
+import 'package:shop0koa_frontend/constants/colors.dart';
+import 'package:shop0koa_frontend/utils/button.dart';
 
 class AddProduct extends StatelessWidget {
   const AddProduct({super.key});
@@ -98,18 +100,12 @@ class AddProduct extends StatelessWidget {
                   labelText: 'Item Code',
                 ),
               ),
-              const SizedBox(height: 10),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        const Color(0xFF34C759), // background color
-                  ),
-                  child: const Text('Save Product'),
-                ),
-              ),
+              const SizedBox(height: 30),
+              CustomButton(
+                color: AppColors.mainColor,
+                onTap: () {},
+                text: 'ADD PRODUCT',
+              )
             ],
           ),
         ),

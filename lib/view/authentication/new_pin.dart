@@ -78,7 +78,7 @@ class _ConfirmPinState extends State<NewPin> {
             width: MediaQuery.of(context).size.width - 90,
           ),
           SizedBox(height: size.height * 0.05),
-          const Text('Create new Pin',
+          Text('Create a login Pin'.toUpperCase(),
               style: TextStyle(
                 fontSize: 20, // Adjust font size as needed
                 fontWeight: FontWeight.bold,
@@ -207,7 +207,7 @@ class _ConfirmPinState extends State<NewPin> {
             onTap: () {
               Get.to(const ConfirmPin());
             },
-            text: 'Sign Up',
+            text: 'CREATE PIN',
           ),
           const SizedBox(height: 30),
         ],

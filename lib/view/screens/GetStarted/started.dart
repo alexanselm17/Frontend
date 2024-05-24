@@ -36,7 +36,7 @@ class Started extends StatelessWidget {
                 backgroundColor: const Color(0xFF30BA53),
               ),
               onPressed: () {
-                Get.to(() =>const LoginPage()); // Navigate to Login page
+                Get.to(() => const LoginPage()); // Navigate to Login page
               },
               child: const Text('Login'),
             ),

@@ -4,6 +4,7 @@ import 'package:shop0koa_frontend/constants/assets_path.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
 import 'package:shop0koa_frontend/utils/button.dart';
 import 'package:shop0koa_frontend/view/authentication/verify.dart';
+import 'package:shop0koa_frontend/view/screens/home_page.dart';
 import 'package:shop0koa_frontend/view/screens/navigation.dart';
 
 class ConfirmPin extends StatefulWidget {
@@ -78,11 +79,13 @@ class _ConfirmPinState extends State<ConfirmPin> {
             width: MediaQuery.of(context).size.width - 90,
           ),
           SizedBox(height: size.height * 0.05),
-          const Text('Confirm pin',
-              style: TextStyle(
-                fontSize: 20, // Adjust font size as needed
-                fontWeight: FontWeight.bold,
-              )),
+          Text(
+            'Confirm pin'.toUpperCase(),
+            style: TextStyle(
+              fontSize: 20, // Adjust font size as needed
+              fontWeight: FontWeight.bold,
+            ),
+          ),
 
           const Center(
             child: Row(
@@ -205,9 +208,9 @@ class _ConfirmPinState extends State<ConfirmPin> {
             padding: 15,
             color: AppColors.mainColor,
             onTap: () {
-              Get.to(const VerifyBusiness());
+              Get.to(const NavigationPage());
             },
-            text: 'Sign Up',
+            text: 'CONFIRM PIN',
           ),
           const SizedBox(height: 30),
         ],

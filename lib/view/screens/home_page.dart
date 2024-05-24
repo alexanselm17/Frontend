@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
 import 'package:shop0koa_frontend/utils/Vertical_spacing.dart';
+import 'package:shop0koa_frontend/utils/product_tile.dart';
 import 'package:shop0koa_frontend/view/screens/oders/oders_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -16,12 +17,19 @@ class HomePage extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const CircleAvatar(),
-                  const Text('Merchant Name'),
+                  const Row(
+                    children: [
+                      CircleAvatar(),
+                      SizedBox(width: 10),
+                      Text('Merchant Name'),
+                    ],
+                  ),
                   IconButton(
                     onPressed: () {},
                     icon: const Icon(Icons.notifications_none),
@@ -40,10 +48,15 @@ class HomePage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'Your Balance : ',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
+                        const Row(
+                          children: [
+                            Text(
+                              'Your Balance  ',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                            Icon(Icons.visibility)
+                          ],
                         ),
                         Text.rich(
                           TextSpan(
@@ -108,10 +121,15 @@ class HomePage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'Pending Oders ',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
+                        const Row(
+                          children: [
+                            Text(
+                              'Pending Oders ',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                            Icon(Icons.access_time_rounded)
+                          ],
                         ),
                         Text.rich(
                           TextSpan(
@@ -126,9 +144,8 @@ class HomePage extends StatelessWidget {
                                     decorationStyle: TextDecorationStyle.solid),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
-                                    Get.to(OdersPage());
+                                    Get.to(const OdersPage());
                                     print('Text tapped!');
-                                    // Perform your action here
                                   },
                               ),
                             ],
@@ -146,7 +163,21 @@ class HomePage extends StatelessWidget {
                     ),
                   ],
                 ),
-              )
+              ),
+              const VerticalSpacing(),
+              const Text(
+                'Catalogue',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+              const ProductTile(
+                isAnalytics: false,
+                productName: 'soko maize meal -5 kg',
+                leftUnits: '45',
+                productPrice: '389',
+                productImage:
+                    'https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+                productDiscount: '20',
+              ),
             ],
           ),
         ),

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:shop0koa_frontend/constants/colors.dart';
+import 'package:shop0koa_frontend/utils/button.dart';
 import 'package:shop0koa_frontend/view/authentication/login_page.dart';
+import 'package:shop0koa_frontend/view/authentication/new_pin.dart';
 import 'package:shop0koa_frontend/view/screens/home_page.dart';
 
 class VerifyBusiness extends StatelessWidget {
@@ -73,17 +76,12 @@ class VerifyBusiness extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 30),
-            SizedBox(
-              width: MediaQuery.of(context).size.width - 30,
-              child: TextButton(
-                onPressed: () {
-                  Get.to(const LoginPage());
-                },
-                style: TextButton.styleFrom(
-                  backgroundColor: const Color(0xFF34C759),
-                ),
-                child: const Text('Verify'),
-              ),
+            CustomButton(
+              color: AppColors.mainColor,
+              onTap: () {
+                Get.to(NewPin());
+              },
+              text: 'VERIFY',
             ),
           ],
         ),

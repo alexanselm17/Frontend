@@ -42,7 +42,7 @@ class _OdersPageState extends State<OdersPage>
           },
         ),
         title: const Text(
-          'Oders',
+          'Orders',
         ),
       ),
       body: Padding(

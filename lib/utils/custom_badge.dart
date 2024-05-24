@@ -5,17 +5,22 @@ class CustomBadge extends StatelessWidget {
     super.key,
     required this.title,
     required this.color,
+    this.radius = 100,
   });
 
   final String title;
   final Color color;
+  final double radius;
 
   @override
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
-            color: color,
-            borderRadius: const BorderRadius.all(Radius.circular(100))),
+          color: color,
+          borderRadius: BorderRadius.all(
+            Radius.circular(radius),
+          ),
+        ),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
           child: Text(

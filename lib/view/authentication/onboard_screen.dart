@@ -33,7 +33,6 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
           'Monitor your sales in real-time and analyze your performance.',
       imageUrl: 'assets/images/logo.jpg',
     ),
-   
   ];
   @override
   void initState() {
@@ -65,6 +64,7 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
           ),
           const SizedBox(height: 16.0),
           if (_currentPageIndex < onboardingItems.length - 1)
+            //
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(

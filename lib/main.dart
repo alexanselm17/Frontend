@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shop0koa_frontend/constants/initial_bindings.dart';
 import 'package:shop0koa_frontend/view/authentication/onboard_screen.dart';
+import 'package:shop0koa_frontend/view/screens/navigation.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -22,14 +23,15 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialBinding: InitialBinding(),
+      //initialBinding: InitialBinding(),
       theme: ThemeData(
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: const OnBoardScreen(),
+      home: const NavigationPage(),
+      routes: const {},
     );
   }
 }

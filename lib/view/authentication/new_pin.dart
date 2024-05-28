@@ -31,7 +31,7 @@ class _ConfirmPinState extends State<NewPin> {
             }
           });
           if (enteredPin.length == 4) {
-            Get.to(const NavigationPage());
+            Get.to(NavigationPage());
             // showDialog(
             //   context: context,
             //   barrierDismissible: false,
@@ -79,7 +79,7 @@ class _ConfirmPinState extends State<NewPin> {
           ),
           SizedBox(height: size.height * 0.05),
           Text('Create a login Pin'.toUpperCase(),
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20, // Adjust font size as needed
                 fontWeight: FontWeight.bold,
               )),

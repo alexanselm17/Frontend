@@ -205,7 +205,7 @@ class _ConfirmPinState extends State<LoginPage> {
             padding: 15,
             color: AppColors.mainColor,
             onTap: () {
-              Get.to(() => HomePage());
+              Get.to(() => const NavigationPage());
             },
             text: 'Login ',
           ),

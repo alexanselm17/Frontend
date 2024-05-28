@@ -81,7 +81,7 @@ class _ConfirmPinState extends State<ConfirmPin> {
           SizedBox(height: size.height * 0.05),
           Text(
             'Confirm pin'.toUpperCase(),
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 20, // Adjust font size as needed
               fontWeight: FontWeight.bold,
             ),

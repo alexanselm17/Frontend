@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shop0koa_frontend/constants/assets_path.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
 import 'package:shop0koa_frontend/utils/button.dart';
@@ -7,6 +6,7 @@ import 'package:shop0koa_frontend/view/authentication/confirm_pin.dart';
 import 'package:shop0koa_frontend/view/screens/navigation.dart';
 
 class NewPin extends StatefulWidget {
+  static const routeName = 'NewPin';
   const NewPin({super.key});
 
   @override
@@ -17,7 +17,13 @@ class _ConfirmPinState extends State<NewPin> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   String enteredPin = '';
   bool isPinVisible = false;
-  Size size = MediaQuery.of(Get.context!).size;
+  late Size size;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    size = MediaQuery.of(context).size;
+  }
 
   /// this widget will be use for each digit
   Widget numButton(int number) {
@@ -31,7 +37,7 @@ class _ConfirmPinState extends State<NewPin> {
             }
           });
           if (enteredPin.length == 4) {
-            Get.to(NavigationPage());
+            Navigator.of(context).pushNamed(NavigationPage.routeName);
             // showDialog(
             //   context: context,
             //   barrierDismissible: false,
@@ -205,7 +211,7 @@ class _ConfirmPinState extends State<NewPin> {
             padding: 15,
             color: AppColors.mainColor,
             onTap: () {
-              Get.to(const ConfirmPin());
+              Navigator.of(context).pushNamed(ConfirmPin.routeName);
             },
             text: 'CREATE PIN',
           ),

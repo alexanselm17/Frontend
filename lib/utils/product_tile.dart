@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:get/get.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
 import 'package:shop0koa_frontend/utils/Vertical_spacing.dart';
 import 'package:shop0koa_frontend/utils/button.dart';
@@ -102,7 +101,9 @@ class ProductTile extends StatelessWidget {
                             ),
                             const SizedBox(width: 10),
                             GestureDetector(
-                              onTap: () => Get.to(const ProductAnalytics()),
+                              onTap: () => Navigator.of(context)
+                                  .pushNamed(ProductAnalytics.routeName),
+                              //Get.to(const ProductAnalytics()),
                               child: const CustomBadge(
                                 title: 'Analytics',
                                 color: Colors.black,

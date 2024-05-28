@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
 import 'package:shop0koa_frontend/utils/Vertical_spacing.dart';
 import 'package:shop0koa_frontend/utils/product_tile.dart';
@@ -144,7 +143,9 @@ class HomePage extends StatelessWidget {
                                     decorationStyle: TextDecorationStyle.solid),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
-                                    Get.to(const OdersPage());
+                                    Navigator.of(context)
+                                        .pushNamed(OrdersPage.routeName);
+                                    //(const OdersPage());
                                     print('Text tapped!');
                                   },
                               ),

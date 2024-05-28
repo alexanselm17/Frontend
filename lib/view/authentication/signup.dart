@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shop0koa_frontend/utils/button.dart';
 import 'package:shop0koa_frontend/view/account/withdraw_page.dart';
 import 'package:flutter/services.dart';
@@ -8,6 +7,7 @@ import 'package:shop0koa_frontend/view/authentication/new_pin.dart';
 import 'package:shop0koa_frontend/view/authentication/verify.dart';
 
 class SignupPage extends StatefulWidget {
+  static const routeName = 'signUpPage';
   const SignupPage({super.key});
 
   @override
@@ -28,7 +28,7 @@ class _SignupPageState extends State<SignupPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Get.back();
+            Navigator.of(context).pop();
           },
         ),
         title:
@@ -306,7 +306,8 @@ class _SignupPageState extends State<SignupPage> {
                       const SizedBox(height: 20),
                       CustomButton(
                         onTap: () {
-                          Get.to(const VerifyBusiness());
+                          Navigator.of(context)
+                              .pushNamed(VerifyBusiness.routeName);
                         },
                         text: "Sign Up",
                       )

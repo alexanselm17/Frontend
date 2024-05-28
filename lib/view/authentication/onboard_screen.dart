@@ -80,7 +80,7 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
                 width: MediaQuery.of(context).size.width,
                 child: CustomButton(
                   onTap: () {
-                    Get.to(const Started());
+                    Navigator.of(context).pushNamed(Started.routeName);
                     introductionController.disableIntro();
                   },
                   text: 'Get Started',

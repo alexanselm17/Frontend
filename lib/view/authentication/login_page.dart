@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shop0koa_frontend/constants/assets_path.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
 import 'package:shop0koa_frontend/utils/button.dart';
@@ -7,6 +6,7 @@ import 'package:shop0koa_frontend/view/screens/home_page.dart';
 import 'package:shop0koa_frontend/view/screens/navigation.dart';
 
 class LoginPage extends StatefulWidget {
+  static const routeName = 'LoginPage';
   const LoginPage({super.key});
 
   @override
@@ -17,7 +17,13 @@ class _ConfirmPinState extends State<LoginPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   String enteredPin = '';
   bool isPinVisible = false;
-  Size size = MediaQuery.of(Get.context!).size;
+  late Size size;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    Size size = MediaQuery.of(context).size;
+  }
 
   /// this widget will be use for each digit
   Widget numButton(int number) {
@@ -31,7 +37,7 @@ class _ConfirmPinState extends State<LoginPage> {
             }
           });
           if (enteredPin.length == 4) {
-            Get.to(const NavigationPage());
+            Navigator.of(context).pushNamed(NavigationPage.routeName);
             // showDialog(
             //   context: context,
             //   barrierDismissible: false,
@@ -205,7 +211,7 @@ class _ConfirmPinState extends State<LoginPage> {
             padding: 15,
             color: AppColors.mainColor,
             onTap: () {
-              Get.to(() => const NavigationPage());
+              Navigator.of(context).pushNamed(NavigationPage.routeName);
             },
             text: 'Login ',
           ),

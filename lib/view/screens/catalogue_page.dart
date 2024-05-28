@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
 import 'package:shop0koa_frontend/utils/product_tile.dart';
 import 'package:shop0koa_frontend/view/screens/products/add_product.dart';
@@ -17,7 +16,8 @@ class CataloguePage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Get.back();
+            Navigator.of(context).pop();
+            //Get.back();
           },
         ),
         title: const Text('Catalog'),
@@ -25,7 +25,7 @@ class CataloguePage extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
           backgroundColor: AppColors.mainColor,
           onPressed: () {
-            Get.to(const AddProduct());
+            Navigator.of(context).pushNamed(AddProduct.routeName);
           },
           label: const Row(
             children: [

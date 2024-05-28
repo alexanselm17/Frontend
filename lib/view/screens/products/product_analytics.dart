@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
 import 'package:shop0koa_frontend/utils/product_tile.dart';
 import 'package:shop0koa_frontend/view/screens/products/analytics_chart.dart';
 
 class ProductAnalytics extends StatelessWidget {
+  static const routeName = 'ProductAnalytics';
   const ProductAnalytics({super.key});
 
   @override
@@ -17,7 +17,7 @@ class ProductAnalytics extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Get.back();
+            Navigator.of(context).pop();
           },
         ),
         title: const Text('Analytics'),

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:flutter/widgets.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
 import 'package:shop0koa_frontend/utils/button.dart';
 
 class AddProduct extends StatelessWidget {
+  static const routeName = 'AddProduct';
   const AddProduct({super.key});
 
   @override

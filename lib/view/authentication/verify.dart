@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
 import 'package:shop0koa_frontend/utils/button.dart';
@@ -8,6 +7,7 @@ import 'package:shop0koa_frontend/view/authentication/new_pin.dart';
 import 'package:shop0koa_frontend/view/screens/home_page.dart';
 
 class VerifyBusiness extends StatelessWidget {
+  static const routeName = 'verifyBusiness';
   const VerifyBusiness({super.key});
 
   @override
@@ -23,7 +23,7 @@ class VerifyBusiness extends StatelessWidget {
         leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              Get.back();
+              Navigator.of(context).pop();
             }),
       ),
       body: Padding(
@@ -79,7 +79,8 @@ class VerifyBusiness extends StatelessWidget {
             CustomButton(
               color: AppColors.mainColor,
               onTap: () {
-                Get.to(NewPin());
+                Navigator.of(context).pushNamed(NewPin.routeName);
+                //Get.to(NewPin());
               },
               text: 'VERIFY',
             ),

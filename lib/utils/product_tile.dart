@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
 import 'package:shop0koa_frontend/utils/Vertical_spacing.dart';
 import 'package:shop0koa_frontend/utils/button.dart';
@@ -29,9 +28,9 @@ class ProductTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 8.0),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.secondary,
+        borderRadius: const BorderRadius.all(
           Radius.circular(10),
         ),
       ),
@@ -60,8 +59,7 @@ class ProductTile extends StatelessWidget {
                         child: SizedBox(
                           child: Text(
                             productName,
-                            style: const TextStyle(
-                                fontSize: 20, color: Colors.black),
+                            style: Theme.of(context).textTheme.headlineMedium,
                             softWrap: true,
                           ),
                         ),
@@ -85,9 +83,10 @@ class ProductTile extends StatelessWidget {
                       const SizedBox(width: 10),
                       Text(
                         "Ksh.$productDiscount",
-                        style: const TextStyle(
-                            color: Colors.grey,
-                            decoration: TextDecoration.lineThrough),
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              color: Colors.grey,
+                              decoration: TextDecoration.lineThrough,
+                            ),
                       ),
                     ],
                   ),
@@ -116,7 +115,7 @@ class ProductTile extends StatelessWidget {
                           child: SizedBox(
                             width: MediaQuery.of(context).size.width * 0.5,
                             child: CustomButton(
-                              padding: 5,
+                              //padding: 5,
                               onTap: () {},
                               text: 'Edit',
                             ),

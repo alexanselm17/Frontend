@@ -3,39 +3,39 @@ import 'package:flutter/material.dart';
 class CustomButton extends StatelessWidget {
   final Function()? onTap;
   final String? text;
-  final double? padding;
+  final EdgeInsets
+      padding; // Moved to Edge Insets to allow one to customize the type of paddding needed instead of EdgeInsets.all
   final double? margin;
-  final Color? color;
 
   const CustomButton({
     super.key,
     required this.onTap,
-    this.text,
-    this.padding = 20,
+    required this.text,
+    this.padding = const EdgeInsets.all(20),
     this.margin = 20,
-    this.color = Colors.black,
   });
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.all(padding!),
-        margin: EdgeInsets.symmetric(horizontal: margin!),
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Center(
-          child: Text(
-            text!,
-            style: const TextStyle(
-              color: Colors.white,
-            ),
-          ),
-        ),
-      ),
+    return ElevatedButton(
+      style: Theme.of(context).elevatedButtonTheme.style,
+      onPressed: onTap,
+      child: Text(text!),
     );
+    //   return GestureDetector(
+    //     onTap: onTap,
+    //     child: Container(
+    //       padding: EdgeInsets.all(padding!),
+    //       margin: EdgeInsets.symmetric(horizontal: margin!),
+    //       decoration: BoxDecoration(
+    //         color: Theme.of(context).colorScheme.primary,
+    //         borderRadius: BorderRadius.circular(15),
+    //       ),
+    //       child: Center(
+    //         child: Text(text!, style: Theme.of(context).textTheme.bodyLarge),
+    //       ),
+    //     ),
+    //   );
+    // }
   }
 }

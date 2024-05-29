@@ -10,9 +10,9 @@ class CataloguePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         elevation: 0,
-        shadowColor: Colors.white,
+        shadowColor: Theme.of(context).colorScheme.shadow,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -23,7 +23,8 @@ class CataloguePage extends StatelessWidget {
         title: const Text('Catalog'),
       ),
       floatingActionButton: FloatingActionButton.extended(
-          backgroundColor: AppColors.mainColor,
+          backgroundColor:
+              Theme.of(context).floatingActionButtonTheme.backgroundColor,
           onPressed: () {
             Navigator.of(context).pushNamed(AddProduct.routeName);
           },

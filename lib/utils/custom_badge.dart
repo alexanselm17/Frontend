@@ -25,7 +25,10 @@ class CustomBadge extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
           child: Text(
             title,
-            style: const TextStyle(color: Colors.white, fontSize: 10),
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium!
+                .copyWith(color: Colors.white, fontSize: 10),
           ),
         ));
   }

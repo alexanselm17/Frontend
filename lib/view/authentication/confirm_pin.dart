@@ -213,8 +213,8 @@ class _ConfirmPinState extends State<ConfirmPin> {
           ),
           const SizedBox(height: 30),
           CustomButton(
-            padding: 15,
-            color: AppColors.mainColor,
+            //padding: 15,
+            //color: AppColors.mainColor,
             onTap: () {
               Navigator.of(context).pushNamed(NavigationPage.routeName);
             },

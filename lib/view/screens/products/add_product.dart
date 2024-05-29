@@ -102,7 +102,7 @@ class AddProduct extends StatelessWidget {
               ),
               const SizedBox(height: 30),
               CustomButton(
-                color: AppColors.mainColor,
+                //color: AppColors.mainColor,
                 onTap: () {},
                 text: 'ADD PRODUCT',
               )

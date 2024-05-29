@@ -77,7 +77,7 @@ class VerifyBusiness extends StatelessWidget {
             ),
             const SizedBox(height: 30),
             CustomButton(
-              color: AppColors.mainColor,
+              // color: AppColors.mainColor,
               onTap: () {
                 Navigator.of(context).pushNamed(NewPin.routeName);
                 //Get.to(NewPin());

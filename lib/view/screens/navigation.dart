@@ -77,14 +77,15 @@ class _NavigationPageState extends State<NavigationPage>
         children: _buildScreens,
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
         type: BottomNavigationBarType.fixed,
         currentIndex: _currentPageIndex,
         onTap: (value) {
           _updateCurrentPageIndex(value);
         },
         items: _navBarItems,
-        selectedItemColor: AppColors.mainColor,
-        unselectedItemColor: CupertinoColors.black,
+        selectedItemColor: Theme.of(context).colorScheme.onSurface,
+        unselectedItemColor: Theme.of(context).colorScheme.onSurfaceVariant,
       ),
     );
   }

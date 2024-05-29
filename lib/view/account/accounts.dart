@@ -19,14 +19,15 @@ class _AccountPageState extends State<AccountPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          icon: const Icon(Icons.arrow_back),
-        ),
+        // leading: IconButton(
+        //   onPressed: () {
+        //     Navigator.of(context).pop();
+        //   },
+        //   icon: const Icon(Icons.arrow_back),
+        // ),
         title: const Text('Your Account'),
         actions: [
           IconButton(
@@ -57,27 +58,21 @@ class _AccountPageState extends State<AccountPage> {
                   ),
                 ),
               ),
-              const Text(
-                "Kahawa Sukari Naivas",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
+              Text("Kahawa Sukari Naivas", style: theme.textTheme.displaySmall),
               Container(
                 width: 100,
                 padding: const EdgeInsets.all(5),
-                decoration: const BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.all(Radius.circular(5))),
-                child: const Row(
+                decoration: BoxDecoration(
+                    color: theme.colorScheme.primary,
+                    borderRadius: const BorderRadius.all(Radius.circular(5))),
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       "Verified",
-                      style: TextStyle(color: Colors.white),
+                      style: theme.textTheme.bodyMedium,
                     ),
-                    Expanded(
+                    const Expanded(
                       child: Icon(
                         Icons.verified,
                         color: Colors.white,

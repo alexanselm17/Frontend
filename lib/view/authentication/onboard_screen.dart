@@ -5,6 +5,7 @@ import 'package:shop0koa_frontend/controllers/introduction_controller.dart';
 import 'package:shop0koa_frontend/utils/button.dart';
 import 'package:shop0koa_frontend/view/authentication/confirm_pin.dart';
 import 'package:shop0koa_frontend/view/screens/GetStarted/started.dart';
+import 'package:shop0koa_frontend/view/screens/screens.dart';
 
 class OnBoardScreen extends StatefulWidget {
   const OnBoardScreen({super.key});
@@ -47,7 +48,7 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      //backgroundColor: Colors.white,
       body: Column(
         children: [
           Expanded(
@@ -80,7 +81,9 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
                 width: MediaQuery.of(context).size.width,
                 child: CustomButton(
                   onTap: () {
-                    Navigator.of(context).pushNamed(Started.routeName);
+                    //Bypassed the Navigation from Onboading to Sign up page fpr new users
+                    //If the User exists we will be displaying the login page first instead of the onboard screen
+                    Navigator.of(context).pushNamed(LoginPage.routeName);
                     introductionController.disableIntro();
                   },
                   text: 'Get Started',
@@ -101,8 +104,8 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: currentIndex == index
-            ? Colors.black
-            : Colors.black.withOpacity(0.5),
+            ? Theme.of(context).colorScheme.onSurface
+            : Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
       ),
     );
   }
@@ -139,10 +142,18 @@ class OnboardingItemWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(
-            item.imageUrl ?? '',
-            height: 150,
-            width: 200,
+          Container(
+            //width: MediaQuery.sizeOf(context).height * .5,
+            decoration: const BoxDecoration(shape: BoxShape.circle),
+
+            child: ClipOval(
+              child: Image.asset(
+                item.imageUrl ?? '',
+                height: 200,
+                width: 200,
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
           const SizedBox(height: 10.0),
           Text(

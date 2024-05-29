@@ -1,80 +1,55 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
-import 'package:shop0koa_frontend/controllers/navigation_controller.dart';
 import 'package:shop0koa_frontend/view/account/accounts.dart';
 import 'package:shop0koa_frontend/view/screens/catalogue_page.dart';
 import 'package:shop0koa_frontend/view/screens/home_page.dart';
 
-class NavigationPage extends GetView<NavigationController> {
+class NavigationPage extends StatefulWidget {
   const NavigationPage({super.key});
 
-  List<PersistentBottomNavBarItem> _navBarsItems() {
-    return [
-      PersistentBottomNavBarItem(
-          icon: const Icon(CupertinoIcons.house),
-          title: ("Home"),
-          activeColorPrimary: AppColors.mainColor,
-          inactiveColorPrimary: CupertinoColors.black),
-      PersistentBottomNavBarItem(
-        icon: const Icon(CupertinoIcons.list_bullet),
-        title: ("Catalogue"),
-        activeColorPrimary: AppColors.mainColor,
-        inactiveColorPrimary: CupertinoColors.black,
-      ),
-      PersistentBottomNavBarItem(
-        icon: const Icon(CupertinoIcons.profile_circled),
-        title: ("Account"),
-        activeColorPrimary: AppColors.mainColor,
-        inactiveColorPrimary: CupertinoColors.black,
-      ),
-    ];
-  }
+  @override
+  State<NavigationPage> createState() => _NavigationPageState();
+}
 
-  List<Widget> _buildScreens() {
-    return [
-      const HomePage(),
-      const CataloguePage(),
-      const AccountPage(),
-    ];
+class _NavigationPageState extends State<NavigationPage> {
+  int _currentIndex = 0;
+
+  final List<Widget> _children = [
+    const HomePage(),
+    const CataloguePage(),
+    const AccountPage(),
+  ];
+
+  void onTappedBar(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return PersistentTabView(
-      context,
-      // controller: _controller,
-      screens: _buildScreens(),
-      items: _navBarsItems(),
-      confineInSafeArea: true,
-      backgroundColor: Colors.white, // Default is Colors.white.
-      handleAndroidBackButtonPress: true, // Default is true.
-      resizeToAvoidBottomInset:
-          true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
-      stateManagement: true, // Default is true.
-      hideNavigationBarWhenKeyboardShows:
-          true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
-      decoration: NavBarDecoration(
-        borderRadius: BorderRadius.circular(0),
-        colorBehindNavBar: Colors.white,
+    return Scaffold(
+      body: _children[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: AppColors.mainColor,
+        onTap: onTappedBar,
+        currentIndex: _currentIndex,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.house),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.list_bullet),
+            label: 'Catalogue',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.profile_circled),
+            label: 'Profile',
+          ),
+        ],
       ),
-      popAllScreensOnTapOfSelectedTab: true,
-      popActionScreens: PopActionScreensType.all,
-      itemAnimationProperties: const ItemAnimationProperties(
-        // Navigation Bar's items animation properties.
-        duration: Duration(milliseconds: 200),
-        curve: Curves.ease,
-      ),
-      screenTransitionAnimation: const ScreenTransitionAnimation(
-        // Screen transition animation on change of selected tab.
-        animateTabTransition: true,
-        curve: Curves.ease,
-        duration: Duration(milliseconds: 200),
-      ),
-      navBarStyle:
-          NavBarStyle.style6, // Choose the nav bar style with this property.
     );
   }
 }

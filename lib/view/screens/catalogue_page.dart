@@ -10,9 +10,6 @@ class CataloguePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        elevation: 0,
-        shadowColor: Theme.of(context).colorScheme.shadow,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

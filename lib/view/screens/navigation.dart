@@ -84,7 +84,7 @@ class _NavigationPageState extends State<NavigationPage>
           _updateCurrentPageIndex(value);
         },
         items: _navBarItems,
-        selectedItemColor: Theme.of(context).colorScheme.onSurface,
+        selectedItemColor: Theme.of(context).colorScheme.primary,
         unselectedItemColor: Theme.of(context).colorScheme.onSurfaceVariant,
       ),
     );

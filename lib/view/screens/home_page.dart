@@ -12,6 +12,18 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: const CircleAvatar(),
+        title: const Text('Merchant Name'),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.notifications,
+            ),
+          )
+        ],
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -19,22 +31,22 @@ class HomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Row(
-                    children: [
-                      CircleAvatar(),
-                      SizedBox(width: 10),
-                      Text('Merchant Name'),
-                    ],
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.notifications_none),
-                  )
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     const Row(
+              //       children: [
+              //         CircleAvatar(),
+              //         SizedBox(width: 10),
+              //         Text('Merchant Name'),
+              //       ],
+              //     ),
+              //     IconButton(
+              //       onPressed: () {},
+              //       icon: const Icon(Icons.notifications_none),
+              //     )
+              //   ],
+              // ),
               const VerticalSpacing(),
               Container(
                 padding: const EdgeInsets.all(20),

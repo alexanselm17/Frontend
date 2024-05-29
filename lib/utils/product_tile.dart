@@ -28,6 +28,7 @@ class ProductTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 8.0),
+      height: MediaQuery.sizeOf(context).height * .15,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.secondary,
         borderRadius: const BorderRadius.all(
@@ -35,13 +36,17 @@ class ProductTile extends StatelessWidget {
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.only(
+          right: 8,
+          // top: 8,
+          // bottom: 8,
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             CustomCachedNetworkImage(
               image: productImage,
-              height: 100,
+              height: MediaQuery.sizeOf(context).height * .14,
               width: 100,
             ),
             const SizedBox(
@@ -68,9 +73,8 @@ class ProductTile extends StatelessWidget {
                   ),
                   const VerticalSpacing(height: 5),
                   CustomBadge(
-                    title: "$leftUnits Units Left",
-                    color: AppColors.mainColor,
-                  ),
+                      title: "$leftUnits Units Left",
+                      color: Theme.of(context).colorScheme.inversePrimary),
                   const SizedBox(
                     height: 5.0,
                   ),
@@ -78,13 +82,18 @@ class ProductTile extends StatelessWidget {
                     children: [
                       Text(
                         "Ksh. $productPrice",
-                        style: const TextStyle(fontSize: 20),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(color: Colors.white),
                       ),
                       const SizedBox(width: 10),
                       Text(
                         "Ksh.$productDiscount",
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                              color: Colors.grey,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .surfaceContainerHighest,
                               decoration: TextDecoration.lineThrough,
                             ),
                       ),
@@ -94,18 +103,22 @@ class ProductTile extends StatelessWidget {
                   !isAnalytics
                       ? Row(
                           children: [
-                            const CustomBadge(
+                            CustomBadge(
                               title: 'Edit',
-                              color: Colors.black,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primaryContainer,
                             ),
                             const SizedBox(width: 10),
                             GestureDetector(
                               onTap: () => Navigator.of(context)
                                   .pushNamed(ProductAnalytics.routeName),
                               //Get.to(const ProductAnalytics()),
-                              child: const CustomBadge(
+                              child: CustomBadge(
                                 title: 'Analytics',
-                                color: Colors.black,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .primaryContainer,
                               ),
                             ),
                           ],

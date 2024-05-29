@@ -366,6 +366,11 @@ class MaterialTheme {
             foregroundColor: colorScheme.onSecondary,
           ),
         ),
+        appBarTheme: AppBarTheme(
+          backgroundColor: colorScheme.surfaceContainerHighest,
+          foregroundColor: colorScheme.onSurface,
+          centerTitle: true,
+        ),
         useMaterial3: true,
         brightness: colorScheme.brightness,
         colorScheme: colorScheme,

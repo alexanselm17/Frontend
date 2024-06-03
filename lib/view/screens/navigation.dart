@@ -55,21 +55,18 @@ class _NavigationPageState extends State<NavigationPage>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _pageController = PageController();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _pageController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       body: PageView(
         onPageChanged: _updateCurrentPageIndex,

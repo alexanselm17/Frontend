@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
 import 'package:shop0koa_frontend/utils/Vertical_spacing.dart';
 import 'package:shop0koa_frontend/view/screens/oders/buy_now_pay_later.dart';
 import 'package:shop0koa_frontend/view/screens/oders/flexi_save.dart';
 
-class OdersPage extends StatefulWidget {
-  const OdersPage({super.key});
+class OrdersPage extends StatefulWidget {
+  static const routeName = 'OrdersPage';
+  const OrdersPage({super.key});
 
   @override
-  State<OdersPage> createState() => _OdersPageState();
+  State<OrdersPage> createState() => _OrdersPageState();
 }
 
-class _OdersPageState extends State<OdersPage>
+class _OrdersPageState extends State<OrdersPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
@@ -38,7 +38,7 @@ class _OdersPageState extends State<OdersPage>
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Get.back();
+            Navigator.of(context).pop();
           },
         ),
         title: const Text(

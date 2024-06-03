@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:shop0koa_frontend/view/authentication/signup.dart';
 import 'package:shop0koa_frontend/view/authentication/login_page.dart';
 
 class Started extends StatelessWidget {
+  static const routeName = 'started';
   const Started({super.key});
 
   @override
@@ -26,7 +26,8 @@ class Started extends StatelessWidget {
                 backgroundColor: const Color(0xFF30BA53),
               ),
               onPressed: () {
-                Get.to(() => SignupPage()); // Navigate to Sign Up page
+                Navigator.of(context).pushNamed(
+                    SignupPage.routeName); // Navigate to Sign Up page
               },
               child: const Text('Sign Up'),
             ),
@@ -36,7 +37,8 @@ class Started extends StatelessWidget {
                 backgroundColor: const Color(0xFF30BA53),
               ),
               onPressed: () {
-                Get.to(() => const LoginPage()); // Navigate to Login page
+                Navigator.of(context)
+                    .pushNamed(LoginPage.routeName); // Navigate to Login page
               },
               child: const Text('Login'),
             ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 
 class Withdraw extends StatefulWidget {
   const Withdraw({super.key});
@@ -19,7 +18,7 @@ class _WithdrawState extends State<Withdraw> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Get.back();
+            Navigator.of(context).pop();
           },
         ),
         title:

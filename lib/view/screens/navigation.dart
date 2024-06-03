@@ -6,49 +6,82 @@ import 'package:shop0koa_frontend/view/screens/catalogue_page.dart';
 import 'package:shop0koa_frontend/view/screens/home_page.dart';
 
 class NavigationPage extends StatefulWidget {
+  static const routeName = 'Navigationpage';
   const NavigationPage({super.key});
 
   @override
   State<NavigationPage> createState() => _NavigationPageState();
 }
 
-class _NavigationPageState extends State<NavigationPage> {
-  int _currentIndex = 0;
+class _NavigationPageState extends State<NavigationPage>
+    with TickerProviderStateMixin {
+  int _currentPageIndex = 0;
+  late PageController _pageController;
 
-  final List<Widget> _children = [
+  final List<BottomNavigationBarItem> _navBarItems = [
+    const BottomNavigationBarItem(
+      label: 'Home',
+      icon: Icon(
+        CupertinoIcons.house,
+      ),
+    ),
+    const BottomNavigationBarItem(
+      icon: Icon(CupertinoIcons.list_bullet),
+      label: 'Catalogue',
+    ),
+    const BottomNavigationBarItem(
+      icon: Icon(CupertinoIcons.profile_circled),
+      label: 'Account',
+    )
+  ];
+
+  final List<Widget> _buildScreens = [
     const HomePage(),
     const CataloguePage(),
     const AccountPage(),
   ];
 
-  void onTappedBar(int index) {
+  void _updateCurrentPageIndex(int index) {
     setState(() {
-      _currentIndex = index;
+      _currentPageIndex = index;
     });
+    _pageController.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 400),
+      curve: Curves.ease,
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _pageController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _children[_currentIndex],
+      body: PageView(
+        onPageChanged: _updateCurrentPageIndex,
+        controller: _pageController,
+        children: _buildScreens,
+      ),
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: AppColors.mainColor,
-        onTap: onTappedBar,
-        currentIndex: _currentIndex,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.house),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.list_bullet),
-            label: 'Catalogue',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.profile_circled),
-            label: 'Profile',
-          ),
-        ],
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _currentPageIndex,
+        onTap: (value) {
+          _updateCurrentPageIndex(value);
+        },
+        items: _navBarItems,
+        selectedItemColor: Theme.of(context).colorScheme.primary,
+        unselectedItemColor: Theme.of(context).colorScheme.onSurfaceVariant,
       ),
     );
   }

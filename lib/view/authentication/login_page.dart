@@ -1,12 +1,14 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shop0koa_frontend/constants/assets_path.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
 import 'package:shop0koa_frontend/utils/button.dart';
 import 'package:shop0koa_frontend/view/screens/home_page.dart';
 import 'package:shop0koa_frontend/view/screens/navigation.dart';
+import 'package:shop0koa_frontend/view/screens/screens.dart';
 
 class LoginPage extends StatefulWidget {
+  static const routeName = 'LoginPage';
   const LoginPage({super.key});
 
   @override
@@ -15,50 +17,45 @@ class LoginPage extends StatefulWidget {
 
 class _ConfirmPinState extends State<LoginPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  late TapGestureRecognizer _recognizer;
   String enteredPin = '';
   bool isPinVisible = false;
-  Size size = MediaQuery.of(Get.context!).size;
+  late Size size;
 
-  /// this widget will be use for each digit
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    size = MediaQuery.of(context).size;
+    _recognizer = TapGestureRecognizer()
+      ..onTap = () => Navigator.of(context).pushNamed(SignupPage.routeName);
+  }
+
+  /// this widget will be used for each digit
   Widget numButton(int number) {
     return Padding(
       padding: const EdgeInsets.only(top: 16),
-      child: TextButton(
-        onPressed: () async {
-          setState(() {
-            if (enteredPin.length < 4) {
-              enteredPin += number.toString();
+      child: Container(
+        width: 80,
+        height: 80,
+        decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Theme.of(context).colorScheme.onSecondary),
+        child: TextButton(
+          onPressed: () {
+            setState(() {
+              if (enteredPin.length < 4) {
+                enteredPin += number.toString();
+              }
+            });
+            if (enteredPin.length == 4) {
+              Navigator.of(context).pushNamed(NavigationPage.routeName);
             }
-          });
-          if (enteredPin.length == 4) {
-            Get.to(const NavigationPage());
-            // showDialog(
-            //   context: context,
-            //   barrierDismissible: false,
-            //   builder: (context) => const CustomProgressDialog(
-            //     status: "Confirming Pin..",
-            //   ),
-            // );
-            // var res =
-            //     await _currentAccService.confirmPin(pin: enteredPin.trim());
-            // Navigator.pop(context);
-            // if (res.body == "true") {
-            //   Navigator.pop(context, "yes");
-            // } else {
-            //   Navigator.pop(context, 'no');
-            // }
-          } else {
-            // _scaffoldKey.currentState.showSnackBar(SnackBar(
-            //     content: Text("Please enter your Pin"),
-            //     duration: Duration(seconds: 3)));
-          }
-        },
-        child: Text(
-          number.toString(),
-          style: const TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.w600,
-            color: Colors.black,
+          },
+          child: Text(
+            number.toString(),
+            style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
           ),
         ),
       ),
@@ -77,29 +74,30 @@ class _ConfirmPinState extends State<LoginPage> {
             image: const AssetImage(AssetsPath.logo),
             width: MediaQuery.of(context).size.width - 90,
           ),
-          SizedBox(height: size.height * 0.05),
-          const Text('Enter PIN to login',
-              style: TextStyle(
-                fontSize: 20, // Adjust font size as needed
-                fontWeight: FontWeight.bold,
-              )),
+          SizedBox(height: size.height * 0.03),
+          const Text(
+            'Enter PIN to login',
+            style: TextStyle(
+              fontSize: 20, // Adjust font size as needed
+              fontWeight: FontWeight.bold,
+            ),
+          ),
 
-          const Center(
+          Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                /// visiblity toggle button
-                // IconButton(
-                //   onPressed: () {
-                //     setState(() {
-                //       isPinVisible = !isPinVisible;
-                //     });
-                //   },
-                //   icon: Icon(
-                //     isPinVisible ? Icons.visibility_off : Icons.visibility,
-                //     color: Colors.black,
-                //   ),
-                // ),
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      isPinVisible = !isPinVisible;
+                    });
+                  },
+                  icon: Icon(
+                    isPinVisible ? Icons.visibility_off : Icons.visibility,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                ),
               ],
             ),
           ),
@@ -113,47 +111,41 @@ class _ConfirmPinState extends State<LoginPage> {
               4,
               (index) {
                 return Container(
-                    margin: const EdgeInsets.all(6.0),
-                    width: size.width * 0.13,
-                    height: size.width * 0.13,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          color: !isPinVisible
-                              ? AppColors.mainColor
-                              : Colors.white),
-                      borderRadius: BorderRadius.circular(30.0),
-                      color: index < enteredPin.length
-                          ? isPinVisible
-                              ? Colors.green
-                              : Colors.white
-                          : Colors.white,
-                    ),
-                    child: Center(
-                      child: isPinVisible && index < enteredPin.length
-                          ? Text(
-                              enteredPin[index],
-                              style: const TextStyle(
-                                fontSize: 17,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            )
-                          : !isPinVisible && index < enteredPin.length
-                              ? Container(
-                                  margin: const EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(30),
-                                    color: AppColors.mainColor,
-                                  ),
-                                )
-                              // const Text(
-                              //     "*",
-                              //     style: TextStyle(
-                              //         fontSize: 28, color: Colors.white),
-                              //   )
-
-                              : null,
-                    ));
+                  margin: const EdgeInsets.all(6.0),
+                  width: size.width * 0.13,
+                  height: size.width * 0.13,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color:
+                            !isPinVisible ? AppColors.mainColor : Colors.white),
+                    borderRadius: BorderRadius.circular(30.0),
+                    color: index < enteredPin.length
+                        ? isPinVisible
+                            ? Colors.green
+                            : Colors.white
+                        : Colors.white,
+                  ),
+                  child: Center(
+                    child: isPinVisible && index < enteredPin.length
+                        ? Text(
+                            enteredPin[index],
+                            style: const TextStyle(
+                              fontSize: 17,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          )
+                        : !isPinVisible && index < enteredPin.length
+                            ? Container(
+                                margin: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  color: AppColors.mainColor,
+                                ),
+                              )
+                            : null,
+                  ),
+                );
               },
             ),
           ),
@@ -178,22 +170,19 @@ class _ConfirmPinState extends State<LoginPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const TextButton(onPressed: null, child: SizedBox()),
+                const SizedBox.shrink(),
                 numButton(0),
-                TextButton(
+                IconButton(
                   onPressed: () {
-                    setState(
-                      () {
-                        if (enteredPin.isNotEmpty) {
-                          enteredPin =
-                              enteredPin.substring(0, enteredPin.length - 1);
-                        }
-                      },
-                    );
+                    if (enteredPin.isEmpty) return;
+                    setState(() {
+                      enteredPin =
+                          enteredPin.substring(0, enteredPin.length - 1);
+                    });
                   },
-                  child: const Icon(
+                  icon: Icon(
                     Icons.backspace,
-                    color: Colors.black,
+                    color: Theme.of(context).colorScheme.onSurface,
                     size: 24,
                   ),
                 ),
@@ -202,14 +191,26 @@ class _ConfirmPinState extends State<LoginPage> {
           ),
           const SizedBox(height: 30),
           CustomButton(
-            padding: 15,
-            color: AppColors.mainColor,
             onTap: () {
-              Get.to(() => HomePage());
+              Navigator.of(context).pushNamed(NavigationPage.routeName);
             },
-            text: 'Login ',
+            text: 'Login',
           ),
-          const SizedBox(height: 30),
+          const SizedBox(height: 10),
+          RichText(
+            text: TextSpan(
+              children: [
+                const TextSpan(text: 'Have an account?'),
+                TextSpan(
+                  text: 'Login',
+                  style: const TextStyle(
+                    fontStyle: FontStyle.italic,
+                  ),
+                  recognizer: _recognizer,
+                )
+              ],
+            ),
+          )
         ],
       ),
     );

@@ -272,7 +272,10 @@ class _SignupPageState extends State<SignupPage> {
                                     File(imageUrl!),
                                   ),
                                 )
-                              : const Icon(Icons.person),
+                              : const Icon(
+                                  Icons.person,
+                                  size: 80,
+                                ),
                           const SizedBox(
                               width: 10), // Adjust as needed for spacing
                           Column(

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shop0koa_frontend/constants/initial_bindings.dart';
 import 'package:shop0koa_frontend/view/authentication/onboard_screen.dart';
-import 'package:get/get.dart';
 import './view/screens/screens.dart';
 import './util.dart';
 import './theme.dart';
@@ -24,10 +22,9 @@ class _MyAppState extends State<MyApp> {
     final brightness = View.of(context).platformDispatcher.platformBrightness;
     TextTheme textTheme = createTextTheme(context, "Roboto", "Lato");
     MaterialTheme theme = MaterialTheme(textTheme);
-    return GetMaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: brightness == Brightness.light ? theme.light() : theme.dark(),
-      initialBinding: InitialBinding(),
       // theme: ThemeData(
       //   primarySwatch: Colors.blue,
       //   scaffoldBackgroundColor: Colors.white,

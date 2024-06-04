@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shop0koa_frontend/controllers/introduction_controller.dart';
 import 'package:shop0koa_frontend/utils/button.dart';
 import 'package:shop0koa_frontend/view/authentication/confirm_pin.dart';
 import 'package:shop0koa_frontend/view/screens/GetStarted/started.dart';
@@ -15,8 +13,6 @@ class OnBoardScreen extends StatefulWidget {
 }
 
 class _OnBoardScreenState extends State<OnBoardScreen> {
-  IntroductionController introductionController = Get.find();
-
   late SharedPreferences preferences;
   final PageController _pageController = PageController();
   int _currentPageIndex = 0;
@@ -84,7 +80,6 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
                     //Bypassed the Navigation from Onboading to Sign up page fpr new users
                     //If the User exists we will be displaying the login page first instead of the onboard screen
                     Navigator.of(context).pushNamed(LoginPage.routeName);
-                    introductionController.disableIntro();
                   },
                   text: 'Get Started',
                 ),

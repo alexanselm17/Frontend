@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
-import 'package:shop0koa_frontend/utils/Vertical_spacing.dart';
-import 'package:shop0koa_frontend/utils/button.dart';
-import 'package:shop0koa_frontend/utils/custom_badge.dart';
-import 'package:shop0koa_frontend/utils/custom_cached_network_image.dart';
+import 'package:shop0koa_frontend/view/widgets/Vertical_spacing.dart';
+import 'package:shop0koa_frontend/view/widgets/button.dart';
+import 'package:shop0koa_frontend/view/widgets/custom_badge.dart';
+import 'package:shop0koa_frontend/view/widgets/custom_cached_network_image.dart';
 import 'package:shop0koa_frontend/view/screens/products/product_analytics.dart';
 
 class ProductTile extends StatelessWidget {

@@ -42,7 +42,7 @@ class _MyAppState extends State<MyApp> {
         LoginPage.routeName: (context) => const LoginPage(),
         ConfirmPin.routeName: (context) => const ConfirmPin(),
         NewPin.routeName: (context) => const NewPin(),
-        VerifyBusiness.routeName: (context) => const VerifyBusiness(),
+        VerifyBusiness.routeName: (context) => VerifyBusiness(),
         Started.routeName: (context) => const Started(),
       },
     );

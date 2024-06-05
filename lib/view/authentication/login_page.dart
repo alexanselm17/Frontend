@@ -2,7 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:shop0koa_frontend/constants/assets_path.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
-import 'package:shop0koa_frontend/utils/button.dart';
+import 'package:shop0koa_frontend/view/widgets/button.dart';
 import 'package:shop0koa_frontend/view/screens/home_page.dart';
 import 'package:shop0koa_frontend/view/screens/navigation.dart';
 import 'package:shop0koa_frontend/view/screens/screens.dart';
@@ -149,7 +149,7 @@ class _ConfirmPinState extends State<LoginPage> {
               },
             ),
           ),
-          SizedBox(height: size.height * 0.09),
+          //SizedBox(height: size.height * 0.09),
 
           for (var i = 0; i < 3; i++)
             Padding(
@@ -192,6 +192,7 @@ class _ConfirmPinState extends State<LoginPage> {
           const SizedBox(height: 30),
           CustomButton(
             onTap: () {
+              //TODO: make it pushReplacementNamed
               Navigator.of(context).pushNamed(NavigationPage.routeName);
             },
             text: 'Login',
@@ -200,16 +201,23 @@ class _ConfirmPinState extends State<LoginPage> {
           RichText(
             text: TextSpan(
               children: [
-                const TextSpan(text: 'Have an account?'),
                 TextSpan(
-                  text: 'Login',
-                  style: const TextStyle(
-                    fontStyle: FontStyle.italic,
-                  ),
+                  text: 'Have an account?',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                TextSpan(
+                  text: 'Sign Up',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge!
+                      .copyWith(color: Colors.purple),
                   recognizer: _recognizer,
                 )
               ],
             ),
+          ),
+          const SizedBox(
+            height: 50,
           )
         ],
       ),

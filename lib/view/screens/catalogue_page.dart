@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
-import 'package:shop0koa_frontend/utils/product_tile.dart';
+import 'package:shop0koa_frontend/view/widgets/product_tile.dart';
 import 'package:shop0koa_frontend/view/screens/products/add_product.dart';
 
 class CataloguePage extends StatelessWidget {

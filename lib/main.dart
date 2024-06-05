@@ -25,10 +25,6 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: brightness == Brightness.light ? theme.light() : theme.dark(),
-      // theme: ThemeData(
-      //   primarySwatch: Colors.blue,
-      //   scaffoldBackgroundColor: Colors.white,
-      // ),
       home: const OnBoardScreen(),
       routes: {
         ProductAnalytics.routeName: (context) => const ProductAnalytics(),

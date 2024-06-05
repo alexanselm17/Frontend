@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
-import 'package:shop0koa_frontend/utils/Vertical_spacing.dart';
+import 'package:shop0koa_frontend/view/widgets/Vertical_spacing.dart';
 import 'package:shop0koa_frontend/view/screens/oders/buy_now_pay_later.dart';
 import 'package:shop0koa_frontend/view/screens/oders/flexi_save.dart';
 

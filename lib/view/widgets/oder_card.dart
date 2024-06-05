@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
-import 'package:shop0koa_frontend/utils/custom_badge.dart';
+import 'package:shop0koa_frontend/view/widgets/custom_badge.dart';
 
 class OdersCard extends StatelessWidget {
   final Color color;

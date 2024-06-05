@@ -2,7 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:shop0koa_frontend/constants/assets_path.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
-import 'package:shop0koa_frontend/utils/button.dart';
+import 'package:shop0koa_frontend/view/widgets/button.dart';
 import 'package:shop0koa_frontend/view/screens/home_page.dart';
 import 'package:shop0koa_frontend/view/screens/navigation.dart';
 import 'package:shop0koa_frontend/view/screens/screens.dart';
@@ -192,6 +192,7 @@ class _ConfirmPinState extends State<LoginPage> {
           const SizedBox(height: 30),
           CustomButton(
             onTap: () {
+              //TODO: make it pushReplacementNamed
               Navigator.of(context).pushNamed(NavigationPage.routeName);
             },
             text: 'Login',

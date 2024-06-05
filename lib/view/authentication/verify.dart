@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
-import 'package:shop0koa_frontend/utils/button.dart';
+import 'package:shop0koa_frontend/view/widgets/button.dart';
 import 'package:shop0koa_frontend/view/authentication/login_page.dart';
 import 'package:shop0koa_frontend/view/authentication/new_pin.dart';
 import 'package:shop0koa_frontend/view/screens/home_page.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop0koa_frontend/constants/assets_path.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
-import 'package:shop0koa_frontend/utils/button.dart';
+import 'package:shop0koa_frontend/view/widgets/button.dart';
 import 'package:shop0koa_frontend/view/authentication/confirm_pin.dart';
 import 'package:shop0koa_frontend/view/screens/navigation.dart';
 

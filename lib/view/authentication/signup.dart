@@ -1,6 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:shop0koa_frontend/utils/button.dart';
+import 'package:shop0koa_frontend/logic/pick_files.dart';
+import 'package:shop0koa_frontend/view/widgets/button.dart';
+import 'dart:io';
 import 'package:shop0koa_frontend/view/authentication/verify.dart';
 import 'package:shop0koa_frontend/view/screens/screens.dart';
 
@@ -18,9 +20,12 @@ class SignupPage extends StatefulWidget {
 class _SignupPageState extends State<SignupPage> {
   final _formKey = GlobalKey<FormState>();
   late TapGestureRecognizer _gestureDetector;
+  String? imageUrl;
   bool _isMale = false;
   bool _isFemale = false;
   bool _isAgreed = false;
+
+  void setImageUrl() {}
 
   @override
   void didChangeDependencies() {
@@ -255,22 +260,25 @@ class _SignupPageState extends State<SignupPage> {
                       ],
                     ),
                     const SizedBox(height: 10.0),
-                    const Padding(
-                      padding: EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Icon(
-                            Icons
-                                .supervised_user_circle_sharp, // This is a user icon
-                            size: 60.0, // Adjust size as needed
-                            color: Colors.black, // Adjust color as needed
-                          ),
-                          SizedBox(width: 10), // Adjust as needed for spacing
+                          imageUrl != null
+                              ? CircleAvatar(
+                                  radius: 50,
+                                  backgroundImage: FileImage(
+                                    File(imageUrl!),
+                                  ),
+                                )
+                              : const Icon(Icons.person),
+                          const SizedBox(
+                              width: 10), // Adjust as needed for spacing
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 'Profile Picture',
                                 style: TextStyle(
                                   fontSize: 18, // Adjust font size as needed
@@ -278,11 +286,20 @@ class _SignupPageState extends State<SignupPage> {
                                       .bold, // Adjust font weight as needed
                                 ),
                               ),
-                              Text(
-                                'Upload',
-                                style: TextStyle(
-                                  fontSize: 18, // Adjust font size as needed
-                                  color: Colors.blue, // Adjust color as needed
+                              TextButton(
+                                onPressed: () async {
+                                  final url = await PickFiles().pickImages();
+                                  setState(() {
+                                    imageUrl = url;
+                                  });
+                                },
+                                child: const Text(
+                                  'Upload',
+                                  style: TextStyle(
+                                    fontSize: 18, // Adjust font size as needed
+                                    color:
+                                        Colors.blue, // Adjust color as needed
+                                  ),
                                 ),
                               ),
                             ],
@@ -321,12 +338,15 @@ class _SignupPageState extends State<SignupPage> {
                     RichText(
                       text: TextSpan(
                         children: [
-                          const TextSpan(text: 'Have an account?'),
+                          TextSpan(
+                              text: 'Have an account?',
+                              style: Theme.of(context).textTheme.bodyLarge),
                           TextSpan(
                             text: 'Login',
-                            style: const TextStyle(
-                              fontStyle: FontStyle.italic,
-                            ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(color: Colors.purple),
                             recognizer: _gestureDetector,
                           )
                         ],

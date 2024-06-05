@@ -149,7 +149,7 @@ class _ConfirmPinState extends State<LoginPage> {
               },
             ),
           ),
-          SizedBox(height: size.height * 0.09),
+          //SizedBox(height: size.height * 0.09),
 
           for (var i = 0; i < 3; i++)
             Padding(
@@ -200,16 +200,23 @@ class _ConfirmPinState extends State<LoginPage> {
           RichText(
             text: TextSpan(
               children: [
-                const TextSpan(text: 'Have an account?'),
                 TextSpan(
-                  text: 'Login',
-                  style: const TextStyle(
-                    fontStyle: FontStyle.italic,
-                  ),
+                  text: 'Have an account?',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                TextSpan(
+                  text: 'Sign Up',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge!
+                      .copyWith(color: Colors.purple),
                   recognizer: _recognizer,
                 )
               ],
             ),
+          ),
+          const SizedBox(
+            height: 50,
           )
         ],
       ),

@@ -16,6 +16,8 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
+final messengerKey = GlobalKey<ScaffoldMessengerState>();
+
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
@@ -23,6 +25,7 @@ class _MyAppState extends State<MyApp> {
     TextTheme textTheme = createTextTheme(context, "Roboto", "Lato");
     MaterialTheme theme = MaterialTheme(textTheme);
     return MaterialApp(
+      scaffoldMessengerKey: messengerKey,
       debugShowCheckedModeBanner: false,
       theme: brightness == Brightness.light ? theme.light() : theme.dark(),
       home: const OnBoardScreen(),
@@ -35,7 +38,7 @@ class _MyAppState extends State<MyApp> {
         LoginPage.routeName: (context) => const LoginPage(),
         ConfirmPin.routeName: (context) => const ConfirmPin(),
         NewPin.routeName: (context) => const NewPin(),
-        VerifyBusiness.routeName: (context) => VerifyBusiness(),
+        VerifyBusiness.routeName: (context) => const VerifyBusiness(),
         Started.routeName: (context) => const Started(),
       },
     );

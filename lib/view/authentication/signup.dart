@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:shop0koa_frontend/logic/pick_files.dart';
 import 'package:shop0koa_frontend/view/widgets/button.dart';
 import 'dart:io';
-import 'package:shop0koa_frontend/view/authentication/verify.dart';
 import 'package:shop0koa_frontend/view/screens/screens.dart';
 
 //TODO

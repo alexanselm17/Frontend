@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:shop0koa_frontend/constants/assets_path.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
 import 'package:shop0koa_frontend/view/widgets/button.dart';
-import 'package:shop0koa_frontend/view/authentication/verify.dart';
-import 'package:shop0koa_frontend/view/screens/home_page.dart';
 import 'package:shop0koa_frontend/view/screens/navigation.dart';
 
 //Implement this like the confirm Password

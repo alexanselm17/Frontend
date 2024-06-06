@@ -19,7 +19,7 @@ class PickFiles {
     FilePickerResult? result = await FilePicker.platform
         .pickFiles(allowedExtensions: ['docx', 'pdf'], type: FileType.custom);
     if (result != null && result.files.isNotEmpty) {
-      return result.files.single.path;
+      return result.files.single.name;
     } else {
       return null;
     }

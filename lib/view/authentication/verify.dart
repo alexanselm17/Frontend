@@ -4,6 +4,8 @@ import 'package:shop0koa_frontend/logic/pick_files.dart';
 import 'package:shop0koa_frontend/view/widgets/button.dart';
 import 'package:shop0koa_frontend/view/authentication/new_pin.dart';
 
+enum documentType { businesspermit, idCard }
+
 class VerifyBusiness extends StatefulWidget {
   static const routeName = 'verifyBusiness';
   const VerifyBusiness({super.key});
@@ -13,7 +15,19 @@ class VerifyBusiness extends StatefulWidget {
 }
 
 class _VerifyBusinessState extends State<VerifyBusiness> {
-  String? pickedDocument;
+  String? businessPermit;
+  String? idCard;
+
+  Future<void> pickDocuments(documentType type) async {
+    var result = await PickFiles().pickDocuments();
+    if (result != null) {
+      setState(() {
+        type == documentType.businesspermit
+            ? businessPermit = result
+            : idCard = result;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,18 +61,22 @@ class _VerifyBusinessState extends State<VerifyBusiness> {
                 height: 200,
                 child: TextButton(
                   onPressed: () {
-                    PickFiles().pickDocuments();
+                    pickDocuments(documentType.businesspermit);
                   },
-                  child: const Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.file_upload,
-                        size: 50,
-                      ),
-                      Text('Upload Business Permit (PDF 2MB Max)'),
-                    ],
-                  ),
+                  child: businessPermit == null
+                      ? const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.file_upload,
+                              size: 50,
+                            ),
+                            Text('Upload Business Permit (PDF 2MB Max)'),
+                          ],
+                        )
+                      : Center(
+                          child: Text(businessPermit!),
+                        ),
                 ),
               ),
             ),
@@ -71,22 +89,19 @@ class _VerifyBusinessState extends State<VerifyBusiness> {
                 width: MediaQuery.of(context).size.width - 30,
                 height: 200,
                 child: TextButton(
-                  onPressed: () async {
-                    var result = await PickFiles().pickDocuments();
-                    setState(() {
-                      pickedDocument = result!;
-                    });
+                  onPressed: () {
+                    pickDocuments(documentType.idCard);
                   },
-                  child: pickedDocument == null
+                  child: idCard == null
                       ? const Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(Icons.file_upload, size: 50),
-                            Text('Upload xxxxxxxxxx (PDF 2MB Max)'),
+                            Text('Upload Document (PDF 2MB Max)'),
                           ],
                         )
                       : Center(
-                          child: Text(pickedDocument!),
+                          child: Text(idCard!),
                         ),
                 ),
               ),

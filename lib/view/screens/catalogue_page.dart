@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
-import 'package:shop0koa_frontend/utils/product_tile.dart';
+import 'package:shop0koa_frontend/view/widgets/product_tile.dart';
 import 'package:shop0koa_frontend/view/screens/products/add_product.dart';
 
 class CataloguePage extends StatelessWidget {
@@ -11,21 +10,20 @@ class CataloguePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        shadowColor: Colors.white,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Get.back();
+            Navigator.of(context).pop();
+            //Get.back();
           },
         ),
         title: const Text('Catalog'),
       ),
       floatingActionButton: FloatingActionButton.extended(
-          backgroundColor: AppColors.mainColor,
+          backgroundColor:
+              Theme.of(context).floatingActionButtonTheme.backgroundColor,
           onPressed: () {
-            Get.to(const AddProduct());
+            Navigator.of(context).pushNamed(AddProduct.routeName);
           },
           label: const Row(
             children: [

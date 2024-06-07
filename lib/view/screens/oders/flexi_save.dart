@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
-import 'package:shop0koa_frontend/utils/oder_card.dart';
+import 'package:shop0koa_frontend/view/widgets/oder_card.dart';
 
 class FlexiSave extends StatelessWidget {
   const FlexiSave({super.key});

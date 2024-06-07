@@ -1,80 +1,88 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
-import 'package:shop0koa_frontend/controllers/navigation_controller.dart';
 import 'package:shop0koa_frontend/view/account/accounts.dart';
 import 'package:shop0koa_frontend/view/screens/catalogue_page.dart';
 import 'package:shop0koa_frontend/view/screens/home_page.dart';
 
-class NavigationPage extends GetView<NavigationController> {
+class NavigationPage extends StatefulWidget {
+  static const routeName = 'Navigationpage';
   const NavigationPage({super.key});
 
-  List<PersistentBottomNavBarItem> _navBarsItems() {
-    return [
-      PersistentBottomNavBarItem(
-          icon: const Icon(CupertinoIcons.house),
-          title: ("Home"),
-          activeColorPrimary: AppColors.mainColor,
-          inactiveColorPrimary: CupertinoColors.black),
-      PersistentBottomNavBarItem(
-        icon: const Icon(CupertinoIcons.list_bullet),
-        title: ("Catalogue"),
-        activeColorPrimary: AppColors.mainColor,
-        inactiveColorPrimary: CupertinoColors.black,
+  @override
+  State<NavigationPage> createState() => _NavigationPageState();
+}
+
+class _NavigationPageState extends State<NavigationPage>
+    with TickerProviderStateMixin {
+  int _currentPageIndex = 0;
+  late PageController _pageController;
+
+  final List<BottomNavigationBarItem> _navBarItems = [
+    const BottomNavigationBarItem(
+      label: 'Home',
+      icon: Icon(
+        CupertinoIcons.house,
       ),
-      PersistentBottomNavBarItem(
-        icon: const Icon(CupertinoIcons.profile_circled),
-        title: ("Account"),
-        activeColorPrimary: AppColors.mainColor,
-        inactiveColorPrimary: CupertinoColors.black,
-      ),
-    ];
+    ),
+    const BottomNavigationBarItem(
+      icon: Icon(CupertinoIcons.list_bullet),
+      label: 'Catalogue',
+    ),
+    const BottomNavigationBarItem(
+      icon: Icon(CupertinoIcons.profile_circled),
+      label: 'Account',
+    )
+  ];
+
+  final List<Widget> _buildScreens = [
+    const HomePage(),
+    const CataloguePage(),
+    const AccountPage(),
+  ];
+
+  void _updateCurrentPageIndex(int index) {
+    setState(() {
+      _currentPageIndex = index;
+    });
+    _pageController.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 400),
+      curve: Curves.ease,
+    );
   }
 
-  List<Widget> _buildScreens() {
-    return [
-      const HomePage(),
-      const CataloguePage(),
-      const AccountPage(),
-    ];
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _pageController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return PersistentTabView(
-      context,
-      // controller: _controller,
-      screens: _buildScreens(),
-      items: _navBarsItems(),
-      confineInSafeArea: true,
-      backgroundColor: Colors.white, // Default is Colors.white.
-      handleAndroidBackButtonPress: true, // Default is true.
-      resizeToAvoidBottomInset:
-          true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
-      stateManagement: true, // Default is true.
-      hideNavigationBarWhenKeyboardShows:
-          true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
-      decoration: NavBarDecoration(
-        borderRadius: BorderRadius.circular(0),
-        colorBehindNavBar: Colors.white,
+    return Scaffold(
+      body: PageView(
+        onPageChanged: _updateCurrentPageIndex,
+        controller: _pageController,
+        children: _buildScreens,
       ),
-      popAllScreensOnTapOfSelectedTab: true,
-      popActionScreens: PopActionScreensType.all,
-      itemAnimationProperties: const ItemAnimationProperties(
-        // Navigation Bar's items animation properties.
-        duration: Duration(milliseconds: 200),
-        curve: Curves.ease,
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _currentPageIndex,
+        onTap: (value) {
+          _updateCurrentPageIndex(value);
+        },
+        items: _navBarItems,
+        selectedItemColor: Theme.of(context).colorScheme.primary,
+        unselectedItemColor: Theme.of(context).colorScheme.onSurfaceVariant,
       ),
-      screenTransitionAnimation: const ScreenTransitionAnimation(
-        // Screen transition animation on change of selected tab.
-        animateTabTransition: true,
-        curve: Curves.ease,
-        duration: Duration(milliseconds: 200),
-      ),
-      navBarStyle:
-          NavBarStyle.style6, // Choose the nav bar style with this property.
     );
   }
 }

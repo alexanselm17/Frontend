@@ -1,13 +1,16 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:shop0koa_frontend/utils/button.dart';
-import 'package:shop0koa_frontend/view/account/withdraw_page.dart';
-import 'package:flutter/services.dart';
-import 'package:shop0koa_frontend/view/authentication/confirm_pin.dart';
-import 'package:shop0koa_frontend/view/authentication/new_pin.dart';
+import 'package:shop0koa_frontend/logic/pick_files.dart';
+import 'package:shop0koa_frontend/view/widgets/button.dart';
+import 'dart:io';
 import 'package:shop0koa_frontend/view/authentication/verify.dart';
+import 'package:shop0koa_frontend/view/screens/screens.dart';
+
+//TODO
+//Fix the screen on keyboard Entry not to have unbounded height
 
 class SignupPage extends StatefulWidget {
+  static const routeName = 'signUpPage';
   const SignupPage({super.key});
 
   @override
@@ -16,10 +19,21 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
   final _formKey = GlobalKey<FormState>();
-
+  late TapGestureRecognizer _gestureDetector;
+  String? imageUrl;
   bool _isMale = false;
   bool _isFemale = false;
   bool _isAgreed = false;
+
+  void setImageUrl() {}
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    _gestureDetector = TapGestureRecognizer()
+      ..onTap = () => Navigator.of(context).pushNamed(LoginPage.routeName);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +42,7 @@ class _SignupPageState extends State<SignupPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Get.back();
+            Navigator.of(context).pop();
           },
         ),
         title:
@@ -37,240 +51,252 @@ class _SignupPageState extends State<SignupPage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-            padding: const EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 15.0),
-            child: Column(
-              children: [
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: CustomTextField(
-                              labelText: "First Name*",
-                              keyboardType: TextInputType.text,
-                              obscureText: false,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your first name';
-                                } else if (!RegExp(r'^[a-zA-Z\s]*$')
-                                    .hasMatch(value)) {
-                                  return 'Please enter only characters';
-                                }
-                                return null;
-                              },
-                            ),
+          padding: const EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 15.0),
+          child: Column(
+            children: [
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomTextField(
+                            labelText: "First Name*",
+                            keyboardType: TextInputType.text,
+                            obscureText: false,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your first name';
+                              } else if (!RegExp(r'^[a-zA-Z\s]*$')
+                                  .hasMatch(value)) {
+                                return 'Please enter only characters';
+                              }
+                              return null;
+                            },
                           ),
-                          const SizedBox(width: 20),
-                          Expanded(
-                            child: CustomTextField(
-                              labelText: 'Last Name*',
-                              keyboardType: TextInputType.text,
-                              obscureText: false,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your first name';
-                                } else if (!RegExp(r'^[a-zA-Z\s]*$')
-                                    .hasMatch(value)) {
-                                  return 'Please enter only characters';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      CustomTextField(
-                          labelText: "Business Name*",
-                          keyboardType: TextInputType.text,
-                          obscureText: false,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your business name';
-                            } else if (!RegExp(r'^[a-zA-Z\s]*$')
-                                .hasMatch(value)) {
-                              return 'Please enter only characters';
-                            }
-                            return null;
-                          }),
-                      const SizedBox(height: 10),
-                      CustomTextField(
-                        labelText: "License No.*",
-                        keyboardType: TextInputType.number,
-                        obscureText: false,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your license number';
-                          } else if (!RegExp(r'^\d+$').hasMatch(value)) {
-                            return 'Please enter a valid license number';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 10),
-                      DropdownButtonFormField<String>(
-                        decoration: InputDecoration(
-                          labelText: 'Select Location',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20)),
                         ),
-                        items: <String>['Kenya', 'Tanzania', 'Uganda']
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          // Do something when a location is selected
-                        },
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please select a location';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 10),
-                      CustomTextField(
-                        labelText: "Email Address",
-                        keyboardType: TextInputType.emailAddress,
+                        const SizedBox(width: 20),
+                        Expanded(
+                          child: CustomTextField(
+                            labelText: 'Last Name*',
+                            keyboardType: TextInputType.text,
+                            obscureText: false,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your first name';
+                              } else if (!RegExp(r'^[a-zA-Z\s]*$')
+                                  .hasMatch(value)) {
+                                return 'Please enter only characters';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    CustomTextField(
+                        labelText: "Business Name*",
+                        keyboardType: TextInputType.text,
                         obscureText: false,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your email address';
-                          } else if (!RegExp(
-                                  r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
+                            return 'Please enter your business name';
+                          } else if (!RegExp(r'^[a-zA-Z\s]*$')
                               .hasMatch(value)) {
-                            return 'Please enter a valid email address';
+                            return 'Please enter only characters';
                           }
                           return null;
-                        },
+                        }),
+                    const SizedBox(height: 10),
+                    CustomTextField(
+                      labelText: "License No.*",
+                      keyboardType: TextInputType.number,
+                      obscureText: false,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your license number';
+                        } else if (!RegExp(r'^\d+$').hasMatch(value)) {
+                          return 'Please enter a valid license number';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    DropdownButtonFormField<String>(
+                      decoration: InputDecoration(
+                        labelText: 'Select Location',
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20)),
                       ),
-                      const SizedBox(height: 10),
-                      CustomTextField(
-                        labelText: "Phone Number*",
-                        keyboardType: TextInputType.number,
-                        obscureText: false,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your phone number';
-                          } else if (!RegExp(r'^(07|01)\d{8}$')
-                              .hasMatch(value)) {
-                            return 'Please enter a valid phone number';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 10),
-                      CustomTextField(
-                        labelText: "Create Password(Min.8 Char)*",
-                        keyboardType: TextInputType.text,
-                        obscureText: true,
-                        validator: (value) {
-                          if (value == null || value.length < 8) {
-                            return 'Password must be at least 8 characters';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 10),
-                      CustomTextField(
-                        labelText: "Repeat Password*",
-                        keyboardType: TextInputType.text,
-                        obscureText: true,
-                        validator: (value) {
-                          if (value == null || value.length < 8) {
-                            return 'Password must be at least 8 characters';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          const Text(
-                            'Gender',
-                            style: TextStyle(
-                              fontSize: 18, // Adjust font size as needed
-                            ),
+                      items: <String>['Kenya', 'Tanzania', 'Uganda']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        // Do something when a location is selected
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please select a location';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    CustomTextField(
+                      labelText: "Email Address",
+                      keyboardType: TextInputType.emailAddress,
+                      obscureText: false,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your email address';
+                        } else if (!RegExp(
+                                r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
+                            .hasMatch(value)) {
+                          return 'Please enter a valid email address';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    CustomTextField(
+                      labelText: "Phone Number*",
+                      keyboardType: TextInputType.number,
+                      obscureText: false,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your phone number';
+                        } else if (!RegExp(r'^(07|01)\d{8}$').hasMatch(value)) {
+                          return 'Please enter a valid phone number';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    CustomTextField(
+                      labelText: "Create Password(Min.8 Char)*",
+                      keyboardType: TextInputType.text,
+                      obscureText: true,
+                      validator: (value) {
+                        if (value == null || value.length < 8) {
+                          return 'Password must be at least 8 characters';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    CustomTextField(
+                      labelText: "Repeat Password*",
+                      keyboardType: TextInputType.text,
+                      obscureText: true,
+                      validator: (value) {
+                        if (value == null || value.length < 8) {
+                          return 'Password must be at least 8 characters';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        const Text(
+                          'Gender',
+                          style: TextStyle(
+                            fontSize: 18, // Adjust font size as needed
                           ),
-                          Container(
-                            padding: const EdgeInsets.all(
-                                8.0), // Adjust padding as needed
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Colors
-                                      .grey), // Adjust border color as needed
-                              borderRadius: BorderRadius.circular(
-                                  50.0), // Adjust border radius as needed
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Row(
-                                  children: [
-                                    const Text('Male'),
-                                    Checkbox(
-                                      value: _isMale,
-                                      onChanged: (bool? value) {
-                                        setState(() {
-                                          _isMale = value!;
-                                          _isFemale = !value;
-                                        });
-                                      },
-                                    ),
-                                  ],
-                                ),
-                                const VerticalDivider(
-                                    color: Color.fromARGB(255, 13, 13, 13)),
-                                Row(
-                                  children: [
-                                    const Text('Female'),
-                                    Checkbox(
-                                      value: _isFemale,
-                                      onChanged: (bool? value) {
-                                        setState(() {
-                                          _isFemale = value!;
-                                          _isMale = !value;
-                                        });
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(
+                              8.0), // Adjust padding as needed
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Colors
+                                    .grey), // Adjust border color as needed
+                            borderRadius: BorderRadius.circular(
+                                50.0), // Adjust border radius as needed
                           ),
-                        ],
-                      ),
-                      const SizedBox(height: 10.0),
-                      const Padding(
-                        padding: EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Icon(
-                              Icons
-                                  .supervised_user_circle_sharp, // This is a user icon
-                              size: 60.0, // Adjust size as needed
-                              color: Colors.black, // Adjust color as needed
-                            ),
-                            SizedBox(width: 10), // Adjust as needed for spacing
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Profile Picture',
-                                  style: TextStyle(
-                                    fontSize: 18, // Adjust font size as needed
-                                    fontWeight: FontWeight
-                                        .bold, // Adjust font weight as needed
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Row(
+                                children: [
+                                  const Text('Male'),
+                                  Checkbox(
+                                    value: _isMale,
+                                    onChanged: (bool? value) {
+                                      setState(() {
+                                        _isMale = value!;
+                                        _isFemale = !value;
+                                      });
+                                    },
                                   ),
+                                ],
+                              ),
+                              const VerticalDivider(
+                                  color: Color.fromARGB(255, 13, 13, 13)),
+                              Row(
+                                children: [
+                                  const Text('Female'),
+                                  Checkbox(
+                                    value: _isFemale,
+                                    onChanged: (bool? value) {
+                                      setState(() {
+                                        _isFemale = value!;
+                                        _isMale = !value;
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10.0),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          imageUrl != null
+                              ? CircleAvatar(
+                                  radius: 50,
+                                  backgroundImage: FileImage(
+                                    File(imageUrl!),
+                                  ),
+                                )
+                              : const Icon(
+                                  Icons.person,
+                                  size: 80,
                                 ),
-                                Text(
+                          const SizedBox(
+                              width: 10), // Adjust as needed for spacing
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Profile Picture',
+                                style: TextStyle(
+                                  fontSize: 18, // Adjust font size as needed
+                                  fontWeight: FontWeight
+                                      .bold, // Adjust font weight as needed
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () async {
+                                  final url = await PickFiles().pickImages();
+                                  setState(() {
+                                    imageUrl = url;
+                                  });
+                                },
+                                child: const Text(
                                   'Upload',
                                   style: TextStyle(
                                     fontSize: 18, // Adjust font size as needed
@@ -278,43 +304,63 @@ class _SignupPageState extends State<SignupPage> {
                                         Colors.blue, // Adjust color as needed
                                   ),
                                 ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Checkbox(
-                            value: _isAgreed,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                _isAgreed = value!;
-                              });
-                            },
-                          ),
-                          const Expanded(
-                            child: Text(
-                              'I agree with the terms and conditions',
-                              style: TextStyle(
-                                  fontSize: 14), // Adjust font size as needed
-                            ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                      const SizedBox(height: 20),
-                      CustomButton(
-                        onTap: () {
-                          Get.to(const VerifyBusiness());
-                        },
-                        text: "Sign Up",
-                      )
-                    ],
-                  ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Checkbox(
+                          value: _isAgreed,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              _isAgreed = value!;
+                            });
+                          },
+                        ),
+                        const Expanded(
+                          child: Text(
+                            'I agree with the terms and conditions',
+                            style: TextStyle(
+                                fontSize: 14), // Adjust font size as needed
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    CustomButton(
+                      onTap: () {
+                        Navigator.of(context)
+                            .pushNamed(VerifyBusiness.routeName);
+                      },
+                      text: "Sign Up",
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                              text: 'Have an account?',
+                              style: Theme.of(context).textTheme.bodyLarge),
+                          TextSpan(
+                            text: 'Login',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(color: Colors.purple),
+                            recognizer: _gestureDetector,
+                          )
+                        ],
+                      ),
+                    )
+                  ],
                 ),
-              ],
-            )),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

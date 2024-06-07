@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shop0koa_frontend/constants/assets_path.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
-import 'package:shop0koa_frontend/utils/button.dart';
+import 'package:shop0koa_frontend/view/widgets/button.dart';
 import 'package:shop0koa_frontend/view/authentication/verify.dart';
 import 'package:shop0koa_frontend/view/screens/home_page.dart';
 import 'package:shop0koa_frontend/view/screens/navigation.dart';
 
+//Implement this like the confirm Password
+
 class ConfirmPin extends StatefulWidget {
+  static const routeName = 'ConfirmPin';
   const ConfirmPin({super.key});
 
   @override
@@ -18,7 +20,13 @@ class _ConfirmPinState extends State<ConfirmPin> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   String enteredPin = '';
   bool isPinVisible = false;
-  Size size = MediaQuery.of(Get.context!).size;
+  late Size size;
+
+  @override
+  didChangeDependencies() {
+    super.didChangeDependencies();
+    size = MediaQuery.of(context).size;
+  }
 
   /// this widget will be use for each digit
   Widget numButton(int number) {
@@ -32,7 +40,7 @@ class _ConfirmPinState extends State<ConfirmPin> {
             }
           });
           if (enteredPin.length == 4) {
-            Get.to(const NavigationPage());
+            Navigator.of(context).pushNamed(NavigationPage.routeName);
             // showDialog(
             //   context: context,
             //   barrierDismissible: false,
@@ -81,7 +89,7 @@ class _ConfirmPinState extends State<ConfirmPin> {
           SizedBox(height: size.height * 0.05),
           Text(
             'Confirm pin'.toUpperCase(),
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 20, // Adjust font size as needed
               fontWeight: FontWeight.bold,
             ),
@@ -205,10 +213,10 @@ class _ConfirmPinState extends State<ConfirmPin> {
           ),
           const SizedBox(height: 30),
           CustomButton(
-            padding: 15,
-            color: AppColors.mainColor,
+            //padding: 15,
+            //color: AppColors.mainColor,
             onTap: () {
-              Get.to(const NavigationPage());
+              Navigator.of(context).pushNamed(NavigationPage.routeName);
             },
             text: 'CONFIRM PIN',
           ),

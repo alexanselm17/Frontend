@@ -3,17 +3,18 @@ description: "A new Flutter project."
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.3.4 <4.0.0'
+  sdk: ">=3.3.4 <4.0.0"
 
 dependencies:
   cached_network_image: ^3.3.1
   cupertino_icons: ^1.0.6
   dotted_border: ^2.1.0
+  file_picker: ^8.0.3
   fl_chart: ^0.68.0
   flutter:
     sdk: flutter
   get: ^4.6.6
-  persistent_bottom_nav_bar: ^5.0.2
+  google_fonts: ^6.2.1
   shared_preferences: ^2.2.3
 
 dev_dependencies:
@@ -26,7 +27,7 @@ flutter:
   generate: true
   assets:
     - assets/images/
-    - assets/icons/
+  #  - assets/icons/
   # list giving the asset and other descriptors for the font. For
   # example:
   # fonts:

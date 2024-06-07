@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:shop0koa_frontend/logic/pick_files.dart';
+import 'package:shop0koa_frontend/provider/authenticationProvider.dart';
+import 'package:shop0koa_frontend/services/firebase.dart';
+import 'package:shop0koa_frontend/view/screens/screens.dart';
 import 'package:shop0koa_frontend/view/widgets/button.dart';
-import 'package:shop0koa_frontend/view/authentication/new_pin.dart';
 
 class VerifyBusiness extends StatefulWidget {
   static const routeName = 'verifyBusiness';
@@ -14,9 +18,15 @@ class VerifyBusiness extends StatefulWidget {
 
 class _VerifyBusinessState extends State<VerifyBusiness> {
   String? pickedDocument;
+  String permitUrl = '';
+  String nationalUrl = '';
+  String kraUrl = '';
+  final Firebase firebase = Firebase();
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -46,8 +56,13 @@ class _VerifyBusinessState extends State<VerifyBusiness> {
                 width: MediaQuery.of(context).size.width - 30,
                 height: 200,
                 child: TextButton(
-                  onPressed: () {
-                    PickFiles().pickDocuments();
+                  onPressed: () async {
+                    var path = await PickFiles().pickDocuments();
+                    var url = await firebase.storeProduct(
+                        selectedImageFile: XFile(path!));
+                    setState(() {
+                      permitUrl = url;
+                    });
                   },
                   child: const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -73,7 +88,12 @@ class _VerifyBusinessState extends State<VerifyBusiness> {
                 child: TextButton(
                   onPressed: () async {
                     var result = await PickFiles().pickDocuments();
+                    var path = await PickFiles().pickDocuments();
+                    var url = await firebase.storeProduct(
+                        selectedImageFile: XFile(path!));
+
                     setState(() {
+                      kraUrl = kraUrl;
                       pickedDocument = result!;
                     });
                   },
@@ -94,8 +114,15 @@ class _VerifyBusinessState extends State<VerifyBusiness> {
             const SizedBox(height: 30),
             CustomButton(
               // color: AppColors.mainColor,
-              onTap: () {
-                Navigator.of(context).pushNamed(NewPin.routeName);
+              onTap: () async {
+                await authProvider.verifyBusines(
+                  context: context,
+                  kraUrl: kraUrl,
+                  permitUrl: permitUrl,
+                  natinalUrl: 'natinalUrl',
+                  UserId: 1,
+                );
+                Navigator.of(context).pushNamed(NavigationPage.routeName);
                 //Get.to(NewPin());
               },
               text: 'VERIFY',

@@ -1,9 +1,14 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:shop0koa_frontend/logic/pick_files.dart';
+import 'package:shop0koa_frontend/main.dart';
+import 'package:shop0koa_frontend/provider/authenticationProvider.dart';
+import 'package:shop0koa_frontend/services/firebase.dart';
+import 'package:shop0koa_frontend/view/widgets/Vertical_spacing.dart';
 import 'package:shop0koa_frontend/view/widgets/button.dart';
 import 'dart:io';
-import 'package:shop0koa_frontend/view/authentication/verify.dart';
 import 'package:shop0koa_frontend/view/screens/screens.dart';
 
 //TODO
@@ -24,12 +29,13 @@ class _SignupPageState extends State<SignupPage> {
   bool _isMale = false;
   bool _isFemale = false;
   bool _isAgreed = false;
+  final Firebase firebase = Firebase();
+  String profile = '';
 
   void setImageUrl() {}
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     _gestureDetector = TapGestureRecognizer()
       ..onTap = () => Navigator.of(context).pushNamed(LoginPage.routeName);
@@ -37,6 +43,8 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -63,6 +71,7 @@ class _SignupPageState extends State<SignupPage> {
                         Expanded(
                           child: CustomTextField(
                             labelText: "First Name*",
+                            controller: authProvider.firstNameController,
                             keyboardType: TextInputType.text,
                             obscureText: false,
                             validator: (value) {
@@ -80,6 +89,7 @@ class _SignupPageState extends State<SignupPage> {
                         Expanded(
                           child: CustomTextField(
                             labelText: 'Last Name*',
+                            controller: authProvider.lastNameController,
                             keyboardType: TextInputType.text,
                             obscureText: false,
                             validator: (value) {
@@ -98,6 +108,7 @@ class _SignupPageState extends State<SignupPage> {
                     const SizedBox(height: 10),
                     CustomTextField(
                         labelText: "Business Name*",
+                        controller: authProvider.businessNameController,
                         keyboardType: TextInputType.text,
                         obscureText: false,
                         validator: (value) {
@@ -111,6 +122,8 @@ class _SignupPageState extends State<SignupPage> {
                         }),
                     const SizedBox(height: 10),
                     CustomTextField(
+                      controller:
+                          authProvider.businessRegistrationNumberController,
                       labelText: "License No.*",
                       keyboardType: TextInputType.number,
                       obscureText: false,
@@ -138,7 +151,7 @@ class _SignupPageState extends State<SignupPage> {
                         );
                       }).toList(),
                       onChanged: (String? newValue) {
-                        // Do something when a location is selected
+                        authProvider.businessAddressController.text = newValue!;
                       },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -150,6 +163,7 @@ class _SignupPageState extends State<SignupPage> {
                     const SizedBox(height: 10),
                     CustomTextField(
                       labelText: "Email Address",
+                      controller: authProvider.emailController,
                       keyboardType: TextInputType.emailAddress,
                       obscureText: false,
                       validator: (value) {
@@ -165,6 +179,7 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                     const SizedBox(height: 10),
                     CustomTextField(
+                      controller: authProvider.phoneNumberController,
                       labelText: "Phone Number*",
                       keyboardType: TextInputType.number,
                       obscureText: false,
@@ -179,28 +194,29 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                     const SizedBox(height: 10),
                     CustomTextField(
-                      labelText: "Create Password(Min.8 Char)*",
-                      keyboardType: TextInputType.text,
+                      controller: authProvider.passwordController,
+                      labelText: "Create Pin",
+                      keyboardType: TextInputType.number,
                       obscureText: true,
                       validator: (value) {
-                        if (value == null || value.length < 8) {
-                          return 'Password must be at least 8 characters';
+                        if (value == null || value.length < 4) {
+                          return 'PIn must be 4 number';
                         }
                         return null;
                       },
                     ),
                     const SizedBox(height: 10),
-                    CustomTextField(
-                      labelText: "Repeat Password*",
-                      keyboardType: TextInputType.text,
-                      obscureText: true,
-                      validator: (value) {
-                        if (value == null || value.length < 8) {
-                          return 'Password must be at least 8 characters';
-                        }
-                        return null;
-                      },
-                    ),
+                    // CustomTextField(
+                    //   labelText: "Repeat Password*",
+                    //   keyboardType: TextInputType.text,
+                    //   obscureText: true,
+                    //   validator: (value) {
+                    //     if (value == null || value.length < 8) {
+                    //       return 'Password must be at least 8 characters';
+                    //     }
+                    //     return null;
+                    //   },
+                    // ),
                     const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -208,12 +224,11 @@ class _SignupPageState extends State<SignupPage> {
                         const Text(
                           'Gender',
                           style: TextStyle(
-                            fontSize: 18, // Adjust font size as needed
+                            fontSize: 18,
                           ),
                         ),
                         Container(
-                          padding: const EdgeInsets.all(
-                              8.0), // Adjust padding as needed
+                          padding: const EdgeInsets.all(8.0),
                           decoration: BoxDecoration(
                             border: Border.all(
                                 color: Colors
@@ -276,32 +291,32 @@ class _SignupPageState extends State<SignupPage> {
                                   Icons.person,
                                   size: 80,
                                 ),
-                          const SizedBox(
-                              width: 10), // Adjust as needed for spacing
+                          const SizedBox(width: 10),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
                                 'Profile Picture',
                                 style: TextStyle(
-                                  fontSize: 18, // Adjust font size as needed
-                                  fontWeight: FontWeight
-                                      .bold, // Adjust font weight as needed
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                               TextButton(
                                 onPressed: () async {
                                   final url = await PickFiles().pickImages();
+                                  var profil = await firebase.storeProduct(
+                                      selectedImageFile: XFile(url!));
                                   setState(() {
                                     imageUrl = url;
+                                    profile = profil;
                                   });
                                 },
                                 child: const Text(
                                   'Upload',
                                   style: TextStyle(
-                                    fontSize: 18, // Adjust font size as needed
-                                    color:
-                                        Colors.blue, // Adjust color as needed
+                                    fontSize: 18,
+                                    color: Colors.blue,
                                   ),
                                 ),
                               ),
@@ -331,13 +346,26 @@ class _SignupPageState extends State<SignupPage> {
                       ],
                     ),
                     const SizedBox(height: 20),
-                    CustomButton(
-                      onTap: () {
-                        Navigator.of(context)
-                            .pushNamed(VerifyBusiness.routeName);
-                      },
-                      text: "Sign Up",
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width - 50,
+                      child: authProvider.isLoading
+                          ? const CircularProgressIndicator()
+                          : CustomButton(
+                              onTap: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  await authProvider.register(
+                                    context: context,
+                                    gender: _isMale ? "male" : "female",
+                                    url: profile,
+                                  );
+                                  navigatorKey.currentState!
+                                      .pushNamed(VerifyBusiness.routeName);
+                                }
+                              },
+                              text: "Sign Up",
+                            ),
                     ),
+                    const VerticalSpacing(),
                     RichText(
                       text: TextSpan(
                         children: [
@@ -368,6 +396,7 @@ class _SignupPageState extends State<SignupPage> {
 
 class CustomTextField extends StatelessWidget {
   final String labelText;
+  final TextEditingController controller;
   final TextInputType keyboardType;
   final bool obscureText;
   final String? Function(String?)? validator;
@@ -379,6 +408,7 @@ class CustomTextField extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.obscureText = false,
     required this.validator,
+    required this.controller,
   });
 
   @override
@@ -387,6 +417,7 @@ class CustomTextField extends StatelessWidget {
       valueListenable: _obscureTextNotifier,
       builder: (context, value, child) {
         return TextFormField(
+          controller: controller,
           keyboardType: keyboardType,
           obscureText: obscureText ? value : false,
           decoration: InputDecoration(

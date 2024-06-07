@@ -1,29 +1,40 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
+import 'package:shop0koa_frontend/provider/authenticationProvider.dart';
 import 'package:shop0koa_frontend/view/widgets/Vertical_spacing.dart';
+import 'package:shop0koa_frontend/view/widgets/custom_cached_network_image.dart';
 import 'package:shop0koa_frontend/view/widgets/product_tile.dart';
 import 'package:shop0koa_frontend/view/screens/oders/oders_page.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    final provider = Provider.of<AuthProvider>(context);
+    provider.getUser(userId: 28, context: context);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+
     return Scaffold(
-      appBar: AppBar(
-        leading: const CircleAvatar(),
-        title: const Text('Merchant Name'),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.notifications,
-            ),
-          )
-        ],
-      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -31,22 +42,43 @@ class HomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: [
-              //     const Row(
-              //       children: [
-              //         CircleAvatar(),
-              //         SizedBox(width: 10),
-              //         Text('Merchant Name'),
-              //       ],
-              //     ),
-              //     IconButton(
-              //       onPressed: () {},
-              //       icon: const Icon(Icons.notifications_none),
-              //     )
-              //   ],
-              // ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: CachedNetworkImageProvider(
+                          authProvider.user!.user!.url!,
+                        ),
+                        // child: CustomCachedNetworkImage(
+                        //   image: authProvider.user!.user!.url!,
+                        //   width: 50,
+                        //   height: 50,
+                        // ),
+                      ),
+                      const SizedBox(width: 10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                              authProvider.user!.user!.businessName!
+                                  .toUpperCase(),
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              )),
+                          Text('Hello ${authProvider.user!.user!.firstName!}')
+                        ],
+                      ),
+                    ],
+                  ),
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.notifications_none),
+                  )
+                ],
+              ),
               const VerticalSpacing(),
               Container(
                 padding: const EdgeInsets.all(20),
@@ -182,15 +214,15 @@ class HomePage extends StatelessWidget {
                 'Catalogue',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
-              const ProductTile(
-                isAnalytics: false,
-                productName: 'soko maize meal -5 kg',
-                leftUnits: '45',
-                productPrice: '389',
-                productImage:
-                    'https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                productDiscount: '20',
-              ),
+              // const ProductTile(
+              //   isAnalytics: false,
+              //   productName: 'soko maize meal -5 kg',
+              //   leftUnits: '45',
+              //   productPrice: '389',
+              //   productImage:
+              //       'https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+              //   productDiscount: '20',
+              // ),
             ],
           ),
         ),

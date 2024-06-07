@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class Withdraw extends StatefulWidget {
+  static const routeName = 'Withdraw';
   const Withdraw({super.key});
 
   @override

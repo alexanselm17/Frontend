@@ -1,13 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
+import 'package:shop0koa_frontend/models/Produxt.dart';
+import 'package:shop0koa_frontend/models/catalogue/catalogue.dart';
+import 'package:shop0koa_frontend/provider/catalogueProvider.dart';
 import 'package:shop0koa_frontend/view/widgets/product_tile.dart';
 import 'package:shop0koa_frontend/view/screens/products/add_product.dart';
 
-class CataloguePage extends StatelessWidget {
+class CataloguePage extends StatefulWidget {
   const CataloguePage({super.key});
 
   @override
+  State<CataloguePage> createState() => _CataloguePageState();
+}
+
+class _CataloguePageState extends State<CataloguePage> {
+  @override
+  void initState() {
+    final catalogueProvider =
+        Provider.of<CatalogueProvider>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      catalogueProvider.getProducts();
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final catalogueProvider =
+        Provider.of<CatalogueProvider>(context, listen: true);
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -20,8 +42,7 @@ class CataloguePage extends StatelessWidget {
         title: const Text('Catalog'),
       ),
       floatingActionButton: FloatingActionButton.extended(
-          backgroundColor:
-              Theme.of(context).floatingActionButtonTheme.backgroundColor,
+          backgroundColor: AppColors.mainColor,
           onPressed: () {
             Navigator.of(context).pushNamed(AddProduct.routeName);
           },
@@ -39,22 +60,31 @@ class CataloguePage extends StatelessWidget {
           )),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: ListView.builder(
-          // physics: const AlwaysScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: 10,
-          itemBuilder: (_, index) {
-            return const ProductTile(
-              isAnalytics: false,
-              productName: 'soko maize meal -5 kg',
-              leftUnits: '45',
-              productPrice: '389',
-              productImage:
-                  'https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-              productDiscount: '20',
-            );
-          },
-        ),
+        child: catalogueProvider.isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : catalogueProvider.catalogue!.products!.isEmpty
+                ? const Center(
+                    child:
+                        Text('You dont have any products in the catalogue yet'),
+                  )
+                : ListView.builder(
+                    // physics: const AlwaysScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: catalogueProvider.catalogue!.products!.length,
+                    itemBuilder: (_, index) {
+                      final Products product =
+                          catalogueProvider.catalogue!.products![index];
+                      return ProductTile(
+                        products: product,
+                        isAnalytics: false,
+                        productName: product.name!,
+                        leftUnits: product.quantity.toString(),
+                        productPrice: product.price.toString(),
+                        productImage: product.url!,
+                        productDiscount: product.discount.toString(),
+                      );
+                    },
+                  ),
       ),
     );
   }

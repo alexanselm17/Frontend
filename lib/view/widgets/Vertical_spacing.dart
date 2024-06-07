@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class VerticalSpacing extends StatelessWidget {
   final double? height;
-  const VerticalSpacing({Key? key, this.height = 10.0}) : super(key: key);
+  const VerticalSpacing({super.key, this.height = 10.0});
 
   @override
   Widget build(BuildContext context) {

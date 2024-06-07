@@ -1,8 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shop0koa_frontend/constants/assets_path.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
-import 'package:shop0koa_frontend/view/widgets/button.dart';
+import 'package:shop0koa_frontend/provider/authenticationProvider.dart';
+import 'package:shop0koa_frontend/repository/authentication.dart';
 import 'package:shop0koa_frontend/view/screens/screens.dart';
 
 class LoginPage extends StatefulWidget {
@@ -14,6 +16,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _ConfirmPinState extends State<LoginPage> {
+  final Auth auth = Auth();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   late TapGestureRecognizer _recognizer;
   String enteredPin = '';
@@ -46,7 +49,7 @@ class _ConfirmPinState extends State<LoginPage> {
               }
             });
             if (enteredPin.length == 4) {
-              Navigator.of(context).pushNamed(NavigationPage.routeName);
+              // Navigator.of(context).pushNamed(NavigationPage.routeName);
             }
           },
           child: Text(
@@ -62,6 +65,8 @@ class _ConfirmPinState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+
     return Scaffold(
       key: _scaffoldKey,
       body: Column(
@@ -188,12 +193,19 @@ class _ConfirmPinState extends State<LoginPage> {
             ),
           ),
           const SizedBox(height: 30),
-          CustomButton(
-            onTap: () {
-              //TODO: make it pushReplacementNamed
-              Navigator.of(context).pushNamed(NavigationPage.routeName);
-            },
-            text: 'Login',
+          ElevatedButton(
+            onPressed: authProvider.isLoading
+                ? null
+                : () {
+                    authProvider.login(
+                      email: 'pushin@gmail.com',
+                      password: enteredPin,
+                      context: context,
+                    );
+                  },
+            child: authProvider.isLoading
+                ? const CircularProgressIndicator()
+                : const Text('Login'),
           ),
           const SizedBox(height: 10),
           RichText(

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "755118341581",
+    "project_id": "shopokoa-9d196",
+    "storage_bucket": "shopokoa-9d196.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:755118341581:android:9db3b45021d96992025884",
+        "android_client_info": {
+          "package_name": "com.example.shop0koa_frontend"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkQ_zgmu5QLcJZvKMZ0yIFvWGGQYZ1FIM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

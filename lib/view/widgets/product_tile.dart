@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:shop0koa_frontend/constants/colors.dart';
+import 'package:shop0koa_frontend/models/catalogue/catalogue.dart';
+import 'package:shop0koa_frontend/view/screens/screens.dart';
 import 'package:shop0koa_frontend/view/widgets/Vertical_spacing.dart';
 import 'package:shop0koa_frontend/view/widgets/button.dart';
 import 'package:shop0koa_frontend/view/widgets/custom_badge.dart';
 import 'package:shop0koa_frontend/view/widgets/custom_cached_network_image.dart';
-import 'package:shop0koa_frontend/view/screens/products/product_analytics.dart';
 
 class ProductTile extends StatelessWidget {
+  final Products products;
   final bool isAnalytics;
   final String productName;
   final String leftUnits;
@@ -21,24 +24,25 @@ class ProductTile extends StatelessWidget {
     required this.productImage,
     required this.productDiscount,
     required this.isAnalytics,
+    required this.products,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 8.0),
-      height: MediaQuery.sizeOf(context).height * .15,
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.secondary,
-        borderRadius: const BorderRadius.all(
+      height: MediaQuery.sizeOf(context).height * .17,
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(
           Radius.circular(10),
         ),
       ),
       child: Padding(
         padding: const EdgeInsets.only(
           right: 8,
-          // top: 8,
-          // bottom: 8,
+          top: 8,
+          bottom: 8,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -63,7 +67,7 @@ class ProductTile extends StatelessWidget {
                         child: SizedBox(
                           child: Text(
                             productName,
-                            style: Theme.of(context).textTheme.headlineMedium,
+                            style: Theme.of(context).textTheme.headlineSmall,
                             softWrap: true,
                           ),
                         ),
@@ -73,7 +77,7 @@ class ProductTile extends StatelessWidget {
                   const VerticalSpacing(height: 5),
                   CustomBadge(
                       title: "$leftUnits Units Left",
-                      color: Theme.of(context).colorScheme.inversePrimary),
+                      color: AppColors.mainColor),
                   const SizedBox(
                     height: 5.0,
                   ),
@@ -81,43 +85,46 @@ class ProductTile extends StatelessWidget {
                     children: [
                       Text(
                         "Ksh. $productPrice",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyLarge!
-                            .copyWith(color: Colors.white),
+                        style: const TextStyle(
+                          fontSize: 20,
+                        ),
                       ),
                       const SizedBox(width: 10),
-                      Text(
-                        "Ksh.$productDiscount",
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .surfaceContainerHighest,
-                              decoration: TextDecoration.lineThrough,
-                            ),
-                      ),
+                      Text("Ksh.$productDiscount",
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 16,
+                            decoration: TextDecoration.lineThrough,
+                          )),
                     ],
                   ),
                   const VerticalSpacing(height: 0),
                   !isAnalytics
                       ? Row(
                           children: [
-                            CustomBadge(
-                              title: 'Edit',
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .primaryContainer,
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AddProduct(
+                                            isEdit: true,
+                                            product: products,
+                                          )),
+                                );
+                              },
+                              child: const CustomBadge(
+                                title: 'Edit',
+                                color: Colors.black,
+                              ),
                             ),
                             const SizedBox(width: 10),
                             GestureDetector(
                               onTap: () => Navigator.of(context)
                                   .pushNamed(ProductAnalytics.routeName),
-                              //Get.to(const ProductAnalytics()),
-                              child: CustomBadge(
+                              child: const CustomBadge(
                                 title: 'Analytics',
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .primaryContainer,
+                                color: Colors.black,
                               ),
                             ),
                           ],

@@ -5,10 +5,10 @@ class CommonUtils {
   static showToast(String s, {int delayedTime = 3}) {
     messengerKey.currentState!.showSnackBar(SnackBar(
       content: Text(s),
-      margin: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 20,
-      ),
+      // margin: const EdgeInsets.symmetric(
+      //   horizontal: 16,
+      //   vertical: 20,
+      // ),
     ));
   }
 

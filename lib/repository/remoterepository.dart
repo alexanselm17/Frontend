@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
+import 'package:shop0koa_frontend/constants/app_constants.dart';
 
 class ApiService {
   factory ApiService() => _instance;
@@ -11,7 +12,7 @@ class ApiService {
   static final ApiService _instance = ApiService._internal();
 
   final _logger = Logger();
-  final _baseUrl = '[BASE_URL_HERE]';
+  final _baseUrl = AppConstants.BASEURL;
   final _timeout = const Duration(seconds: 60);
 
   // Helper method to set headers for each request

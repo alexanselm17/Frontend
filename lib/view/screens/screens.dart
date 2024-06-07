@@ -8,3 +8,4 @@ export '../authentication/confirm_pin.dart';
 export '../authentication/new_pin.dart';
 export '../authentication/verify.dart';
 export './GetStarted/started.dart';
+export '../account/withdraw_page.dart';

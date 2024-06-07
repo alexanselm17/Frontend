@@ -28,15 +28,15 @@ class ProductAnalytics extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const ProductTile(
-                isAnalytics: true,
-                productName: 'productName',
-                leftUnits: '45',
-                productPrice: '500',
-                productImage:
-                    'https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                productDiscount: '40',
-              ),
+              // const ProductTile(
+              //   isAnalytics: true,
+              //   productName: 'productName',
+              //   leftUnits: '45',
+              //   productPrice: '500',
+              //   productImage:
+              //       'https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+              //   productDiscount: '40',
+              // ),
               const Text(
                 'Sales',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),

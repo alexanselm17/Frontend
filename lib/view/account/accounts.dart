@@ -1,4 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop0koa_frontend/provider/authenticationProvider.dart';
+import 'package:shop0koa_frontend/view/screens/screens.dart';
+import 'package:shop0koa_frontend/view/widgets/Vertical_spacing.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -18,6 +23,8 @@ class _AccountPageState extends State<AccountPage> {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
@@ -41,23 +48,16 @@ class _AccountPageState extends State<AccountPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                height: 200,
-                width: 200,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.black,
-                  ),
-                  shape: BoxShape.circle,
-                  image: const DecorationImage(
-                    image: AssetImage(
-                      "assets/images/logo.jpg",
-                    ),
-                    fit: BoxFit.cover,
-                  ),
+              CircleAvatar(
+                radius: 80,
+                backgroundImage: CachedNetworkImageProvider(
+                  authProvider.user!.user!.url!,
                 ),
               ),
-              Text("Kahawa Sukari Naivas", style: theme.textTheme.displaySmall),
+              const VerticalSpacing(),
+              Text(authProvider.user!.user!.businessName!,
+                  style: theme.textTheme.displaySmall),
+              const VerticalSpacing(),
               Container(
                 width: 100,
                 padding: const EdgeInsets.all(5),
@@ -147,7 +147,9 @@ class _AccountPageState extends State<AccountPage> {
                   foregroundColor: WidgetStatePropertyAll<Color>(Colors.white),
                   backgroundColor: WidgetStatePropertyAll<Color>(Colors.green),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed(Withdraw.routeName);
+                },
                 child: const Text("Withdraw From Wallet"),
               ),
               const SizedBox(

@@ -18,4 +18,7 @@ class User with _$User {
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+
+  // ignore: annotate_overrides
+  Map<String, dynamic> toJson() => _$UserToJson(this);
 }

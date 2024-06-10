@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:dotted_border/dotted_border.dart';
+import '../../widgets/dotted_border_container.dart';
 import 'package:provider/provider.dart';
 import 'package:shop0koa_frontend/models/catalogue/catalogue.dart';
 import 'package:shop0koa_frontend/provider/authenticationProvider.dart';
@@ -141,9 +141,7 @@ class _AddProductState extends State<AddProduct> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              DottedBorder(
-                color: Colors.grey,
-                strokeWidth: 2,
+              DottedBorderContainer(
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width - 30,
                   height: 200,

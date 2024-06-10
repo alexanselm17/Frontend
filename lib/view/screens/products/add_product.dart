@@ -98,7 +98,6 @@ class _AddProductState extends State<AddProduct> {
                     if (pickedFile != null) {
                       var image = await firebase.storeProduct(
                           selectedImageFile: pickedFile);
-
                       setState(() {
                         url = image;
                       });

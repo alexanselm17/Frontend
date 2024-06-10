@@ -2,10 +2,13 @@
 
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shop0koa_frontend/main.dart';
 import 'package:shop0koa_frontend/models/user/register.dart';
 import 'package:shop0koa_frontend/models/user/user_model.dart';
 import 'package:shop0koa_frontend/repository/authentication.dart';
+import 'package:shop0koa_frontend/repository/sharedPreferences.dart';
+import 'package:shop0koa_frontend/view/authentication/onboard_screen.dart';
 import 'package:shop0koa_frontend/view/authentication/verify.dart';
 import 'package:shop0koa_frontend/view/screens/navigation.dart';
 import 'package:shop0koa_frontend/view/widgets/common.dart';
@@ -44,12 +47,42 @@ class AuthProvider with ChangeNotifier {
       notifyListeners();
       var response = await auth.login(email: email, password: password);
       _user = UserModel.fromJson(response);
-      print(response);
       if (_user!.accessToken != null) {
         CommonUtils.showToast('Logged in sucessfully');
+        sharedpreferencesStorage.storeToken(_user!.accessToken!);
+
         Navigator.of(context).pushNamed(NavigationPage.routeName);
       } else {
-        CommonUtils.showToast(response.body);
+        CommonUtils.showErrorToast(
+            response['message'], 'Check your password and try again');
+      }
+    } catch (e) {
+      rethrow;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future logOut({
+    required BuildContext context,
+    required String token,
+  }) async {
+    try {
+      _isLoading = true;
+      notifyListeners();
+      var response = await auth.logOUt(
+        token: token,
+      );
+      if (response['message'] == 'Successfully logged out') {
+        CommonUtils.showToast('Logged out sucessfully');
+        sharedpreferencesStorage.removeToken();
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const OnBoardScreen()),
+        );
+      } else {
+        CommonUtils.showErrorToast(response['message'], '');
       }
     } catch (e) {
       rethrow;

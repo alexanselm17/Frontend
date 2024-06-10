@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shop0koa_frontend/logic/pick_files.dart';
@@ -7,6 +6,7 @@ import 'package:shop0koa_frontend/provider/authenticationProvider.dart';
 import 'package:shop0koa_frontend/services/firebase.dart';
 import 'package:shop0koa_frontend/view/screens/screens.dart';
 import 'package:shop0koa_frontend/view/widgets/button.dart';
+import 'package:shop0koa_frontend/view/widgets/dotted_border_container.dart';
 
 class VerifyBusiness extends StatefulWidget {
   static const routeName = 'verifyBusiness';
@@ -49,9 +49,7 @@ class _VerifyBusinessState extends State<VerifyBusiness> {
           children: [
             const SizedBox(height: 10),
             const Text('Required*', style: TextStyle(fontSize: 14)),
-            DottedBorder(
-              color: Colors.grey,
-              strokeWidth: 2,
+            DottedBorderContainer(
               child: SizedBox(
                 width: MediaQuery.of(context).size.width - 30,
                 height: 200,
@@ -61,7 +59,7 @@ class _VerifyBusinessState extends State<VerifyBusiness> {
                     var url = await firebase.storeProduct(
                         selectedImageFile: XFile(path!));
                     setState(() {
-                      permitUrl = url;
+                      permitUrl = path;
                     });
                   },
                   child: const Column(
@@ -79,9 +77,7 @@ class _VerifyBusinessState extends State<VerifyBusiness> {
             ),
             const SizedBox(height: 30),
             const Text('Required*', style: TextStyle(fontSize: 14)),
-            DottedBorder(
-              color: Colors.grey,
-              strokeWidth: 2,
+            DottedBorderContainer(
               child: SizedBox(
                 width: MediaQuery.of(context).size.width - 30,
                 height: 200,

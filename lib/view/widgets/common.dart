@@ -13,6 +13,9 @@ class CommonUtils {
   }
 
   static showErrorToast(String title, String message, {int delayTime = 3}) {
-    messengerKey.currentState!.showSnackBar(SnackBar(content: Text(title)));
+    messengerKey.currentState!.showSnackBar(SnackBar(
+      content: Text(title),
+      backgroundColor: Colors.red,
+    ));
   }
 }

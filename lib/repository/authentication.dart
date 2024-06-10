@@ -22,6 +22,21 @@ class Auth {
     }
   }
 
+  Future logOUt({required String token}) async {
+    try {
+      const endpoint = '/logout';
+
+      final response = await _apiService.postReq(endpoint, headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token'
+      });
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future getUser({required int userId}) async {
     try {
       var endpoint = '/user/$userId';

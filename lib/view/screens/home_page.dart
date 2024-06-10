@@ -5,8 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
 import 'package:shop0koa_frontend/provider/authenticationProvider.dart';
 import 'package:shop0koa_frontend/view/widgets/Vertical_spacing.dart';
-import 'package:shop0koa_frontend/view/widgets/custom_cached_network_image.dart';
-import 'package:shop0koa_frontend/view/widgets/product_tile.dart';
 import 'package:shop0koa_frontend/view/screens/oders/oders_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -24,16 +22,15 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     final provider = Provider.of<AuthProvider>(context);
-    provider.getUser(userId: 28, context: context);
+    // provider.getUser(userId: 28, context: context);
   }
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
-
+    final authProvider = Provider.of<AuthProvider>(context, listen: true);
+    print(authProvider.user!.accessToken);
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -73,10 +70,25 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ],
                   ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.notifications_none),
-                  )
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.notifications_none),
+                      ),
+                      authProvider.isLoading
+                          ? const CircularProgressIndicator()
+                          : IconButton(
+                              onPressed: () {
+                                authProvider.logOut(
+                                  context: context,
+                                  token: authProvider.user!.accessToken!,
+                                );
+                              },
+                              icon: const Icon(Icons.logout),
+                            ),
+                    ],
+                  ),
                 ],
               ),
               const VerticalSpacing(),

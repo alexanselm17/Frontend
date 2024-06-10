@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shop0koa_frontend/constants/app_constants.dart';
 import 'package:shop0koa_frontend/view/widgets/button.dart';
 import 'package:shop0koa_frontend/view/screens/screens.dart';
 
@@ -74,10 +75,18 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
               child: SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: CustomButton(
-                  onTap: () {
-                    //Bypassed the Navigation from Onboading to Sign up page fpr new users
-                    //If the User exists we will be displaying the login page first instead of the onboard screen
-                    Navigator.of(context).pushNamed(LoginPage.routeName);
+                  onTap: () async {
+                    preferences = await SharedPreferences.getInstance();
+                    if (preferences.containsKey(AppConstants.TOKEN_KEY)) {
+                      String token =
+                          preferences.getString(AppConstants.TOKEN_KEY) ?? "";
+                      if (token != null || token != '') {
+                        Navigator.of(context)
+                            .popAndPushNamed(NavigationPage.routeName);
+                      } else {
+                        Navigator.of(context).pushNamed(LoginPage.routeName);
+                      }
+                    }
                   },
                   text: 'Get Started',
                 ),

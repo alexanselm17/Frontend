@@ -359,9 +359,10 @@ class _SignupPageState extends State<SignupPage> {
                                     gender: _isMale ? "male" : "female",
                                     url: profile,
                                   );
-                                  navigatorKey.currentState!
-                                      .pushNamed(VerifyBusiness.routeName);
                                 }
+                                //TODO, return this to the validator
+                                navigatorKey.currentState!
+                                    .pushNamed(VerifyBusiness.routeName);
                               },
                               text: "Sign Up",
                             ),

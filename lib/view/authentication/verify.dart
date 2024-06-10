@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shop0koa_frontend/logic/pick_files.dart';
+import 'package:shop0koa_frontend/main.dart';
 import 'package:shop0koa_frontend/provider/authenticationProvider.dart';
 import 'package:shop0koa_frontend/services/firebase.dart';
 import 'package:shop0koa_frontend/view/screens/screens.dart';
@@ -17,9 +18,7 @@ class VerifyBusiness extends StatefulWidget {
 }
 
 class _VerifyBusinessState extends State<VerifyBusiness> {
-  String? pickedDocument;
   String permitUrl = '';
-  String nationalUrl = '';
   String kraUrl = '';
   final Firebase firebase = Firebase();
 
@@ -35,11 +34,6 @@ class _VerifyBusinessState extends State<VerifyBusiness> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.of(context).pop();
-            }),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -56,22 +50,25 @@ class _VerifyBusinessState extends State<VerifyBusiness> {
                 child: TextButton(
                   onPressed: () async {
                     var path = await PickFiles().pickDocuments();
-                    var url = await firebase.storeProduct(
+                    await firebase.storeProduct(
                         selectedImageFile: XFile(path!));
+                    debugPrint("The upload is finished");
                     setState(() {
                       permitUrl = path;
                     });
                   },
-                  child: const Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.file_upload,
-                        size: 50,
-                      ),
-                      Text('Upload Business Permit (PDF 2MB Max)'),
-                    ],
-                  ),
+                  child: permitUrl.isEmpty
+                      ? const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.file_upload,
+                              size: 50,
+                            ),
+                            Text('Upload Business Permit (PDF 2MB Max)'),
+                          ],
+                        )
+                      : Center(child: Text(permitUrl)),
                 ),
               ),
             ),
@@ -84,16 +81,15 @@ class _VerifyBusinessState extends State<VerifyBusiness> {
                 child: TextButton(
                   onPressed: () async {
                     var result = await PickFiles().pickDocuments();
-                    var path = await PickFiles().pickDocuments();
-                    var url = await firebase.storeProduct(
-                        selectedImageFile: XFile(path!));
+
+                    await firebase.storeProduct(
+                        selectedImageFile: XFile(result!));
 
                     setState(() {
-                      kraUrl = kraUrl;
-                      pickedDocument = result!;
+                      kraUrl = result;
                     });
                   },
-                  child: pickedDocument == null
+                  child: kraUrl.isEmpty
                       ? const Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -102,7 +98,7 @@ class _VerifyBusinessState extends State<VerifyBusiness> {
                           ],
                         )
                       : Center(
-                          child: Text(pickedDocument!),
+                          child: Text(kraUrl),
                         ),
                 ),
               ),
@@ -118,7 +114,7 @@ class _VerifyBusinessState extends State<VerifyBusiness> {
                   natinalUrl: 'natinalUrl',
                   UserId: 1,
                 );
-                Navigator.of(context).pushNamed(NavigationPage.routeName);
+                navigatorKey.currentState!.pushNamed(NavigationPage.routeName);
                 //Get.to(NewPin());
               },
               text: 'VERIFY',

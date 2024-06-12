@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shop0koa_frontend/constants/app_constants.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
 import 'package:shop0koa_frontend/provider/authenticationProvider.dart';
 import 'package:shop0koa_frontend/view/widgets/Vertical_spacing.dart';
@@ -15,6 +17,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late SharedPreferences preferences;
+
   @override
   void initState() {
     super.initState();
@@ -22,9 +26,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void didChangeDependencies() {
-    super.didChangeDependencies();
     final provider = Provider.of<AuthProvider>(context);
-    // provider.getUser(userId: 28, context: context);
+    provider.getUser(userId: provider.user!.user!.id!, context: context);
+    super.didChangeDependencies();
   }
 
   @override
@@ -79,11 +83,22 @@ class _HomePageState extends State<HomePage> {
                       authProvider.isLoading
                           ? const CircularProgressIndicator()
                           : IconButton(
-                              onPressed: () {
-                                authProvider.logOut(
-                                  context: context,
-                                  token: authProvider.user!.accessToken!,
-                                );
+                              onPressed: () async {
+                                preferences =
+                                    await SharedPreferences.getInstance();
+
+                                if (preferences
+                                    .containsKey(AppConstants.TOKEN_KEY)) {
+                                  String token = preferences
+                                          .getString(AppConstants.TOKEN_KEY) ??
+                                      "";
+                                  if (token != null || token != '') {
+                                    authProvider.logOut(
+                                      context: context,
+                                      token: token,
+                                    );
+                                  } else {}
+                                }
                               },
                               icon: const Icon(Icons.logout),
                             ),

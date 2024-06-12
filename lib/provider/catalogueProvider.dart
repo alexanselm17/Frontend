@@ -51,13 +51,18 @@ class CatalogueProvider with ChangeNotifier {
           itemCode: itemCodeController.text,
           storeId: storeId,
           quantity: int.parse(quantityController.text));
-      CommonUtils.showToast('Product Added successfully');
-      nameController.clear();
-      priceController.clear();
-      quantityController.clear();
-      discountController.clear();
-      urlController.clear();
-      itemCodeController.clear();
+      print(response);
+      if (response['status'] == 'success') {
+        CommonUtils.showToast('Product Added successfully');
+        nameController.clear();
+        priceController.clear();
+        quantityController.clear();
+        discountController.clear();
+        urlController.clear();
+        itemCodeController.clear();
+      } else {
+        return CommonUtils.showToast(response['errors']);
+      }
     } catch (e) {
       _addingProduct = false;
       rethrow;

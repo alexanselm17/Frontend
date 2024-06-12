@@ -19,6 +19,7 @@ class _CataloguePageState extends State<CataloguePage> {
     final catalogueProvider =
         Provider.of<CatalogueProvider>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      didChangeDependencies();
       catalogueProvider.getProducts();
     });
     super.initState();

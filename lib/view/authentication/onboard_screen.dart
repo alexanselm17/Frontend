@@ -86,6 +86,8 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
                       } else {
                         Navigator.of(context).pushNamed(LoginPage.routeName);
                       }
+                    } else {
+                      Navigator.of(context).pushNamed(LoginPage.routeName);
                     }
                   },
                   text: 'Get Started',

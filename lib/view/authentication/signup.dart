@@ -130,9 +130,10 @@ class _SignupPageState extends State<SignupPage> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your license number';
-                        } else if (!RegExp(r'^\d+$').hasMatch(value)) {
-                          return 'Please enter a valid license number';
                         }
+                        //else if (!RegExp(r'^\d+$').hasMatch(value)) {
+                        //   return 'Please enter a valid license number';
+                        // }
                         return null;
                       },
                     ),
@@ -358,9 +359,10 @@ class _SignupPageState extends State<SignupPage> {
                                     gender: _isMale ? "male" : "female",
                                     url: profile,
                                   );
-                                  navigatorKey.currentState!
-                                      .pushNamed(VerifyBusiness.routeName);
                                 }
+                                //TODO, return this to the validator
+                                navigatorKey.currentState!
+                                    .pushNamed(VerifyBusiness.routeName);
                               },
                               text: "Sign Up",
                             ),

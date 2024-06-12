@@ -387,11 +387,13 @@ class _SignupPageState extends State<SignupPage> {
                                   );
                                   navigatorKey.currentState!
                                       .pushNamed(VerifyBusiness.routeName);
+                                  navigatorKey.currentState!
+                                      .pushNamed(VerifyBusiness.routeName);
                                 }
 <<<<<<< HEAD
-                                //TODO, return this to the validator
 =======
->>>>>>> 451e02c (intergration)
+                                //TODO, return this to the validator
+>>>>>>> b879b40 (working splash screen)
                               },
                               text: "Sign Up",
                             ),

@@ -20,9 +20,7 @@ class Firebase {
       await reference.putData(await selectedImageFile.readAsBytes(), metadata);
       return await reference.getDownloadURL();
     } else {
-      await reference
-          .child(selectedImageFile.name)
-          .putFile(File(selectedImageFile.path), metadata);
+      await reference.putFile(File(selectedImageFile.path), metadata);
       return await reference.getDownloadURL();
     }
   }

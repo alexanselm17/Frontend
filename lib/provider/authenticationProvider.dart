@@ -2,7 +2,6 @@
 
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shop0koa_frontend/main.dart';
 import 'package:shop0koa_frontend/models/user/register.dart';
 import 'package:shop0koa_frontend/models/user/user_model.dart';
@@ -46,8 +45,8 @@ class AuthProvider with ChangeNotifier {
       _isLoading = true;
       notifyListeners();
       var response = await auth.login(email: email, password: password);
-      _user = UserModel.fromJson(response);
-      if (_user!.accessToken != null) {
+      if (response['status'] == 'success') {
+        _user = UserModel.fromJson(response);
         CommonUtils.showToast('Logged in sucessfully');
         sharedpreferencesStorage.storeToken(_user!.accessToken!);
 
@@ -81,8 +80,10 @@ class AuthProvider with ChangeNotifier {
           context,
           MaterialPageRoute(builder: (context) => const OnBoardScreen()),
         );
+        _isLoading = false;
       } else {
         CommonUtils.showErrorToast(response['message'], '');
+        _isLoading = false;
       }
     } catch (e) {
       rethrow;
@@ -94,28 +95,23 @@ class AuthProvider with ChangeNotifier {
 
   Future getUser({required int userId, required BuildContext context}) async {
     try {
-      _isLoading = true;
       notifyListeners();
       var response = await auth.getUser(userId: userId);
       _user = UserModel.fromJson(response);
-      print(response);
       if (_user!.accessToken != null) {
-      } else {
-        // CommonUtils.showToast(response.body);
-      }
+      } else {}
     } catch (e) {
       rethrow;
     } finally {
-      _isLoading = false;
       notifyListeners();
     }
   }
 
-  Future register(
-      {required BuildContext context,
-      required String gender,
-      required String url}) async {
-    var random = Random();
+  Future register({
+    required BuildContext context,
+    required String gender,
+    required String url,
+  }) async {
     try {
       _isLoading = true;
       notifyListeners();
@@ -131,13 +127,16 @@ class AuthProvider with ChangeNotifier {
         email: emailController.text,
         password: passwordController.text,
       );
-      _registerUser = RegisterUser.fromJson(response);
-      print(response);
-      // if (_registerUser!.id != null) {
-      CommonUtils.showToast('Registered sucessfully');
-      // } else {
-      //   CommonUtils.showToast(response['message']);
-      // }
+      print(response['user']['id']);
+      if (response['status'] == 'success') {
+        await getUser(userId: response['user']['id'], context: context);
+        print("gggggggggggg $_registerUser");
+        notifyListeners();
+        CommonUtils.showToast('Registered sucessfully');
+        navigatorKey.currentState!.pushNamed(VerifyBusiness.routeName);
+      } else {
+        CommonUtils.showToast(response['message']);
+      }
     } catch (e) {
       rethrow;
     } finally {

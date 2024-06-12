@@ -5,8 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
 import 'package:shop0koa_frontend/provider/authenticationProvider.dart';
 import 'package:shop0koa_frontend/view/widgets/Vertical_spacing.dart';
-import 'package:shop0koa_frontend/view/widgets/custom_cached_network_image.dart';
-import 'package:shop0koa_frontend/view/widgets/product_tile.dart';
 import 'package:shop0koa_frontend/view/screens/oders/oders_page.dart';
 
 class HomePage extends StatefulWidget {

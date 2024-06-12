@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
-import 'package:shop0koa_frontend/models/Produxt.dart';
 import 'package:shop0koa_frontend/models/catalogue/catalogue.dart';
 import 'package:shop0koa_frontend/provider/catalogueProvider.dart';
 import 'package:shop0koa_frontend/view/widgets/product_tile.dart';

@@ -6,7 +6,6 @@ import 'package:shop0koa_frontend/main.dart';
 import 'package:shop0koa_frontend/models/user/register.dart';
 import 'package:shop0koa_frontend/models/user/user_model.dart';
 import 'package:shop0koa_frontend/repository/authentication.dart';
-import 'package:shop0koa_frontend/view/authentication/verify.dart';
 import 'package:shop0koa_frontend/view/screens/navigation.dart';
 import 'package:shop0koa_frontend/view/widgets/common.dart';
 
@@ -47,7 +46,8 @@ class AuthProvider with ChangeNotifier {
       print(response);
       if (_user!.accessToken != null) {
         CommonUtils.showToast('Logged in sucessfully');
-        Navigator.of(context).pushNamed(NavigationPage.routeName);
+        navigatorKey.currentState!
+            .pushReplacementNamed(NavigationPage.routeName);
       } else {
         CommonUtils.showToast(response.body);
       }

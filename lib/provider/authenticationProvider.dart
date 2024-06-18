@@ -130,7 +130,7 @@ class AuthProvider with ChangeNotifier {
       print(response['user']['id']);
       if (response['status'] == 'success') {
         await getUser(userId: response['user']['id'], context: context);
-        print("gggggggggggg $_registerUser");
+        print("gggggggggggg ${user!.user}");
         notifyListeners();
         CommonUtils.showToast('Registered sucessfully');
         navigatorKey.currentState!.pushNamed(VerifyBusiness.routeName);

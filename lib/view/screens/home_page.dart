@@ -6,8 +6,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop0koa_frontend/constants/app_constants.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
 import 'package:shop0koa_frontend/provider/authenticationProvider.dart';
+import 'package:shop0koa_frontend/provider/catalogueProvider.dart';
 import 'package:shop0koa_frontend/view/widgets/Vertical_spacing.dart';
 import 'package:shop0koa_frontend/view/screens/oders/oders_page.dart';
+import 'package:shop0koa_frontend/view/widgets/product_tile.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -33,6 +35,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final catlogueProvider =
+        Provider.of<CatalogueProvider>(context, listen: false);
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -256,15 +261,15 @@ class _HomePageState extends State<HomePage> {
                       fontSize: 16,
                     ),
                   ),
-                  // const ProductTile(
-                  //   isAnalytics: false,
-                  //   productName: 'soko maize meal -5 kg',
-                  //   leftUnits: '45',
-                  //   productPrice: '389',
-                  //   productImage:
-                  //       'https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                  //   productDiscount: '20',
-                  // ),
+                  ProductTile(
+                      isAnalytics: false,
+                      productName: 'soko maize meal -5 kg',
+                      leftUnits: '45',
+                      productPrice: '389',
+                      productImage:
+                          'https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+                      productDiscount: '20',
+                      products: catlogueProvider.catalogue!.products!.first),
                 ],
               );
             },

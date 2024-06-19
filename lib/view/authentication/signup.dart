@@ -352,17 +352,23 @@ class _SignupPageState extends State<SignupPage> {
                       width: MediaQuery.of(context).size.width - 50,
                       child: authProvider.isLoading
                           ? const CircularProgressIndicator()
-                          : CustomButton(
-                              onTap: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  await authProvider.register(
-                                    context: context,
-                                    gender: _isMale ? "male" : "female",
-                                    url: profileUrl ?? '',
-                                  );
-                                }
-                              },
-                              text: "Sign Up",
+                          : Center(
+                              child: SizedBox(
+                                width: 40,
+                                height: 40,
+                                child: CustomButton(
+                                  onTap: () async {
+                                    if (_formKey.currentState!.validate()) {
+                                      await authProvider.register(
+                                        context: context,
+                                        gender: _isMale ? "male" : "female",
+                                        url: profileUrl ?? '',
+                                      );
+                                    }
+                                  },
+                                  text: "Sign Up",
+                                ),
+                              ),
                             ),
                     ),
                     const VerticalSpacing(),

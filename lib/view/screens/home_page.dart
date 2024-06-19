@@ -22,11 +22,6 @@ class _HomePageState extends State<HomePage> {
   late SharedPreferences preferences;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final provider = Provider.of<AuthProvider>(context);
@@ -261,15 +256,15 @@ class _HomePageState extends State<HomePage> {
                       fontSize: 16,
                     ),
                   ),
-                  ProductTile(
-                      isAnalytics: false,
-                      productName: 'soko maize meal -5 kg',
-                      leftUnits: '45',
-                      productPrice: '389',
-                      productImage:
-                          'https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                      productDiscount: '20',
-                      products: catlogueProvider.catalogue!.products!.first),
+                  const ProductTile(
+                    isAnalytics: false,
+                    productName: 'soko maize meal -5 kg',
+                    leftUnits: '45',
+                    productPrice: '389',
+                    productImage:
+                        'https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+                    productDiscount: '20',
+                  ),
                 ],
               );
             },

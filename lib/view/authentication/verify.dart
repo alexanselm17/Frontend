@@ -8,6 +8,8 @@ import 'package:shop0koa_frontend/services/firebase.dart';
 import 'package:shop0koa_frontend/view/screens/screens.dart';
 import 'package:shop0koa_frontend/view/widgets/button.dart';
 import 'package:shop0koa_frontend/view/widgets/dotted_border_container.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
 
 class VerifyBusiness extends StatefulWidget {
   static const routeName = 'verifyBusiness';
@@ -20,12 +22,75 @@ class VerifyBusiness extends StatefulWidget {
 class _VerifyBusinessState extends State<VerifyBusiness> {
   String permitUrl = '';
   String kraUrl = '';
+  bool permitUploadDone = false;
+  bool kraUploadDone = false;
+  double permitUploadProgress = 0.0;
+  double kraUploadProgress = 0.0;
   final Firebase firebase = Firebase();
+  late AuthProvider authProvider;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    authProvider = Provider.of<AuthProvider>(context);
+  }
+
+  Future<void> _uploadFile(String filePath, bool isPermit) async {
+    final file = File(filePath);
+    final storageRef = FirebaseStorage.instance
+        .ref()
+        .child('business-documents/${file.path.split('/').last}');
+    final uploadTask = storageRef.putFile(file);
+
+    uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
+      setState(() {
+        if (isPermit) {
+          setState(() {
+            permitUploadProgress = snapshot.bytesTransferred.toDouble() /
+                snapshot.totalBytes.toDouble();
+          });
+        } else {
+          setState(() {
+            kraUploadProgress = snapshot.bytesTransferred.toDouble() /
+                snapshot.totalBytes.toDouble();
+          });
+        }
+      });
+    }, onError: (e) {
+      // Handle error
+      print(e);
+    });
+
+    try {
+      await uploadTask;
+      String downloadUrl = await storageRef.getDownloadURL();
+      setState(() {
+        if (isPermit) {
+          permitUploadProgress = 0.0; // Reset progress after completion
+          permitUrl = downloadUrl;
+          permitUploadDone = true;
+        } else {
+          kraUploadProgress = 0.0; // Reset progress after completion
+          kraUrl = downloadUrl;
+          kraUploadDone = true;
+        }
+      });
+      print('File uploaded successfully. Download URL: $downloadUrl');
+    } catch (e) {
+      // Handle error
+      print(e);
+    }
+  }
+
+  Future<void> _pickAndUploadDocument(bool isPermit) async {
+    final path = await PickFiles().pickDocuments();
+    if (path != null) {
+      await _uploadFile(path, isPermit);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -49,26 +114,41 @@ class _VerifyBusinessState extends State<VerifyBusiness> {
                 height: 200,
                 child: TextButton(
                   onPressed: () async {
-                    var path = await PickFiles().pickDocuments();
-                    await firebase.storeProduct(
-                        selectedImageFile: XFile(path!));
-                    debugPrint("The upload is finished");
-                    setState(() {
-                      permitUrl = path;
-                    });
+                    await _pickAndUploadDocument(true);
                   },
-                  child: permitUrl.isEmpty
+                  child: permitUploadDone
                       ? const Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(
+                              Icons.check_circle,
+                              size: 50,
+                              color: Colors.green,
+                            ),
+                            Text('Done', style: TextStyle(fontSize: 18)),
+                          ],
+                        )
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
                               Icons.file_upload,
                               size: 50,
                             ),
-                            Text('Upload Business Permit (PDF 2MB Max)'),
+                            permitUploadProgress > 0
+                                ? Column(
+                                    children: [
+                                      LinearProgressIndicator(
+                                          value: permitUploadProgress),
+                                      const SizedBox(height: 10),
+                                      Text(
+                                          '${(permitUploadProgress * 100).toStringAsFixed(2)}%'),
+                                    ],
+                                  )
+                                : const Text(
+                                    'Upload Business Permit (PDF 2MB Max)'),
                           ],
-                        )
-                      : Center(child: Text(permitUrl)),
+                        ),
                 ),
               ),
             ),
@@ -80,45 +160,64 @@ class _VerifyBusinessState extends State<VerifyBusiness> {
                 height: 200,
                 child: TextButton(
                   onPressed: () async {
-                    var result = await PickFiles().pickDocuments();
-
-                    await firebase.storeProduct(
-                        selectedImageFile: XFile(result!));
-
-                    setState(() {
-                      kraUrl = result;
-                    });
+                    await _pickAndUploadDocument(false);
                   },
-                  child: kraUrl.isEmpty
+                  child: kraUploadDone
                       ? const Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.file_upload, size: 50),
-                            Text('Upload xxxxxxxxxx (PDF 2MB Max)'),
+                            Icon(
+                              Icons.check_circle,
+                              size: 50,
+                              color: Colors.green,
+                            ),
+                            Text('Done', style: TextStyle(fontSize: 18)),
                           ],
                         )
-                      : Center(
-                          child: Text(kraUrl),
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.file_upload, size: 50),
+                            kraUploadProgress > 0
+                                ? Column(
+                                    children: [
+                                      LinearProgressIndicator(
+                                          value: kraUploadProgress),
+                                      const SizedBox(height: 10),
+                                      Text(
+                                          '${(kraUploadProgress * 100).toStringAsFixed(2)}%'),
+                                    ],
+                                  )
+                                : const Text(
+                                    'Upload KRA Document (PDF 2MB Max)'),
+                          ],
                         ),
                 ),
               ),
             ),
             const SizedBox(height: 30),
-            CustomButton(
-              // color: AppColors.mainColor,
-              onTap: () async {
-                await authProvider.verifyBusines(
-                  context: context,
-                  kraUrl: kraUrl,
-                  permitUrl: permitUrl,
-                  natinalUrl: 'natinalUrl',
-                  UserId: 1,
-                );
-                navigatorKey.currentState!.pushNamed(NavigationPage.routeName);
-                //Get.to(NewPin());
-              },
-              text: 'VERIFY',
-            ),
+            authProvider.isLoading
+                ? const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 30),
+                    child: CircularProgressIndicator(),
+                  )
+                : SizedBox(
+                    width: MediaQuery.of(context).size.width - 30,
+                    child: CustomButton(
+                      onTap: () async {
+                        await authProvider.verifyBusines(
+                          context: context,
+                          kraUrl: kraUrl,
+                          permitUrl: permitUrl,
+                          natinalUrl: 'natinoalUrl',
+                          UserId: authProvider.user!.user!.id!,
+                        );
+                        navigatorKey.currentState!
+                            .pushNamed(NavigationPage.routeName);
+                      },
+                      text: 'VERIFY',
+                    ),
+                  ),
           ],
         ),
       ),

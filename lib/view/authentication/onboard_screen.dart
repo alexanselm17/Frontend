@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop0koa_frontend/constants/app_constants.dart';
+import 'package:shop0koa_frontend/view/authentication/login.dart';
 import 'package:shop0koa_frontend/view/widgets/button.dart';
 import 'package:shop0koa_frontend/view/screens/screens.dart';
 
@@ -76,17 +77,19 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
                 width: MediaQuery.of(context).size.width,
                 child: CustomButton(
                   onTap: () async {
-                    preferences = await SharedPreferences.getInstance();
-                    if (preferences.containsKey(AppConstants.TOKEN_KEY)) {
-                      String token =
-                          preferences.getString(AppConstants.TOKEN_KEY) ?? "";
-                      if (token != null || token != '') {
-                        Navigator.of(context)
-                            .popAndPushNamed(NavigationPage.routeName);
-                      } else {
-                        Navigator.of(context).pushNamed(LoginPage.routeName);
-                      }
-                    }
+                    // preferences = await SharedPreferences.getInstance();
+                    // if (preferences.containsKey(AppConstants.TOKEN_KEY)) {
+                    //   String token =
+                    //       preferences.getString(AppConstants.TOKEN_KEY) ?? "";
+                    //   if (token != null || token != '') {
+                    //     Navigator.of(context)
+                    //         .popAndPushNamed(NavigationPage.routeName);
+                    //   } else {
+                    //     Navigator.of(context).pushNamed(LoginPage.routeName);
+                    //   }
+                    // } else {
+                    Navigator.of(context).pushNamed(LoginPage.routeName);
+                    // }
                   },
                   text: 'Get Started',
                 ),

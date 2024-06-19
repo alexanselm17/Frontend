@@ -46,6 +46,7 @@ class AuthProvider with ChangeNotifier {
       notifyListeners();
       var response = await auth.login(email: email, password: password);
       if (response['status'] == 'success') {
+        await getUser(userId: response['user']['id'], context: context);
         _user = UserModel.fromJson(response);
         CommonUtils.showToast('Logged in sucessfully');
         sharedpreferencesStorage.storeToken(_user!.accessToken!);

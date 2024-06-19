@@ -8,7 +8,7 @@ import 'package:shop0koa_frontend/view/widgets/custom_badge.dart';
 import 'package:shop0koa_frontend/view/widgets/custom_cached_network_image.dart';
 
 class ProductTile extends StatelessWidget {
-  final Products products;
+  final Products? products;
   final bool isAnalytics;
   final String productName;
   final String leftUnits;
@@ -24,7 +24,7 @@ class ProductTile extends StatelessWidget {
     required this.productImage,
     required this.productDiscount,
     required this.isAnalytics,
-    required this.products,
+    this.products,
   });
 
   @override
@@ -67,7 +67,7 @@ class ProductTile extends StatelessWidget {
                         child: SizedBox(
                           child: Text(
                             productName,
-                            style: Theme.of(context).textTheme.headlineSmall,
+                            style: const TextStyle(fontSize: 20),
                             softWrap: true,
                           ),
                         ),

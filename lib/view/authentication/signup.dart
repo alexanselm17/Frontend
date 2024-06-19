@@ -2,17 +2,14 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:shop0koa_frontend/logic/pick_files.dart';
-import 'package:shop0koa_frontend/main.dart';
 import 'package:shop0koa_frontend/provider/authenticationProvider.dart';
+import 'package:shop0koa_frontend/provider/fileUploadProvider.dart';
 import 'package:shop0koa_frontend/services/firebase.dart';
+import 'package:shop0koa_frontend/view/authentication/login.dart';
 import 'package:shop0koa_frontend/view/widgets/Vertical_spacing.dart';
 import 'package:shop0koa_frontend/view/widgets/button.dart';
 import 'dart:io';
 import 'package:shop0koa_frontend/view/screens/screens.dart';
-
-//TODO
-//Fix the screen on keyboard Entry not to have unbounded height
 
 class SignupPage extends StatefulWidget {
   static const routeName = 'signUpPage';
@@ -30,15 +27,28 @@ class _SignupPageState extends State<SignupPage> {
   bool _isFemale = false;
   bool _isAgreed = false;
   final Firebase firebase = Firebase();
-  String profile = '';
-
-  void setImageUrl() {}
+  String? profileUrl;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _gestureDetector = TapGestureRecognizer()
       ..onTap = () => Navigator.of(context).pushNamed(LoginPage.routeName);
+  }
+
+  Future<void> _pickAndUploadImage(BuildContext context) async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedFile =
+        await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      final File file = File(pickedFile.path);
+      setState(() {
+        imageUrl = pickedFile.path;
+      });
+      final fileUploadProvider =
+          Provider.of<FileUploadProvider>(context, listen: false);
+      profileUrl = await fileUploadProvider.uploadFile(file);
+    }
   }
 
   @override
@@ -94,7 +104,7 @@ class _SignupPageState extends State<SignupPage> {
                             obscureText: false,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please enter your first name';
+                                return 'Please enter your last name';
                               } else if (!RegExp(r'^[a-zA-Z\s]*$')
                                   .hasMatch(value)) {
                                 return 'Please enter only characters';
@@ -107,19 +117,19 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                     const SizedBox(height: 10),
                     CustomTextField(
-                        labelText: "Business Name*",
-                        controller: authProvider.businessNameController,
-                        keyboardType: TextInputType.text,
-                        obscureText: false,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your business name';
-                          } else if (!RegExp(r'^[a-zA-Z\s]*$')
-                              .hasMatch(value)) {
-                            return 'Please enter only characters';
-                          }
-                          return null;
-                        }),
+                      labelText: "Business Name*",
+                      controller: authProvider.businessNameController,
+                      keyboardType: TextInputType.text,
+                      obscureText: false,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your business name';
+                        } else if (!RegExp(r'^[a-zA-Z\s]*$').hasMatch(value)) {
+                          return 'Please enter only characters';
+                        }
+                        return null;
+                      },
+                    ),
                     const SizedBox(height: 10),
                     CustomTextField(
                       controller:
@@ -131,9 +141,6 @@ class _SignupPageState extends State<SignupPage> {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your license number';
                         }
-                        //else if (!RegExp(r'^\d+$').hasMatch(value)) {
-                        //   return 'Please enter a valid license number';
-                        // }
                         return null;
                       },
                     ),
@@ -201,23 +208,11 @@ class _SignupPageState extends State<SignupPage> {
                       obscureText: true,
                       validator: (value) {
                         if (value == null || value.length < 4) {
-                          return 'PIn must be 4 number';
+                          return 'Pin must be 4 digits';
                         }
                         return null;
                       },
                     ),
-                    const SizedBox(height: 10),
-                    // CustomTextField(
-                    //   labelText: "Repeat Password*",
-                    //   keyboardType: TextInputType.text,
-                    //   obscureText: true,
-                    //   validator: (value) {
-                    //     if (value == null || value.length < 8) {
-                    //       return 'Password must be at least 8 characters';
-                    //     }
-                    //     return null;
-                    //   },
-                    // ),
                     const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -254,8 +249,7 @@ class _SignupPageState extends State<SignupPage> {
                                   ),
                                 ],
                               ),
-                              const VerticalDivider(
-                                  color: Color.fromARGB(255, 13, 13, 13)),
+                              const VerticalDivider(color: Colors.black),
                               Row(
                                 children: [
                                   const Text('Female'),
@@ -281,17 +275,32 @@ class _SignupPageState extends State<SignupPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          imageUrl != null
-                              ? CircleAvatar(
-                                  radius: 50,
-                                  backgroundImage: FileImage(
-                                    File(imageUrl!),
-                                  ),
-                                )
-                              : const Icon(
-                                  Icons.person,
-                                  size: 80,
-                                ),
+                          Consumer<FileUploadProvider>(
+                            builder: (context, fileUploadProvider, child) {
+                              return imageUrl != null
+                                  ? fileUploadProvider.uploadProgress > 0
+                                      ? Column(
+                                          children: [
+                                            LinearProgressIndicator(
+                                                value: fileUploadProvider
+                                                    .uploadProgress),
+                                            const SizedBox(height: 10),
+                                            Text(
+                                                '${(fileUploadProvider.uploadProgress * 100).toStringAsFixed(2)}%'),
+                                          ],
+                                        )
+                                      : CircleAvatar(
+                                          radius: 50,
+                                          backgroundImage: FileImage(
+                                            File(imageUrl!),
+                                          ),
+                                        )
+                                  : const Icon(
+                                      Icons.person,
+                                      size: 80,
+                                    );
+                            },
+                          ),
                           const SizedBox(width: 10),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -304,15 +313,7 @@ class _SignupPageState extends State<SignupPage> {
                                 ),
                               ),
                               TextButton(
-                                onPressed: () async {
-                                  final url = await PickFiles().pickImages();
-                                  var profil = await firebase.storeProduct(
-                                      selectedImageFile: XFile(url!));
-                                  setState(() {
-                                    imageUrl = url;
-                                    profile = profil;
-                                  });
-                                },
+                                onPressed: () => _pickAndUploadImage(context),
                                 child: const Text(
                                   'Upload',
                                   style: TextStyle(
@@ -351,20 +352,23 @@ class _SignupPageState extends State<SignupPage> {
                       width: MediaQuery.of(context).size.width - 50,
                       child: authProvider.isLoading
                           ? const CircularProgressIndicator()
-                          : CustomButton(
-                              onTap: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  await authProvider.register(
-                                    context: context,
-                                    gender: _isMale ? "male" : "female",
-                                    url: profile,
-                                  );
-                                }
-                                //TODO, return this to the validator
-                                navigatorKey.currentState!
-                                    .pushNamed(VerifyBusiness.routeName);
-                              },
-                              text: "Sign Up",
+                          : Center(
+                              child: SizedBox(
+                                width: 40,
+                                height: 40,
+                                child: CustomButton(
+                                  onTap: () async {
+                                    if (_formKey.currentState!.validate()) {
+                                      await authProvider.register(
+                                        context: context,
+                                        gender: _isMale ? "male" : "female",
+                                        url: profileUrl ?? '',
+                                      );
+                                    }
+                                  },
+                                  text: "Sign Up",
+                                ),
+                              ),
                             ),
                     ),
                     const VerticalSpacing(),
@@ -435,36 +439,6 @@ class CustomTextField extends StatelessWidget {
           validator: validator,
         );
       },
-    );
-  }
-}
-
-class TextField extends StatelessWidget {
-  final String labelText;
-  final Icon icon;
-  final TextInputType keyboardType;
-  final bool obscureText;
-  final Function validator;
-
-  const TextField({
-    super.key,
-    required this.labelText,
-    required this.icon,
-    required this.keyboardType,
-    required this.obscureText,
-    required this.validator,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      keyboardType: keyboardType,
-      obscureText: obscureText,
-      decoration: InputDecoration(
-        labelText: labelText,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(40)),
-        prefixIcon: icon,
-      ),
     );
   }
 }

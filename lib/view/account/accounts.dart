@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop0koa_frontend/provider/authenticationProvider.dart';
+import 'package:shop0koa_frontend/view/authentication/edit_profile.dart';
 import 'package:shop0koa_frontend/view/screens/screens.dart';
 import 'package:shop0koa_frontend/view/widgets/Vertical_spacing.dart';
 
@@ -28,16 +29,19 @@ class _AccountPageState extends State<AccountPage> {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        // leading: IconButton(
-        //   onPressed: () {
-        //     Navigator.of(context).pop();
-        //   },
-        //   icon: const Icon(Icons.arrow_back),
-        // ),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
         title: const Text('Your Account'),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => const EditProfilePage()));
+            },
             icon: const Icon(Icons.edit),
           )
         ],

@@ -9,7 +9,6 @@ import 'package:shop0koa_frontend/view/authentication/login.dart';
 import 'package:shop0koa_frontend/view/widgets/Vertical_spacing.dart';
 import 'package:shop0koa_frontend/view/widgets/button.dart';
 import 'dart:io';
-import 'package:shop0koa_frontend/view/screens/screens.dart';
 
 class SignupPage extends StatefulWidget {
   static const routeName = 'signUpPage';

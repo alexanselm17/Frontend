@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shop0koa_frontend/logic/pick_files.dart';
 import 'package:shop0koa_frontend/main.dart';

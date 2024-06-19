@@ -14,7 +14,7 @@ class Auth {
           await _apiService.postReq(endpoint, body: body, headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': 'Bearer'
+        // 'Authorization': 'Bearer'
       });
       return response;
     } catch (e) {

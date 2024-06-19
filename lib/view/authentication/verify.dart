@@ -39,7 +39,7 @@ class _VerifyBusinessState extends State<VerifyBusiness> {
     final file = File(filePath);
     final storageRef = FirebaseStorage.instance
         .ref()
-        .child('uploads/${file.path.split('/').last}');
+        .child('business-documents/${file.path.split('/').last}');
     final uploadTask = storageRef.putFile(file);
 
     uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {

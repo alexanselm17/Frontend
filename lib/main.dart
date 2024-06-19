@@ -4,10 +4,10 @@ import 'package:provider/provider.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
 import 'package:shop0koa_frontend/provider/authenticationProvider.dart';
 import 'package:shop0koa_frontend/provider/catalogueProvider.dart';
+import 'package:shop0koa_frontend/provider/fileUploadProvider.dart';
+import 'package:shop0koa_frontend/view/authentication/login.dart';
 import 'package:shop0koa_frontend/view/authentication/onboard_screen.dart';
 import './view/screens/screens.dart';
-import './util.dart';
-import './theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,13 +32,11 @@ final navigatorKey = GlobalKey<NavigatorState>();
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    final brightness = View.of(context).platformDispatcher.platformBrightness;
-    TextTheme textTheme = createTextTheme(context, "Roboto", "Lato");
-    MaterialTheme theme = MaterialTheme(textTheme);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => CatalogueProvider()),
+        ChangeNotifierProvider(create: (_) => FileUploadProvider()),
       ],
       child: MaterialApp(
         scaffoldMessengerKey: messengerKey,
@@ -60,7 +58,7 @@ class _MyAppState extends State<MyApp> {
           NavigationPage.routeName: (context) => const NavigationPage(),
           AddProduct.routeName: (context) => const AddProduct(isEdit: false),
           SignupPage.routeName: (context) => const SignupPage(),
-          LoginPage.routeName: (context) => const LoginPage(),
+          LoginPage.routeName: (context) => LoginPage(),
           ConfirmPin.routeName: (context) => const ConfirmPin(),
           NewPin.routeName: (context) => const NewPin(),
           VerifyBusiness.routeName: (context) => const VerifyBusiness(),

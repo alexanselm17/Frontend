@@ -1,12 +1,11 @@
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:shop0koa_frontend/logic/pick_files.dart';
-import 'package:shop0koa_frontend/main.dart';
 import 'package:shop0koa_frontend/provider/authenticationProvider.dart';
+import 'package:shop0koa_frontend/provider/fileUploadProvider.dart';
 import 'package:shop0koa_frontend/services/firebase.dart';
+import 'package:shop0koa_frontend/view/authentication/login.dart';
 import 'package:shop0koa_frontend/view/widgets/Vertical_spacing.dart';
 import 'package:shop0koa_frontend/view/widgets/button.dart';
 import 'dart:io';
@@ -28,7 +27,6 @@ class _SignupPageState extends State<SignupPage> {
   bool _isFemale = false;
   bool _isAgreed = false;
   final Firebase firebase = Firebase();
-  double _uploadProgress = 0.0;
   String? profileUrl;
 
   @override
@@ -38,37 +36,7 @@ class _SignupPageState extends State<SignupPage> {
       ..onTap = () => Navigator.of(context).pushNamed(LoginPage.routeName);
   }
 
-  Future<void> _uploadFile(File file) async {
-    final storageRef = FirebaseStorage.instance
-        .ref()
-        .child('uploads/${file.path.split('/').last}');
-    final uploadTask = storageRef.putFile(file);
-
-    uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
-      setState(() {
-        _uploadProgress = snapshot.bytesTransferred.toDouble() /
-            snapshot.totalBytes.toDouble();
-      });
-    }, onError: (e) {
-      // Handle error
-      print(e);
-    });
-
-    try {
-      await uploadTask;
-      String downloadUrl = await storageRef.getDownloadURL();
-      setState(() {
-        _uploadProgress = 0.0; // Reset progress after completion
-        profileUrl = downloadUrl;
-      });
-      print('File uploaded successfully. Download URL: $downloadUrl');
-    } catch (e) {
-      // Handle error
-      print(e);
-    }
-  }
-
-  Future<void> _pickAndUploadImage() async {
+  Future<void> _pickAndUploadImage(BuildContext context) async {
     final ImagePicker picker = ImagePicker();
     final XFile? pickedFile =
         await picker.pickImage(source: ImageSource.gallery);
@@ -77,7 +45,9 @@ class _SignupPageState extends State<SignupPage> {
       setState(() {
         imageUrl = pickedFile.path;
       });
-      await _uploadFile(file);
+      final fileUploadProvider =
+          Provider.of<FileUploadProvider>(context, listen: false);
+      profileUrl = await fileUploadProvider.uploadFile(file);
     }
   }
 
@@ -305,27 +275,32 @@ class _SignupPageState extends State<SignupPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          imageUrl != null
-                              ? _uploadProgress > 0
-                                  ? Column(
-                                      children: [
-                                        LinearProgressIndicator(
-                                            value: _uploadProgress),
-                                        const SizedBox(height: 10),
-                                        Text(
-                                            '${(_uploadProgress * 100).toStringAsFixed(2)}%'),
-                                      ],
-                                    )
-                                  : CircleAvatar(
-                                      radius: 50,
-                                      backgroundImage: FileImage(
-                                        File(imageUrl!),
-                                      ),
-                                    )
-                              : const Icon(
-                                  Icons.person,
-                                  size: 80,
-                                ),
+                          Consumer<FileUploadProvider>(
+                            builder: (context, fileUploadProvider, child) {
+                              return imageUrl != null
+                                  ? fileUploadProvider.uploadProgress > 0
+                                      ? Column(
+                                          children: [
+                                            LinearProgressIndicator(
+                                                value: fileUploadProvider
+                                                    .uploadProgress),
+                                            const SizedBox(height: 10),
+                                            Text(
+                                                '${(fileUploadProvider.uploadProgress * 100).toStringAsFixed(2)}%'),
+                                          ],
+                                        )
+                                      : CircleAvatar(
+                                          radius: 50,
+                                          backgroundImage: FileImage(
+                                            File(imageUrl!),
+                                          ),
+                                        )
+                                  : const Icon(
+                                      Icons.person,
+                                      size: 80,
+                                    );
+                            },
+                          ),
                           const SizedBox(width: 10),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -338,7 +313,7 @@ class _SignupPageState extends State<SignupPage> {
                                 ),
                               ),
                               TextButton(
-                                onPressed: _pickAndUploadImage,
+                                onPressed: () => _pickAndUploadImage(context),
                                 child: const Text(
                                   'Upload',
                                   style: TextStyle(

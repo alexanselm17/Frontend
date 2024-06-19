@@ -30,9 +30,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final catlogueProvider =
-        Provider.of<CatalogueProvider>(context, listen: false);
-
     return Scaffold(
       body: SafeArea(
         child: Padding(

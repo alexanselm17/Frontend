@@ -6,6 +6,6 @@ class AppConstants {
   static String get FCM_KEY => "fcm_token"; // FCM token
   static String get ACCOUNT_TYPE => "account_type";
   static String get BASEURL =>
-      "https://teaching-tongue-agree-lease.trycloudflare.com";
+     "https://brussels-glossary-circuits-score.trycloudflare.com";
   // FCM token
 }

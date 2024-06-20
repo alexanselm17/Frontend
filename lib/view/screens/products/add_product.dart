@@ -16,7 +16,7 @@ class AddProduct extends StatefulWidget {
   const AddProduct({super.key, required this.isEdit, this.product});
 
   @override
-  _AddProductState createState() => _AddProductState();
+  State<AddProduct> createState() => _AddProductState();
 }
 
 class _AddProductState extends State<AddProduct> {

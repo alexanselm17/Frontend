@@ -5,6 +5,7 @@ import 'package:shop0koa_frontend/constants/colors.dart';
 import 'package:shop0koa_frontend/provider/authenticationProvider.dart';
 import 'package:shop0koa_frontend/provider/catalogueProvider.dart';
 import 'package:shop0koa_frontend/provider/fileUploadProvider.dart';
+import 'package:shop0koa_frontend/view/authentication/Pendingpage.dart';
 import 'package:shop0koa_frontend/view/authentication/login.dart';
 import 'package:shop0koa_frontend/view/authentication/onboard_screen.dart';
 import './view/screens/screens.dart';
@@ -64,6 +65,7 @@ class _MyAppState extends State<MyApp> {
           VerifyBusiness.routeName: (context) => const VerifyBusiness(),
           Started.routeName: (context) => const Started(),
           Withdraw.routeName: (context) => const Withdraw(),
+          Pendingpage.routeName: (context) => const Pendingpage(),
         },
       ),
     );

@@ -3,7 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop0koa_frontend/provider/authenticationProvider.dart';
+import 'package:shop0koa_frontend/view/authentication/Pendingpage.dart';
 import 'package:shop0koa_frontend/view/authentication/signup.dart';
+import 'package:shop0koa_frontend/view/authentication/verify.dart';
 import 'package:shop0koa_frontend/view/widgets/text_field.dart';
 
 class LoginPage extends StatelessWidget {

@@ -171,7 +171,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           child: const Center(
                             child: Text(
-                              'Ksh. 456,890,670',
+                              'Ksh. 0',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,

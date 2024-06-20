@@ -131,7 +131,7 @@ class _AccountPageState extends State<AccountPage> {
                                   color: Colors.grey,
                                 )
                               : const Text(
-                                  "Ksh 234,567.01",
+                                  "Ksh 0",
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 20,

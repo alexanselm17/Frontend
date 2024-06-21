@@ -1,6 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:shop0koa_frontend/main.dart';
 import 'package:shop0koa_frontend/models/user/register.dart';

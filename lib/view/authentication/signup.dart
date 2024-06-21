@@ -6,10 +6,10 @@ import 'package:shop0koa_frontend/provider/authenticationProvider.dart';
 import 'package:shop0koa_frontend/provider/fileUploadProvider.dart';
 import 'package:shop0koa_frontend/services/firebase.dart';
 import 'package:shop0koa_frontend/view/authentication/login.dart';
+import 'package:shop0koa_frontend/view/screens/screens.dart';
 import 'package:shop0koa_frontend/view/widgets/Vertical_spacing.dart';
 import 'package:shop0koa_frontend/view/widgets/button.dart';
 import 'dart:io';
-import 'package:shop0koa_frontend/view/screens/screens.dart';
 
 class SignupPage extends StatefulWidget {
   static const routeName = 'signUpPage';
@@ -364,6 +364,8 @@ class _SignupPageState extends State<SignupPage> {
                                         gender: _isMale ? "male" : "female",
                                         url: profileUrl ?? '',
                                       );
+                                      Navigator.of(context)
+                                          .pushNamed(VerifyBusiness.routeName);
                                     }
                                   },
                                   text: "Sign Up",

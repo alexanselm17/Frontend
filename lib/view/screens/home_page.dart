@@ -6,7 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop0koa_frontend/constants/app_constants.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
 import 'package:shop0koa_frontend/provider/authenticationProvider.dart';
-import 'package:shop0koa_frontend/provider/catalogueProvider.dart';
 import 'package:shop0koa_frontend/view/widgets/Vertical_spacing.dart';
 import 'package:shop0koa_frontend/view/screens/oders/oders_page.dart';
 import 'package:shop0koa_frontend/view/widgets/product_tile.dart';
@@ -172,7 +171,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           child: const Center(
                             child: Text(
-                              'Ksh. 456,890,670',
+                              'Ksh. 0',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,

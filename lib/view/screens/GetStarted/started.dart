@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop0koa_frontend/view/authentication/login.dart';
 import 'package:shop0koa_frontend/view/authentication/signup.dart';
-import 'package:shop0koa_frontend/view/authentication/login_page.dart';
 
 class Started extends StatelessWidget {
   static const routeName = 'started';

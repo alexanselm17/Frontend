@@ -7,6 +7,7 @@ import 'package:shop0koa_frontend/provider/catalogueProvider.dart';
 import 'package:shop0koa_frontend/services/firebase.dart';
 import 'package:shop0koa_frontend/view/widgets/button.dart';
 import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class AddProduct extends StatefulWidget {
   final bool isEdit;
@@ -15,109 +16,90 @@ class AddProduct extends StatefulWidget {
   const AddProduct({super.key, required this.isEdit, this.product});
 
   @override
-  _AddProductState createState() => _AddProductState();
+  State<AddProduct> createState() => _AddProductState();
 }
 
 class _AddProductState extends State<AddProduct> {
   final ImagePicker _imagePicker = ImagePicker();
   final Firebase firebase = Firebase();
-  OverlayEntry? _overlayEntry;
   String url = '';
+  XFile? _selectedImage;
 
   @override
   void initState() {
     final catalogueProvider =
         Provider.of<CatalogueProvider>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      widget.isEdit
-          ? setState(() {
-              catalogueProvider.nameController.text = widget.product!.name!;
-              catalogueProvider.priceController.text =
-                  widget.product!.price.toString();
-              catalogueProvider.quantityController.text =
-                  widget.product!.quantity.toString();
-              catalogueProvider.itemCodeController.text =
-                  widget.product!.itemCode!;
-              catalogueProvider.discountController.text =
-                  widget.product!.discount.toString();
-            })
-          : null;
+      if (widget.isEdit) {
+        setState(() {
+          catalogueProvider.nameController.text = widget.product!.name!;
+          catalogueProvider.priceController.text =
+              widget.product!.price.toString();
+          catalogueProvider.quantityController.text =
+              widget.product!.quantity.toString();
+          catalogueProvider.itemCodeController.text = widget.product!.itemCode!;
+          catalogueProvider.discountController.text =
+              widget.product!.discount.toString();
+        });
+      }
     });
     super.initState();
   }
 
   void _showOverlay(BuildContext context) {
-    _overlayEntry = _createOverlayEntry(context);
-    Overlay.of(context).insert(_overlayEntry!);
-  }
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return Container(
+          width: MediaQuery.sizeOf(context).width,
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextButton(
+                onPressed: () async {
+                  final pickedFile =
+                      await _imagePicker.pickImage(source: ImageSource.gallery);
+                  if (pickedFile != null) {
+                    var image = await firebase.storeProduct(
+                        selectedImageFile: pickedFile);
 
-  OverlayEntry _createOverlayEntry(BuildContext context) {
-    return OverlayEntry(
-      builder: (context) => Positioned(
-        top: MediaQuery.of(context).size.height / 4,
-        left: MediaQuery.of(context).size.width / 10,
-        width: MediaQuery.of(context).size.width * 0.8,
-        child: Material(
-          color: Colors.transparent,
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.5),
-                  blurRadius: 10,
-                ),
-              ],
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextButton(
-                  onPressed: () async {
-                    final pickedFile = await _imagePicker.pickImage(
-                        source: ImageSource.gallery);
-                    if (pickedFile != null) {
-                      var image = await firebase.storeProduct(
-                          selectedImageFile: pickedFile);
-
-                      setState(() {
-                        url = image;
-                      });
-                      _overlayEntry?.remove();
-                    }
-                    _overlayEntry?.remove();
-                  },
-                  child: const Text('Pick from Gallery'),
-                ),
-                TextButton(
-                  onPressed: () async {
-                    final pickedFile = await _imagePicker.pickImage(
-                        source: ImageSource.camera);
-                    if (pickedFile != null) {
-                      var image = await firebase.storeProduct(
-                          selectedImageFile: pickedFile);
-                      setState(() {
-                        url = image;
-                      });
-                      _overlayEntry?.remove();
-                    }
-                    _overlayEntry?.remove();
-                  },
-                  child: const Text('Capture using Camera'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    _overlayEntry?.remove();
-                  },
-                  child: const Text('Cancel'),
-                ),
-              ],
-            ),
+                    setState(() {
+                      url = image;
+                      _selectedImage = pickedFile;
+                    });
+                    Navigator.pop(context);
+                  }
+                },
+                child: const Text('Pick from Gallery'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  final pickedFile =
+                      await _imagePicker.pickImage(source: ImageSource.camera);
+                  if (pickedFile != null) {
+                    var image = await firebase.storeProduct(
+                        selectedImageFile: pickedFile);
+                    setState(() {
+                      url = image;
+                      _selectedImage = pickedFile;
+                    });
+                    Navigator.pop(context);
+                  }
+                },
+                child: const Text('Capture using Camera'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Cancel'),
+              ),
+            ],
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -148,16 +130,21 @@ class _AddProductState extends State<AddProduct> {
                     onPressed: () {
                       _showOverlay(context);
                     },
-                    child: const Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.image_outlined,
-                          size: 80,
-                        ),
-                        Text('Add product image (JPEG, PNG)'),
-                      ],
-                    ),
+                    child: _selectedImage == null
+                        ? const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.image_outlined,
+                                size: 80,
+                              ),
+                              Text('Add product image (JPEG, PNG)'),
+                            ],
+                          )
+                        : Image.file(
+                            File(_selectedImage!.path),
+                            fit: BoxFit.cover,
+                          ),
                   ),
                 ),
               ),

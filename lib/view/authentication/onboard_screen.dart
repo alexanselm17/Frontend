@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shop0koa_frontend/constants/app_constants.dart';
 import 'package:shop0koa_frontend/view/authentication/login.dart';
 import 'package:shop0koa_frontend/view/widgets/button.dart';
-import 'package:shop0koa_frontend/view/screens/screens.dart';
 
 class OnBoardScreen extends StatefulWidget {
   const OnBoardScreen({super.key});

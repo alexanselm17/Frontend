@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shop0koa_frontend/provider/authenticationProvider.dart';
 
@@ -6,20 +10,29 @@ class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
 
   @override
-  _EditProfilePageState createState() => _EditProfilePageState();
+  State<EditProfilePage> createState() => _EditProfilePageState();
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
+  final ImagePicker _imagePicker = ImagePicker();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _businessController = TextEditingController();
+  File? _selectedImage;
 
   @override
-  void initState() {
-    super.initState();
-    init();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    if (authProvider.user != null) {
+      _firstNameController.text = authProvider.user!.user!.firstName!;
+      _lastNameController.text = authProvider.user!.user!.lastName!;
+      _emailController.text = authProvider.user!.user!.email!;
+      _phoneController.text = authProvider.user!.user!.phoneNumber!;
+      _businessController.text = authProvider.user!.user!.businessName!;
+    }
   }
 
   @override
@@ -45,17 +58,51 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
-  void init() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final authProvider = Provider.of<AuthProvider>(context, listen: false);
-      if (authProvider.user != null) {
-        _firstNameController.text = authProvider.user!.user!.firstName!;
-        _lastNameController.text = authProvider.user!.user!.lastName!;
-        _emailController.text = authProvider.user!.user!.email!;
-        _phoneController.text = authProvider.user!.user!.phoneNumber!;
-        _businessController.text = authProvider.user!.user!.businessName!;
-      }
-    });
+  void _showImageSourceActionSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => SafeArea(
+        child: Wrap(
+          children: <Widget>[
+            ListTile(
+              leading: const Icon(Icons.photo_library),
+              title: const Text('Gallery'),
+              onTap: () async {
+                Navigator.of(context).pop();
+                final pickedFile =
+                    await _imagePicker.pickImage(source: ImageSource.gallery);
+                if (pickedFile != null) {
+                  setState(() {
+                    _selectedImage = File(pickedFile.path);
+                  });
+                }
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo_camera),
+              title: const Text('Camera'),
+              onTap: () async {
+                Navigator.of(context).pop();
+                final pickedFile =
+                    await _imagePicker.pickImage(source: ImageSource.camera);
+                if (pickedFile != null) {
+                  setState(() {
+                    _selectedImage = File(pickedFile.path);
+                  });
+                }
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.cancel),
+              title: const Text('Cancel'),
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -64,7 +111,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
     return Scaffold(
       appBar: AppBar(
-        // leading: const Icon(Icons.arrow_back),
         title: const Text('Edit Profile'),
       ),
       body: SingleChildScrollView(
@@ -72,25 +118,20 @@ class _EditProfilePageState extends State<EditProfilePage> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: <Widget>[
-              Stack(
-                children: <Widget>[
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundImage:
-                        NetworkImage(authProvider.user!.user!.url!),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: IconButton(
-                      icon: const Icon(Icons.edit),
-                      onPressed: () {
-                        // Implement your image edit feature here
-                      },
-                    ),
-                  ),
-                ],
+              GestureDetector(
+                onTap: () {
+                  _showImageSourceActionSheet(context);
+                },
+                child: CircleAvatar(
+                  radius: 50,
+                  backgroundImage: _selectedImage != null
+                      ? FileImage(_selectedImage!)
+                      : CachedNetworkImageProvider(
+                          authProvider.user!.user!.url!,
+                        ) as ImageProvider<Object>,
+                ),
               ),
+              const SizedBox(height: 20),
               _buildTextField(_firstNameController, 'First Name'),
               _buildTextField(_lastNameController, 'Last Name'),
               _buildTextField(_emailController, 'Email Address'),

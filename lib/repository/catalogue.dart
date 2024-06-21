@@ -3,9 +3,9 @@ import './remoterepository.dart';
 class CatalogueRepository {
   final _apiService = ApiService();
 
-  Future getProducts() async {
+  Future getProducts({required String storeId}) async {
     try {
-      const endpoint = '/product';
+      var endpoint = '/product/store/$storeId';
       final response = await _apiService.getReq(endpoint, headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',

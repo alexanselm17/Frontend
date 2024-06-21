@@ -351,26 +351,24 @@ class _SignupPageState extends State<SignupPage> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width - 50,
                       child: authProvider.isLoading
-                          ? const CircularProgressIndicator()
-                          : Center(
+                          ? const Center(
                               child: SizedBox(
-                                width: 40,
-                                height: 40,
-                                child: CustomButton(
-                                  onTap: () async {
-                                    if (_formKey.currentState!.validate()) {
-                                      await authProvider.register(
-                                        context: context,
-                                        gender: _isMale ? "male" : "female",
-                                        url: profileUrl ?? '',
-                                      );
-                                      Navigator.of(context)
-                                          .pushNamed(VerifyBusiness.routeName);
-                                    }
-                                  },
-                                  text: "Sign Up",
-                                ),
-                              ),
+                                  width: 40,
+                                  height: 40,
+                                  child: CircularProgressIndicator()))
+                          : CustomButton(
+                              onTap: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  await authProvider.register(
+                                    context: context,
+                                    gender: _isMale ? "male" : "female",
+                                    url: profileUrl ?? '',
+                                  );
+                                  Navigator.of(context)
+                                      .pushNamed(VerifyBusiness.routeName);
+                                }
+                              },
+                              text: "Sign Up",
                             ),
                     ),
                     const VerticalSpacing(),
@@ -433,7 +431,8 @@ class CustomTextField extends StatelessWidget {
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
             suffixIcon: obscureText
                 ? IconButton(
-                    icon: Icon(value ? Icons.visibility : Icons.visibility_off),
+                    icon:
+                        Icon(!value ? Icons.visibility : Icons.visibility_off),
                     onPressed: () => _obscureTextNotifier.value = !value,
                   )
                 : null,

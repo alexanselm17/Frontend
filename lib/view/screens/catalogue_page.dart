@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
 import 'package:shop0koa_frontend/models/catalogue/catalogue.dart';
+import 'package:shop0koa_frontend/provider/authenticationProvider.dart';
 import 'package:shop0koa_frontend/provider/catalogueProvider.dart';
 import 'package:shop0koa_frontend/view/widgets/product_tile.dart';
 import 'package:shop0koa_frontend/view/screens/products/add_product.dart';
@@ -14,15 +15,22 @@ class CataloguePage extends StatefulWidget {
 }
 
 class _CataloguePageState extends State<CataloguePage> {
+  bool _isInit = true;
   @override
-  void initState() {
-    final catalogueProvider =
-        Provider.of<CatalogueProvider>(context, listen: false);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      didChangeDependencies();
-      catalogueProvider.getProducts();
-    });
-    super.initState();
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    if (_isInit) {
+      _isInit = false;
+      final String storeId = Provider.of<AuthProvider>(context, listen: false)
+          .user!
+          .store!
+          .first
+          .id
+          .toString();
+      Provider.of<CatalogueProvider>(context, listen: false)
+          .getProducts(storeId: storeId);
+    }
   }
 
   @override

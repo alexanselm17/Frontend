@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop0koa_frontend/constants/app_constants.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
 import 'package:shop0koa_frontend/provider/authenticationProvider.dart';
+import 'package:shop0koa_frontend/view/authentication/onboard_screen.dart';
 import 'package:shop0koa_frontend/view/widgets/Vertical_spacing.dart';
 import 'package:shop0koa_frontend/view/screens/oders/oders_page.dart';
 import 'package:shop0koa_frontend/view/widgets/product_tile.dart';
@@ -95,6 +96,12 @@ class _HomePageState extends State<HomePage> {
                                         authProvider.logOut(
                                           context: context,
                                           token: token,
+                                        );
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const OnBoardScreen()),
                                         );
                                       } else {}
                                     }

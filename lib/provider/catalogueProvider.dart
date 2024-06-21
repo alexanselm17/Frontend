@@ -1,9 +1,13 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:shop0koa_frontend/main.dart';
 import 'package:shop0koa_frontend/models/catalogue/catalogue.dart';
+import 'package:shop0koa_frontend/provider/authenticationProvider.dart';
 import 'package:shop0koa_frontend/repository/catalogue.dart';
+import 'package:shop0koa_frontend/view/screens/catalogue_page.dart';
 import 'package:shop0koa_frontend/view/widgets/common.dart';
 
 class CatalogueProvider with ChangeNotifier {
@@ -25,11 +29,11 @@ class CatalogueProvider with ChangeNotifier {
   TextEditingController storeIdController = TextEditingController();
   TextEditingController quantityController = TextEditingController();
 
-  Future getProducts() async {
+  Future getProducts({required String storeId}) async {
     try {
       _isLoading = true;
       notifyListeners();
-      var response = await catalogueRepository.getProducts();
+      var response = await catalogueRepository.getProducts(storeId: storeId);
       _catalogue = CatalogueModel.fromJson(response);
     } catch (e) {
       rethrow;
@@ -39,7 +43,10 @@ class CatalogueProvider with ChangeNotifier {
     }
   }
 
-  Future createProducts({required int storeId, required String url}) async {
+  Future createProducts({
+    required int storeId,
+    required String url,
+  }) async {
     try {
       _addingProduct = true;
       notifyListeners();
@@ -53,6 +60,8 @@ class CatalogueProvider with ChangeNotifier {
           quantity: int.parse(quantityController.text));
       print(response);
       if (response['status'] == 'success') {
+        navigatorKey.currentState!.push(
+            MaterialPageRoute(builder: (context) => const CataloguePage()));
         CommonUtils.showToast('Product Added successfully');
         nameController.clear();
         priceController.clear();

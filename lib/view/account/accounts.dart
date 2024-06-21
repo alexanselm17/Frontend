@@ -110,7 +110,7 @@ class _AccountPageState extends State<AccountPage> {
                           IconButton(
                             onPressed: _toggleBalanceVisibility,
                             icon: Icon(
-                              _balanceVisibility
+                              !_balanceVisibility
                                   ? Icons.visibility
                                   : Icons.visibility_off,
                               color: Colors.white,

@@ -110,9 +110,9 @@ class _AddProductState extends State<AddProduct> {
     final auth = Provider.of<AuthProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Add Product',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          widget.isEdit ? 'Edit Product' : 'Add Product',
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
       body: Padding(

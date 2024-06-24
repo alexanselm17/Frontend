@@ -11,6 +11,8 @@ import 'package:shop0koa_frontend/view/widgets/Vertical_spacing.dart';
 import 'package:shop0koa_frontend/view/widgets/button.dart';
 import 'dart:io';
 
+enum Gender { male, female }
+
 class SignupPage extends StatefulWidget {
   static const routeName = 'signUpPage';
   const SignupPage({super.key});
@@ -20,11 +22,11 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
+  final regex = RegExp(r'^EAK\/ADB\/\d{4}$');
+  Gender? _gender;
   final _formKey = GlobalKey<FormState>();
   late TapGestureRecognizer _gestureDetector;
   String? imageUrl;
-  bool _isMale = false;
-  bool _isFemale = false;
   bool _isAgreed = false;
   final Firebase firebase = Firebase();
   String? profileUrl;
@@ -137,9 +139,12 @@ class _SignupPageState extends State<SignupPage> {
                       labelText: "License No.*",
                       keyboardType: TextInputType.number,
                       obscureText: false,
+                      hintText: 'EAK/ADB/3213',
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your license number';
+                        } else if (!regex.hasMatch(value)) {
+                          return 'License is not valid';
                         }
                         return null;
                       },
@@ -203,6 +208,7 @@ class _SignupPageState extends State<SignupPage> {
                     const SizedBox(height: 10),
                     CustomTextField(
                       controller: authProvider.passwordController,
+                      maxLength: 4,
                       labelText: "Create Pin",
                       keyboardType: TextInputType.number,
                       obscureText: true,
@@ -238,12 +244,12 @@ class _SignupPageState extends State<SignupPage> {
                               Row(
                                 children: [
                                   const Text('Male'),
-                                  Checkbox(
-                                    value: _isMale,
-                                    onChanged: (bool? value) {
+                                  Radio<Gender>(
+                                    value: Gender.male,
+                                    groupValue: _gender,
+                                    onChanged: (Gender? value) {
                                       setState(() {
-                                        _isMale = value!;
-                                        _isFemale = !value;
+                                        _gender = value;
                                       });
                                     },
                                   ),
@@ -253,12 +259,12 @@ class _SignupPageState extends State<SignupPage> {
                               Row(
                                 children: [
                                   const Text('Female'),
-                                  Checkbox(
-                                    value: _isFemale,
-                                    onChanged: (bool? value) {
+                                  Radio<Gender>(
+                                    value: Gender.female,
+                                    groupValue: _gender,
+                                    onChanged: (Gender? value) {
                                       setState(() {
-                                        _isFemale = value!;
-                                        _isMale = !value;
+                                        _gender = value;
                                       });
                                     },
                                   ),
@@ -357,17 +363,19 @@ class _SignupPageState extends State<SignupPage> {
                                   height: 40,
                                   child: CircularProgressIndicator()))
                           : CustomButton(
-                              onTap: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  await authProvider.register(
-                                    context: context,
-                                    gender: _isMale ? "male" : "female",
-                                    url: profileUrl ?? '',
-                                  );
-                                  Navigator.of(context)
-                                      .pushNamed(VerifyBusiness.routeName);
-                                }
-                              },
+                              onTap: _isAgreed
+                                  ? () async {
+                                      if (_formKey.currentState!.validate()) {
+                                        await authProvider.register(
+                                          context: context,
+                                          gender: _gender.toString(),
+                                          url: profileUrl ?? '',
+                                        );
+                                        Navigator.of(context).pushNamed(
+                                            VerifyBusiness.routeName);
+                                      }
+                                    }
+                                  : null,
                               text: "Sign Up",
                             ),
                     ),
@@ -405,12 +413,16 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final TextInputType keyboardType;
   final bool obscureText;
+  final int? maxLength;
+  final String? hintText;
   final String? Function(String?)? validator;
   final ValueNotifier<bool> _obscureTextNotifier = ValueNotifier(true);
 
   CustomTextField({
     super.key,
     required this.labelText,
+    this.maxLength,
+    this.hintText,
     this.keyboardType = TextInputType.text,
     this.obscureText = false,
     required this.validator,
@@ -423,11 +435,13 @@ class CustomTextField extends StatelessWidget {
       valueListenable: _obscureTextNotifier,
       builder: (context, value, child) {
         return TextFormField(
+          maxLength: maxLength,
           controller: controller,
           keyboardType: keyboardType,
           obscureText: obscureText ? value : false,
           decoration: InputDecoration(
             labelText: labelText,
+            hintText: hintText,
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
             suffixIcon: obscureText
                 ? IconButton(

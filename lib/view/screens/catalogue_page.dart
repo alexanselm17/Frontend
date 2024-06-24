@@ -18,14 +18,12 @@ class _CataloguePageState extends State<CataloguePage> {
   bool _isInit = true;
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     if (_isInit) {
       _isInit = false;
       final String storeId = Provider.of<AuthProvider>(context, listen: false)
           .user!
           .store!
-          .first
           .id
           .toString();
       Provider.of<CatalogueProvider>(context, listen: false)

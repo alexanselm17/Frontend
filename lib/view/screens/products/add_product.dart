@@ -219,7 +219,9 @@ class _AddProductState extends State<AddProduct> {
                           child: CustomButton(
                             onTap: () async {
                               await catalogueProvider.createProducts(
-                                  storeId: 1, url: url);
+                                storeId: auth.user!.store!.id!,
+                                url: url,
+                              );
                             },
                             text: 'ADD PRODUCT',
                           ))

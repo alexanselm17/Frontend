@@ -6,7 +6,7 @@ class AppConstants {
   static String get FCM_KEY => "fcm_token"; // FCM token
   static String get ACCOUNT_TYPE => "account_type";
   static String get BASEURL =>
-      "https://amateur-survivor-publicly-virtually.trycloudflare.com";
+      "https://javascript-henry-providence-suite.trycloudflare.com";
 
   // FCM token
 }

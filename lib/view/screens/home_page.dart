@@ -25,7 +25,9 @@ class _HomePageState extends State<HomePage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final provider = Provider.of<AuthProvider>(context);
-    provider.getUser(userId: provider.user!.user!.id!, context: context);
+    if (provider.user == null) {
+      provider.getUser(userId: provider.user!.user!.id!, context: context);
+    }
   }
 
   @override
@@ -36,9 +38,7 @@ class _HomePageState extends State<HomePage> {
           padding: const EdgeInsets.all(8.0),
           child: Consumer<AuthProvider>(
             builder: (context, authProvider, _) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+              return ListView(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

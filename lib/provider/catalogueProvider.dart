@@ -35,6 +35,8 @@ class CatalogueProvider with ChangeNotifier {
       notifyListeners();
       var response = await catalogueRepository.getProducts(storeId: storeId);
       _catalogue = CatalogueModel.fromJson(response);
+      _isLoading = false;
+      notifyListeners();
     } catch (e) {
       rethrow;
     } finally {

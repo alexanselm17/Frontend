@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop0koa_frontend/constants/app_constants.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
 import 'package:shop0koa_frontend/provider/authenticationProvider.dart';
+import 'package:shop0koa_frontend/view/authentication/login.dart';
 import 'package:shop0koa_frontend/view/authentication/onboard_screen.dart';
 import 'package:shop0koa_frontend/view/widgets/Vertical_spacing.dart';
 import 'package:shop0koa_frontend/view/screens/oders/oders_page.dart';
@@ -49,11 +50,6 @@ class _HomePageState extends State<HomePage> {
                             backgroundImage: CachedNetworkImageProvider(
                               authProvider.user!.user!.url!,
                             ),
-                            // child: CustomCachedNetworkImage(
-                            //   image: authProvider.user!.user!.url!,
-                            //   width: 50,
-                            //   height: 50,
-                            // ),
                           ),
                           const SizedBox(width: 10),
                           Column(
@@ -101,7 +97,7 @@ class _HomePageState extends State<HomePage> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  const OnBoardScreen()),
+                                                  LoginPage()),
                                         );
                                       } else {}
                                     }
@@ -205,7 +201,7 @@ class _HomePageState extends State<HomePage> {
                             const Row(
                               children: [
                                 Text(
-                                  'Pending Oders ',
+                                  'Pending Orders ',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
@@ -244,8 +240,8 @@ class _HomePageState extends State<HomePage> {
                         const Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            OdersCard(oderType: 'Pick Up', oderAmount: 30),
-                            OdersCard(oderType: 'Deliveries', oderAmount: 10),
+                            OdersCard(oderType: 'Pick Up', oderAmount: 0),
+                            OdersCard(oderType: 'Deliveries', oderAmount: 0),
                           ],
                         ),
                       ],

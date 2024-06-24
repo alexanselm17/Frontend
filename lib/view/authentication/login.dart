@@ -57,16 +57,25 @@ class LoginPage extends StatelessWidget {
                     hintText: 'Enter email',
                     obscureText: false,
                     field: 'Email',
+                    validator: (value) {  }, 
+                    keyboardType: TextInputType.emailAddress,
                   ),
 
                   const SizedBox(height: 10),
 
-                  // password textfield
+                  // password textfield with validator for no more than 4 digits
                   MyTextField(
                     controller: paswordController,
+                    keyboardType: TextInputType.number,
                     hintText: 'Enter Password',
                     obscureText: true,
                     field: 'Password',
+                    validator: (value) {
+                      if (value != null && value.length > 4) {
+                        return 'Password cannot be more than 4 digits';
+                      }
+                      return null;
+                    },
                   ),
 
                   const SizedBox(height: 10),
@@ -106,47 +115,7 @@ class LoginPage extends StatelessWidget {
 
                   const SizedBox(height: 20),
 
-                  // or continue with
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Divider(
-                            thickness: 0.5,
-                            color: Colors.grey[400],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Text(
-                            'Or continue with',
-                            style: TextStyle(color: Colors.grey[700]),
-                          ),
-                        ),
-                        Expanded(
-                          child: Divider(
-                            thickness: 0.5,
-                            color: Colors.grey[400],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
                   const SizedBox(height: 20),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   children: [
-                  //     GestureDetector(
-                  //         onTap: null,
-                  //         child: const SquareTile(
-                  //             imagePath: AssetsPath.googleLogo)),
-                  //     const SizedBox(width: 25),
-                  //     const SquareTile(imagePath: AssetsPath.appleLogo)
-                  //   ],
-                  // ),
-                  const SizedBox(height: 50),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

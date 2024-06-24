@@ -106,7 +106,7 @@ class LoginPage extends StatelessWidget {
 
                   const SizedBox(height: 20),
 
-                  // or continue with
+                /*  // or continue with
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: Row(
@@ -133,7 +133,7 @@ class LoginPage extends StatelessWidget {
                       ],
                     ),
                   ),
-
+*/
                   const SizedBox(height: 20),
                   // Row(
                   //   mainAxisAlignment: MainAxisAlignment.center,
@@ -146,7 +146,7 @@ class LoginPage extends StatelessWidget {
                   //     const SquareTile(imagePath: AssetsPath.appleLogo)
                   //   ],
                   // ),
-                  const SizedBox(height: 50),
+                 // const SizedBox(height: 5),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

@@ -18,15 +18,14 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
   final List<OnboardingItem> onboardingItems = [
     OnboardingItem(
       title: 'Merchant App',
-      description: 'Loading',
-      imageUrl: 'assets/images/logo.jpg',
+      imageUrl: 'assets/images/shopokoa logo.png',
       child: const CircularProgressIndicator(),
     ),
     OnboardingItem(
       title: 'Track Your Sales',
       description:
           'Monitor your sales in real-time and analyze your performance.',
-      imageUrl: 'assets/images/logo.jpg',
+      imageUrl: 'assets/images/shopokoa logo.png',
     ),
   ];
   @override
@@ -116,13 +115,13 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
 
 class OnboardingItem {
   final String title;
-  final String description;
+  final String? description;
   final String? imageUrl;
   final Widget? child;
 
   OnboardingItem({
     required this.title,
-    required this.description,
+    this.description,
     this.imageUrl,
     this.child,
   });
@@ -149,26 +148,28 @@ class OnboardingItemWidget extends StatelessWidget {
             //width: MediaQuery.sizeOf(context).height * .5,
             decoration: const BoxDecoration(shape: BoxShape.circle),
 
-            child: ClipOval(
+            child: ClipPath(
               child: Image.asset(
-                item.imageUrl ?? '',
-                height: 200,
-                width: 200,
+                item.imageUrl ??
+                    '', // Provide a default value when item.imageUrl is null
+                height: 280,
+                width: 180,
                 fit: BoxFit.cover,
               ),
             ),
           ),
-          const SizedBox(height: 10.0),
+          const SizedBox(height: 15.0),
           Text(
             item.title,
             style: const TextStyle(
-              fontSize: 24.0,
+              fontSize: 20.0,
               fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(height: 10.0),
           Text(
-            item.description,
+            item.description ??
+                '', // Provide a default value when item.description is null
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 16.0,

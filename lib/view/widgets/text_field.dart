@@ -12,7 +12,7 @@ class MyTextField extends StatelessWidget {
     required this.controller,
     required this.hintText,
     required this.obscureText,
-    required this.field,
+    required this.field, required String? Function(dynamic value) validator, required TextInputType keyboardType,
   });
 
   @override

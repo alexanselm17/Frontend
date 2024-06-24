@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop0koa_frontend/constants/app_constants.dart';
 import 'package:shop0koa_frontend/constants/colors.dart';
 import 'package:shop0koa_frontend/provider/authenticationProvider.dart';
+import 'package:shop0koa_frontend/view/authentication/login.dart';
 import 'package:shop0koa_frontend/view/authentication/onboard_screen.dart';
 import 'package:shop0koa_frontend/view/widgets/Vertical_spacing.dart';
 import 'package:shop0koa_frontend/view/screens/oders/oders_page.dart';
@@ -31,246 +32,249 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Consumer<AuthProvider>(
-            builder: (context, authProvider, _) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            backgroundImage: CachedNetworkImageProvider(
-                              authProvider.user!.user!.url!,
+      body: Padding(
+        padding: const EdgeInsets.all(6.0),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Consumer<AuthProvider>(
+              builder: (context, authProvider, _) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundImage: CachedNetworkImageProvider(
+                                authProvider.user!.user!.url!,
+                              ),
+                              // child: CustomCachedNetworkImage(
+                              //   image: authProvider.user!.user!.url!,
+                              //   width: 50,
+                              //   height: 50,
+                              // ),
                             ),
-                            // child: CustomCachedNetworkImage(
-                            //   image: authProvider.user!.user!.url!,
-                            //   width: 50,
-                            //   height: 50,
-                            // ),
-                          ),
-                          const SizedBox(width: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            const SizedBox(width: 10),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  authProvider.user!.user!.businessName!
+                                      .toUpperCase(),
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  'Hello ${authProvider.user!.user!.firstName!}',
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {},
+                              icon: const Icon(Icons.notifications_none),
+                            ),
+                            authProvider.isLoading
+                                ? const CircularProgressIndicator()
+                                : IconButton(
+                                    onPressed: () async {
+                                      final preferences =
+                                          await SharedPreferences.getInstance();
+        
+                                      if (preferences
+                                          .containsKey(AppConstants.TOKEN_KEY)) {
+                                        final token = preferences.getString(
+                                                AppConstants.TOKEN_KEY) ??
+                                            '';
+                                        if (token != null || token != '') {
+                                          authProvider.logOut(
+                                            context: context,
+                                            token: token,
+                                          );
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    LoginPage()),
+                                          );
+                                        } else {}
+                                      }
+                                    },
+                                    icon: const Icon(Icons.logout),
+                                  ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const VerticalSpacing(),
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.grey.shade200,
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                authProvider.user!.user!.businessName!
-                                    .toUpperCase(),
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
+                              const Row(
+                                children: [
+                                  Text(
+                                    'Your Balance  ',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  Icon(Icons.visibility),
+                                ],
+                              ),
+                              Text.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: 'View more ',
+                                      style: TextStyle(
+                                        color: AppColors.mainColor,
+                                        decoration: TextDecoration.underline,
+                                        decorationThickness: 2,
+                                        decorationColor: AppColors.mainColor,
+                                        decorationStyle:
+                                            TextDecorationStyle.solid,
+                                      ),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          print('Text tapped!');
+                                          // Perform your action here
+                                        },
+                                    ),
+                                  ],
                                 ),
                               ),
-                              Text(
-                                'Hello ${authProvider.user!.user!.firstName!}',
+                            ],
+                          ),
+                          const VerticalSpacing(),
+                          Container(
+                            width: MediaQuery.of(context).size.width - 10,
+                            padding: const EdgeInsets.all(25),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              gradient: const LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  Colors.green,
+                                  Colors.green,
+                                  Colors.black,
+                                ],
                               ),
+                            ),
+                            child: const Center(
+                              child: Text(
+                                'Ksh. 0',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 32,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const VerticalSpacing(),
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.grey.shade200,
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Row(
+                                children: [
+                                  Text(
+                                    'Pending Orders ',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  Icon(Icons.access_time_rounded),
+                                ],
+                              ),
+                              Text.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: 'View more ',
+                                      style: TextStyle(
+                                        color: AppColors.mainColor,
+                                        decoration: TextDecoration.underline,
+                                        decorationThickness: 2,
+                                        decorationColor: AppColors.mainColor,
+                                        decorationStyle:
+                                            TextDecorationStyle.solid,
+                                      ),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          Navigator.of(context)
+                                              .pushNamed(OrdersPage.routeName);
+                                          //(const OdersPage());
+                                          print('Text tapped!');
+                                        },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const VerticalSpacing(),
+                          const Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              OdersCard(oderType: 'Pick Up', oderAmount: 0),
+                              OdersCard(oderType: 'Deliveries', oderAmount: 0),
                             ],
                           ),
                         ],
                       ),
-                      Row(
-                        children: [
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(Icons.notifications_none),
-                          ),
-                          authProvider.isLoading
-                              ? const CircularProgressIndicator()
-                              : IconButton(
-                                  onPressed: () async {
-                                    final preferences =
-                                        await SharedPreferences.getInstance();
-
-                                    if (preferences
-                                        .containsKey(AppConstants.TOKEN_KEY)) {
-                                      final token = preferences.getString(
-                                              AppConstants.TOKEN_KEY) ??
-                                          '';
-                                      if (token != null || token != '') {
-                                        authProvider.logOut(
-                                          context: context,
-                                          token: token,
-                                        );
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const OnBoardScreen()),
-                                        );
-                                      } else {}
-                                    }
-                                  },
-                                  icon: const Icon(Icons.logout),
-                                ),
-                        ],
+                    ),
+                    const VerticalSpacing(),
+                    const Text(
+                      'Catalogue',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
                       ),
-                    ],
-                  ),
-                  const VerticalSpacing(),
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.grey.shade200,
                     ),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Row(
-                              children: [
-                                Text(
-                                  'Your Balance  ',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                Icon(Icons.visibility),
-                              ],
-                            ),
-                            Text.rich(
-                              TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: 'View more ',
-                                    style: TextStyle(
-                                      color: AppColors.mainColor,
-                                      decoration: TextDecoration.underline,
-                                      decorationThickness: 2,
-                                      decorationColor: AppColors.mainColor,
-                                      decorationStyle:
-                                          TextDecorationStyle.solid,
-                                    ),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        print('Text tapped!');
-                                        // Perform your action here
-                                      },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        const VerticalSpacing(),
-                        Container(
-                          width: MediaQuery.of(context).size.width - 10,
-                          padding: const EdgeInsets.all(25),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            gradient: const LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                Colors.green,
-                                Colors.green,
-                                Colors.black,
-                              ],
-                            ),
-                          ),
-                          child: const Center(
-                            child: Text(
-                              'Ksh. 0',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 32,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+                    const ProductTile(
+                      isAnalytics: false,
+                      productName: 'soko maize meal -5 kg',
+                      leftUnits: '45',
+                      productPrice: '389',
+                      productImage:
+                          'https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+                      productDiscount: '20',
                     ),
-                  ),
-                  const VerticalSpacing(),
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.grey.shade200,
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Row(
-                              children: [
-                                Text(
-                                  'Pending Oders ',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                Icon(Icons.access_time_rounded),
-                              ],
-                            ),
-                            Text.rich(
-                              TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: 'View more ',
-                                    style: TextStyle(
-                                      color: AppColors.mainColor,
-                                      decoration: TextDecoration.underline,
-                                      decorationThickness: 2,
-                                      decorationColor: AppColors.mainColor,
-                                      decorationStyle:
-                                          TextDecorationStyle.solid,
-                                    ),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        Navigator.of(context)
-                                            .pushNamed(OrdersPage.routeName);
-                                        //(const OdersPage());
-                                        print('Text tapped!');
-                                      },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        const VerticalSpacing(),
-                        const Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            OdersCard(oderType: 'Pick Up', oderAmount: 30),
-                            OdersCard(oderType: 'Deliveries', oderAmount: 10),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  const VerticalSpacing(),
-                  const Text(
-                    'Catalogue',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                  const ProductTile(
-                    isAnalytics: false,
-                    productName: 'soko maize meal -5 kg',
-                    leftUnits: '45',
-                    productPrice: '389',
-                    productImage:
-                        'https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                    productDiscount: '20',
-                  ),
-                ],
-              );
-            },
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ),

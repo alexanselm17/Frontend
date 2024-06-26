@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop0koa_frontend/view/screens/catalogue_page.dart';
 import '../../widgets/dotted_border_container.dart';
 import 'package:provider/provider.dart';
 import 'package:shop0koa_frontend/models/catalogue/catalogue.dart';
@@ -110,6 +111,24 @@ class _AddProductState extends State<AddProduct> {
     final auth = Provider.of<AuthProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              final catalogueProvider =
+                  Provider.of<CatalogueProvider>(context, listen: false);
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (widget.isEdit) {
+                  setState(() {
+                    catalogueProvider.nameController.clear();
+                    catalogueProvider.priceController.clear();
+                    catalogueProvider.quantityController.clear();
+                    catalogueProvider.itemCodeController.clear();
+                    catalogueProvider.discountController.clear();
+                  });
+                }
+              });
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back)),
         title: Text(
           widget.isEdit ? 'Edit Product' : 'Add Product',
           style: const TextStyle(fontWeight: FontWeight.bold),
@@ -211,15 +230,19 @@ class _AddProductState extends State<AddProduct> {
                 ),
               ),
               const SizedBox(height: 30),
-              catalogueProvider.isAddingProduct
+              context.watch<CatalogueProvider>().isAddingProduct
                   ? const Center(child: CircularProgressIndicator())
                   : !widget.isEdit
                       ? SizedBox(
                           width: MediaQuery.of(context).size.width - 50,
                           child: CustomButton(
                             onTap: () async {
-                              await catalogueProvider.createProducts(
-                                  storeId: 1, url: url);
+                              await context
+                                  .read<CatalogueProvider>()
+                                  .createProducts(
+                                    storeId: auth.user!.store!.id!,
+                                    url: url,
+                                  );
                             },
                             text: 'ADD PRODUCT',
                           ))
@@ -227,11 +250,13 @@ class _AddProductState extends State<AddProduct> {
                           width: MediaQuery.of(context).size.width - 50,
                           child: CustomButton(
                             onTap: () async {
-                              await catalogueProvider.editProducts(
-                                storeId: widget.product!.store!.id!,
-                                id: widget.product!.id!,
-                                url: url,
-                              );
+                              await context
+                                  .read<CatalogueProvider>()
+                                  .editProducts(
+                                    storeId: widget.product!.store!.id!,
+                                    id: widget.product!.id!,
+                                    url: url == '' ? widget.product!.url! : url,
+                                  );
                             },
                             text: 'Edit PRODUCT',
                           ),

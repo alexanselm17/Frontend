@@ -1,10 +1,12 @@
 class UserModel {
   String? accessToken;
   List<Business>? business;
-  List<Store>? store;
+  String? status;
+  Store? store;
   User? user;
 
-  UserModel({this.accessToken, this.business, this.store, this.user});
+  UserModel(
+      {this.accessToken, this.business, this.status, this.store, this.user});
 
   UserModel.fromJson(Map<String, dynamic> json) {
     accessToken = json['access_token'];
@@ -14,12 +16,8 @@ class UserModel {
         business!.add(Business.fromJson(v));
       });
     }
-    if (json['store'] != null) {
-      store = <Store>[];
-      json['store'].forEach((v) {
-        store!.add(Store.fromJson(v));
-      });
-    }
+    status = json['status'];
+    store = json['store'] != null ? Store.fromJson(json['store']) : null;
     user = json['user'] != null ? User.fromJson(json['user']) : null;
   }
 
@@ -29,8 +27,9 @@ class UserModel {
     if (business != null) {
       data['business'] = business!.map((v) => v.toJson()).toList();
     }
+    data['status'] = status;
     if (store != null) {
-      data['store'] = store!.map((v) => v.toJson()).toList();
+      data['store'] = store!.toJson();
     }
     if (user != null) {
       data['user'] = user!.toJson();

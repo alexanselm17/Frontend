@@ -18,26 +18,17 @@ class _CataloguePageState extends State<CataloguePage> {
   bool _isInit = true;
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     if (_isInit) {
       _isInit = false;
-      final String storeId = Provider.of<AuthProvider>(context, listen: false)
-          .user!
-          .store!
-          .first
-          .id
-          .toString();
-      Provider.of<CatalogueProvider>(context, listen: false)
-          .getProducts(storeId: storeId);
+      final String storeId =
+          context.watch<AuthProvider>().user!.store!.id.toString();
+      context.read<CatalogueProvider>().getProducts(storeId: storeId);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final catalogueProvider =
-        Provider.of<CatalogueProvider>(context, listen: true);
-
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -68,20 +59,26 @@ class _CataloguePageState extends State<CataloguePage> {
           )),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: catalogueProvider.isLoading
+        child: context.watch<CatalogueProvider>().isLoading
             ? const Center(child: CircularProgressIndicator())
-            : catalogueProvider.catalogue!.products!.isEmpty
+            : context.watch<CatalogueProvider>().catalogue!.products!.isEmpty
                 ? const Center(
-                    child:
-                        Text('You dont have any products in the catalogue yet'),
+                    child: Text(
+                        "You don't have any products in the catalogue yet"),
                   )
                 : ListView.builder(
                     // physics: const AlwaysScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: catalogueProvider.catalogue!.products!.length,
+                    itemCount: context
+                        .watch<CatalogueProvider>()
+                        .catalogue!
+                        .products!
+                        .length,
                     itemBuilder: (_, index) {
-                      final Products product =
-                          catalogueProvider.catalogue!.products![index];
+                      final Products product = context
+                          .watch<CatalogueProvider>()
+                          .catalogue!
+                          .products![index];
                       return ProductTile(
                         products: product,
                         isAnalytics: false,

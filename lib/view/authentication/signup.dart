@@ -137,7 +137,7 @@ class _SignupPageState extends State<SignupPage> {
                       controller:
                           authProvider.businessRegistrationNumberController,
                       labelText: "License No.*",
-                      keyboardType: TextInputType.number,
+                      keyboardType: TextInputType.text,
                       obscureText: false,
                       hintText: 'EAK/ADB/3213',
                       validator: (value) {

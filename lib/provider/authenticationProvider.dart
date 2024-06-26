@@ -11,7 +11,7 @@ import 'package:shop0koa_frontend/view/authentication/verify.dart';
 import 'package:shop0koa_frontend/view/screens/navigation.dart';
 import 'package:shop0koa_frontend/view/widgets/common.dart';
 
-class AuthProvider with ChangeNotifier {
+class AuthProvider extends ChangeNotifier {
   final Auth auth = Auth();
 
   RegisterUser? _registerUser;
@@ -47,13 +47,17 @@ class AuthProvider with ChangeNotifier {
       if (response['status'] == 'success') {
         await getUser(userId: response['user']['id'], context: context);
         _user = UserModel.fromJson(response);
-        CommonUtils.showToast('Logged in sucessfully');
+        CommonUtils.showToast('Logged in successfully');
         sharedpreferencesStorage.storeToken(_user!.accessToken!);
 
         Navigator.of(context).pushNamed(NavigationPage.routeName);
+        _isLoading = false;
+        notifyListeners();
       } else {
         CommonUtils.showErrorToast(
             response['message'], 'Check your password and try again');
+        _isLoading = false;
+        notifyListeners();
       }
     } catch (e) {
       rethrow;
@@ -134,10 +138,20 @@ class AuthProvider with ChangeNotifier {
         notifyListeners();
         CommonUtils.showToast('Registered sucessfully');
         navigatorKey.currentState!.pushNamed(VerifyBusiness.routeName);
+        _isLoading = false;
+        notifyListeners();
       } else {
-        CommonUtils.showToast(response['message']);
+        CommonUtils.showToast(response['error']['message']);
+        _isLoading = false;
+        notifyListeners();
       }
     } catch (e) {
+      _isLoading = false;
+      notifyListeners();
+      CommonUtils.showErrorToast(
+        'Error!',
+        e.toString(),
+      );
       rethrow;
     } finally {
       _isLoading = false;
@@ -170,4 +184,6 @@ class AuthProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  clear() {}
 }

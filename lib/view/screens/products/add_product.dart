@@ -230,17 +230,19 @@ class _AddProductState extends State<AddProduct> {
                 ),
               ),
               const SizedBox(height: 30),
-              catalogueProvider.isAddingProduct
+              context.watch<CatalogueProvider>().isAddingProduct
                   ? const Center(child: CircularProgressIndicator())
                   : !widget.isEdit
                       ? SizedBox(
                           width: MediaQuery.of(context).size.width - 50,
                           child: CustomButton(
                             onTap: () async {
-                              await catalogueProvider.createProducts(
-                                storeId: auth.user!.store!.id!,
-                                url: url,
-                              );
+                              await context
+                                  .read<CatalogueProvider>()
+                                  .createProducts(
+                                    storeId: auth.user!.store!.id!,
+                                    url: url,
+                                  );
                             },
                             text: 'ADD PRODUCT',
                           ))
@@ -248,11 +250,13 @@ class _AddProductState extends State<AddProduct> {
                           width: MediaQuery.of(context).size.width - 50,
                           child: CustomButton(
                             onTap: () async {
-                              await catalogueProvider.editProducts(
-                                storeId: widget.product!.store!.id!,
-                                id: widget.product!.id!,
-                                url: url,
-                              );
+                              await context
+                                  .read<CatalogueProvider>()
+                                  .editProducts(
+                                    storeId: widget.product!.store!.id!,
+                                    id: widget.product!.id!,
+                                    url: url == '' ? widget.product!.url! : url,
+                                  );
                             },
                             text: 'Edit PRODUCT',
                           ),

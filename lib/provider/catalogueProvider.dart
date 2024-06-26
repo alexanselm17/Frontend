@@ -10,7 +10,7 @@ import 'package:shop0koa_frontend/repository/catalogue.dart';
 import 'package:shop0koa_frontend/view/screens/catalogue_page.dart';
 import 'package:shop0koa_frontend/view/widgets/common.dart';
 
-class CatalogueProvider with ChangeNotifier {
+class CatalogueProvider extends ChangeNotifier {
   final CatalogueRepository catalogueRepository = CatalogueRepository();
 
   CatalogueModel? _catalogue;
@@ -60,8 +60,8 @@ class CatalogueProvider with ChangeNotifier {
           itemCode: itemCodeController.text,
           storeId: storeId,
           quantity: int.parse(quantityController.text));
-      print(response);
       if (response['status'] == 'success') {
+        await getProducts(storeId: storeId.toString());
         navigatorKey.currentState!.push(
             MaterialPageRoute(builder: (context) => const CataloguePage()));
         CommonUtils.showToast('Product Added successfully');
@@ -97,7 +97,10 @@ class CatalogueProvider with ChangeNotifier {
           itemCode: itemCodeController.text,
           storeId: storeId,
           quantity: int.parse(quantityController.text));
-      CommonUtils.showToast('Product Added successfully');
+      CommonUtils.showToast('Product Edited successfully');
+      await getProducts(storeId: storeId.toString());
+      navigatorKey.currentState!
+          .push(MaterialPageRoute(builder: (context) => const CataloguePage()));
       urlController.clear();
       nameController.clear();
       priceController.clear();
